@@ -17,7 +17,60 @@ public class Secouriste {
         this.adressse = adresse;
     }
 
-    public void get
+    public int getId() {
+        return this.id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNom() {
+        return this.nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return this.prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public int getDateNaissance() {
+        return this.dateNaissance;
+    }
+
+    public void setDateNaissance(int dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTel() {
+        return this.tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getAdressse() {
+        return this.adressse;
+    }
+
+    public void setAdressse(String adressse) {
+        this.adressse = adressse;
+    }
 
 }
