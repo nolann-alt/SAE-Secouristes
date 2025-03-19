@@ -1,27 +1,28 @@
 public class Secouriste {
-    private int id;
+    private long id;
     private String nom;
     private String prenom;
-    private int dateNaissance;
+    private String dateNaissance;
     private String email;
     private String tel;
-    private String adressse;
-    
-    public Secouriste(int id, String nom, String prenom, int dateNaissance, String email, String tel, String adresse) {
+    private String adresse;
+
+    public Secouriste(long id, String nom, String prenom, String dateNaissance, String email, String tel, String adresse) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.email = email;
         this.tel = tel;
-        this.adressse = adresse;
+        this.adresse = adresse;
     }
 
-    public int getId() {
+
+    public long getId() {
         return this.id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -41,11 +42,11 @@ public class Secouriste {
         this.prenom = prenom;
     }
 
-    public int getDateNaissance() {
+    public String getDateNaissance() {
         return this.dateNaissance;
     }
 
-    public void setDateNaissance(int dateNaissance) {
+    public void setDateNaissance(String dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
@@ -65,12 +66,11 @@ public class Secouriste {
         this.tel = tel;
     }
 
-    public String getAdressse() {
-        return this.adressse;
+    public String getAdresse() {
+        return this.adresse;
     }
 
-    public void setAdressse(String adressse) {
-        this.adressse = adressse;
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
-
 }
