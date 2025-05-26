@@ -1,3 +1,5 @@
+package metier.persistence;
+
 public class Secouriste {
     private long id;
     private String nom;

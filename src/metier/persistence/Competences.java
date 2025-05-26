@@ -1,3 +1,5 @@
+package metier.persistence;
+
 public class Competences {
     private String intitule;
 
@@ -13,4 +15,3 @@ public class Competences {
         this.intitule = intitule;
     }
 }
-

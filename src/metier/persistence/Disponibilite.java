@@ -1,3 +1,5 @@
+package metier.persistence;
+
 public class Disponibilite {
     private int idSec;
     private int jour;
@@ -11,11 +13,11 @@ public class Disponibilite {
         this.annee = annee;
     }
 
-    public int getIdSec() {
+    public int getIdSecouriste() {
         return idSec;
     }
 
-    public void setIdSec(int idSec) {
+    public void setIdSecouriste(int idSec) {
         this.idSec = idSec;
     }
 

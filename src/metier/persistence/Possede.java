@@ -1,8 +1,10 @@
-public class Possède {
+package metier.persistence;
+
+public class Possede {
     private String intituleComp;
     private int idSecouriste;
 
-    public Possède(String intituleComp, int idSecouriste) {
+    public Possede(String intituleComp, int idSecouriste) {
         this.intituleComp = intituleComp;
         this.idSecouriste = idSecouriste;
     } 
@@ -22,6 +24,4 @@ public class Possède {
     public void setIdSecouriste(int idSecouriste) {
         this.idSecouriste = idSecouriste;
     }
-
-    
 }

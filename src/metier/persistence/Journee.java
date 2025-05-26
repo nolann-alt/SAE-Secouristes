@@ -1,3 +1,5 @@
+package metier.persistence;
+
 public class Journee {
     private int jour;
     private int mois;

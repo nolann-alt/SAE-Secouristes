@@ -1,3 +1,5 @@
+package metier.persistence;
+
 public class Sport {
     private String code;
     private String nom;

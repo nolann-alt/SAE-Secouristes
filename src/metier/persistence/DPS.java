@@ -1,14 +1,16 @@
+package metier.persistence;
+
 public class DPS {
     private long id;
-    private int horaire_depart;
-    private int horaire_fin;
+    private int horaireDepart;
+    private int horaireFin;
     private String sportAssocie;
     private int codeSite;
 
-    public DPS(long id, int horaire_depart, int horaire_fin) {
+    public DPS(long id, int horaireDepart, int horaireFin) {
         this.id = id;
-        this.horaire_depart = horaire_depart;
-        this.horaire_fin = horaire_fin;
+        this.horaireDepart = horaireDepart;
+        this.horaireFin = DPS.this.horaireFin;
     }
     
     public long getId() {
@@ -19,20 +21,20 @@ public class DPS {
         this.id = id;
     }
 
-    public int getHoraire_depart() {
-        return this.horaire_depart;
+    public int getHoraireDepart() {
+        return this.horaireDepart;
     }
 
-    public void setHoraire_depart(int horaire_depart) {
-        this.horaire_depart = horaire_depart;
+    public void setHoraireDepart(int horaireDepart) {
+        this.horaireDepart = horaireDepart;
     }
 
-    public int getHoraire_fin() {
-        return this.horaire_fin;
+    public int getHoraireFin() {
+        return this.horaireFin;
     }
 
-    public void setHoraire_fin(int horaire_fin) {
-        this.horaire_fin = horaire_fin;
+    public void setHoraireFin(int horaireFin) {
+        this.horaireFin = horaireFin;
     }
 
     public String getSportAssocie() {

@@ -1,3 +1,5 @@
+package metier.persistence;
+
 public class Requiert {
     private String intituleComp;
 

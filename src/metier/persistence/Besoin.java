@@ -1,20 +1,22 @@
-public class Affectation {
-    private int idSecouriste;
+package metier.persistence;
+
+public class Besoin {
+    private int nombreSecouriste;
     private String intituleComp;
     private int idDPS;
 
-    public Affectation(int idSecouriste, String intituleComp, int idDPS) {
-        this.idSecouriste = idSecouriste;
+    public Besoin(int nombreSecouriste, String intituleComp, int idDPS) {
+        this.nombreSecouriste = nombreSecouriste;
         this.intituleComp = intituleComp;
         this.idDPS = idDPS;
     }
 
-    public int getIdSecouriste() {
-        return this.idSecouriste;
+    public int getNombreSecouriste() {
+        return this.nombreSecouriste;
     }
 
-    public void setIdSecouriste(int idSecouriste) {
-        this.idSecouriste = idSecouriste;
+    public void setNombreSecouriste(int nombreSecouriste) {
+        this.nombreSecouriste = nombreSecouriste;
     }
 
     public String getIntituleComp() {

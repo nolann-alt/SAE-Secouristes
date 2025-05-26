@@ -1,3 +1,5 @@
+package metier.persistence;
+
 public class Site {
     private String code;
     private String nom;
