@@ -1,16 +1,24 @@
 package metier.persistence;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+
 public class Site {
     private String code;
     private String nom;
     private float longitude;
     private float latitude;
+    private LinkedHashSet<DPS> listeDPS;
 
-    public Site(String code, String nom, float longitude, float latitude) {
+    public Site(String code, String nom, float longitude, float latitude, DPS[] tabDPS) {
         this.code = code;
         this.nom = nom;
         this.longitude = longitude;
         this.latitude = latitude;
+        listeDPS = new LinkedHashSet<>();
+        for (DPS leDPS : tabDPS) {
+            listeDPS.add(leDPS);
+        }
     }
 
     public String getCode() {
@@ -43,6 +51,15 @@ public class Site {
 
     public void setLatitude(float latitude) {
         this.latitude = latitude;
+    }
+
+    public void ajouterDPS(DPS leDPS) throws IllegalArgumentException {
+        // Check if the DPS is null
+        if (leDPS == null) {
+            throw new IllegalArgumentException("Erreur ajouterDPS() : le DPS en paramètre est à null!");
+        }
+
+        //
     }
 }
 

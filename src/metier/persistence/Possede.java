@@ -1,5 +1,8 @@
 package metier.persistence;
 
+/**
+ * Class which connect secouriste's and compentence's classes
+ */
 public class Possede {
     private String intituleComp;
     private int idSecouriste;
@@ -7,7 +10,7 @@ public class Possede {
     public Possede(String intituleComp, int idSecouriste) {
         this.intituleComp = intituleComp;
         this.idSecouriste = idSecouriste;
-    } 
+    }
 
     public String getIntitule() {
         return this.intituleComp;
