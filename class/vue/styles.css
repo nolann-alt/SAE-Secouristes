@@ -1,0 +1,49 @@
+@font-face {
+    font-family: "SF Pro Display";
+    src: url("fonts/SF-Pro-Display-Black.otf");
+}
+
+/* Désactive le fond de la scène */
+.root {
+    -fx-background-color: transparent;
+    -fx-font-family: "SF Pro Display";
+}
+
+.label, .button, .text {
+    -fx-text-fill: white; /* Texte en blanc */
+}
+
+/* Style du BorderPane arrondi */
+.rounded-app {
+    -fx-background-color: #ffffff; /* Couleur de fond */
+    -fx-background-radius: 25px;   /* Rayon des coins */
+    -fx-border-radius: 25px;       /* Pour harmonisation */
+}
+
+.top-container {
+    -fx-background-color: #E60023; /* Couleur de fond */
+    -fx-background-radius: 25px 25px 0 0;
+    -fx-border-radius: 25px 25px 0 0;
+    -fx-padding: 0 20 0 20 ;
+}
+
+.app-time {
+    -fx-font-size: 16;
+}
+
+.anchorPane-connexion {
+    -fx-background-color: #E60023;
+}
+
+.curve-shape {
+    /*-fx-background-color: white;
+    -fx-background-radius: 0 0 100 100;*/
+}
+
+.main-button {
+    -fx-background-color: #d80027;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20 10 20;
+}

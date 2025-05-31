@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+
+<!-- Utilisation de BorderPane pour l'application car simple d'utilisation -->
+<BorderPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@/vue/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <!-- Utilisation AnchorPane pour placer les éléments avec précisions -->
+      <AnchorPane prefHeight="498.0" prefWidth="394.0" BorderPane.alignment="CENTER" styleClass="anchorPane-connexion">
+
+         <!-- Utilisation de children pour placer plus facilement les éléments car le conteneur n'a pas de structure claire -->
+         <children>
+
+            <!-- Placement de la petite barre d'infos en-haut de l'application avec HBox qui place les éléments à la suite -->
+            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="394.0" spacing="3" styleClass="top-container">
+
+               <!-- Contenu de HBox -->
+               <children>
+                  <Label styleClass="app-time" text="00:00" /> <!-- l'heure -->
+                  <Region HBox.hgrow="ALWAYS" /> <!-- Espace flexible -->
+
+                  <!-- les icônes de statut de l'application-->
+                  <ImageView fitHeight="17" fitWidth="17" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/icons8-signal-50.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/wifi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/icons8-batterie-pleine-50.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+
+            <Pane layoutY="400.0" layoutX="-300" prefHeight="100.0" prefWidth="394.0" styleClass="curve-shape"/>
+
+
+            <VBox layoutX="70" layoutY="40" alignment="CENTER" spacing="10">
+               <Label text="Les" style="-fx-text-fill: white; -fx-font-size: 24px;"/>
+               <Label text="AmbuLympics" style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+               <ImageView fitWidth="100.0" fitHeight="100.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@img/logo.png" />
+                  </image>
+               </ImageView>
+            </VBox>
+         </children>
+
+      </AnchorPane>
+   </top>
+
+   <center>
+      <VBox alignment="CENTER" spacing="20">
+         <Button text="S’inscrire" styleClass="main-button"/>
+         <Button text="Se connecter" styleClass="main-button"/>
+         <Button text="Compte admin" styleClass="main-button"/>
+      </VBox>
+   </center>
+
+</BorderPane>
