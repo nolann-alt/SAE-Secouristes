@@ -22,18 +22,18 @@ public class Affectation {
     }
 
     /**
-     * Méthode qui vérifie si un graphe est un DAG (orienté + acyclique)
-     * @param mat matrice d'adjacence du graphe
-     * @return vrai si c'est un DAG, faux sinon
+     * Method which verify if a graph is a DAG (acyclic and oriented)
+     * @param mat adjacency matrix of the graph
+     * @return true if it's a graph
      */
     public boolean estUnDAG(int[][] mat) {
         boolean dag = true;
         HashMap<Integer, Integer> state = new HashMap<>();
         /*
-        Les différends états des sommets :
-        -1 --> sommet non visité
-        0 --> sommet en cours de traitement
-        1 --> sommet visité
+        Different states possible for each vertex :
+        -1 --> unvisited vertex
+        0 --> vertex in process
+        1 --> visited vertex
          */
         for (int i = 0 ; i < mat.length ; i++) {
             state.put(i, -1);
@@ -46,6 +46,13 @@ public class Affectation {
         return dag;
     }
 
+    /**
+     * Method which run an DFS in the graph
+     * @param mat adjacency matrix of the graph
+     * @param sommet a vertex of the graph
+     * @param state table of states of each vertex
+     * @return true if a cycle is detected, false otherwise
+     */
     private boolean dfs(int[][] mat, int sommet, HashMap<Integer, Integer> state) {
 
         boolean hasCycle = false;
@@ -65,4 +72,6 @@ public class Affectation {
         state.put(sommet, 1);
         return hasCycle;
     }
+
+
 }
