@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+
+<!-- Utilisation de BorderPane pour l'application car simple d'utilisation -->
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+
+<?import javafx.geometry.Pos?>
+<BorderPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@/vue/styles.css" fx:controller="controller.CreationController" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <!-- Utilisation AnchorPane pour placer les éléments avec précisions -->
+        <AnchorPane prefHeight="350.0" prefWidth="394.0" BorderPane.alignment="CENTER" styleClass="anchorPane-connexion">
+
+            <!-- Utilisation de children pour placer plus facilement les éléments car le conteneur n'a pas de structure claire -->
+            <children>
+
+                <!-- Placement de la petite barre d'infos en-haut de l'application avec HBox qui place les éléments à la suite -->
+                <HBox alignment="CENTER" prefHeight="44.0" prefWidth="394.0" spacing="3" styleClass="top-container">
+
+                    <!-- Contenu de HBox -->
+                    <children>
+                        <Label styleClass="app-time" text="00:00" /> <!-- l'heure -->
+                        <Region HBox.hgrow="ALWAYS" /> <!-- Espace flexible -->
+
+                        <!-- les icônes de statut de l'application-->
+                        <ImageView fitHeight="17" fitWidth="17" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@img/icons8-signal-50.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@img/wifi.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@img/icons8-batterie-pleine-50.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </HBox>
+
+                <Button fx:id="backButton"
+                        style="-fx-background-color: transparent; -fx-cursor: hand;"
+                        onMouseEntered="#onBackHover"
+                        onMouseExited="#onBackExit"
+                        onMousePressed="#onBackPress"
+                        onMouseReleased="#onBackRelease"
+                        onAction="#handleBack"
+                        layoutX="10.0" layoutY="50.0"
+                        prefWidth="40" prefHeight="40">
+                    <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@img/icons8-right-arrow-50 1.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <!-- Texte central avec StackPane -->
+                <StackPane prefWidth="394.0" prefHeight="219"
+                           AnchorPane.topAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <VBox alignment="CENTER">
+                        <Label text="Créer mon" style="-fx-text-fill: white; -fx-font-size: 32px;"/>
+                        <Region prefHeight="10"/>
+                        <Label text="compte" style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;"/>
+                        <Region prefHeight="20"/>
+                    </VBox>
+                </StackPane>
+
+                <!-- Courbe -->
+                <Pane prefHeight="100.0" prefWidth="394"
+                      styleClass="curve-shape"
+                      AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0"/>
+            </children>
+
+        </AnchorPane>
+    </top>
+
+    <center>
+        <VBox styleClass="form-section">
+            <children>
+                <!-- Name Field -->
+                <VBox styleClass="input-container">
+                    <children>
+                        <TextField promptText="Nom :" styleClass="input-field" />
+                    </children>
+                </VBox>
+
+                <!-- First Name Field -->
+                <VBox styleClass="input-container">
+                    <children>
+                        <TextField promptText="Prénom :" styleClass="input-field" />
+                    </children>
+                    <VBox.margin>
+                        <Insets top="40.0" />
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Email Field -->
+                <VBox styleClass="input-container">
+                    <children>
+                        <TextField promptText="Adresse email :" styleClass="input-field" />
+                    </children>
+                    <VBox.margin>
+                        <Insets top="40.0" />
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Password Field -->
+                <VBox styleClass="input-container">
+                    <children>
+                        <HBox styleClass="password-container">
+                            <children>
+                                <PasswordField promptText="Mot de passe :" styleClass="password-field" HBox.hgrow="ALWAYS" />
+                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass="password-toggle">
+                                    <image>
+
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </HBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="40.0" />
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Notification Checkbox -->
+                <HBox styleClass="checkbox-container">
+                    <children>
+                        <StackPane styleClass="checkbox-wrapper">
+                            <children>
+                                <CheckBox fx:id="customCheckbox" styleClass="notification-checkbox">
+                                    <graphic>
+                                        <ImageView fx:id="checkboxImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@img/Checkboxes.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </CheckBox>
+                            </children>
+                        </StackPane>
+                        <Label styleClass="checkbox-label" text="J'autorise l'application à m'envoyer des notifications et des alertes" wrapText="true" HBox.hgrow="ALWAYS" />
+                    </children>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <!-- Create Account Button -->
+                <VBox alignment="CENTER">
+                    <Button styleClass="create-button" text="Créer mon compte">
+                        <VBox.margin>
+                            <Insets top="40.0" />
+                        </VBox.margin>
+                    </Button>
+                </VBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

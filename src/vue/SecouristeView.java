@@ -1,17 +1,11 @@
 package vue;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.ComboBox;
 import javafx.stage.StageStyle;
 import javafx.scene.text.Font;
 
@@ -21,7 +15,7 @@ public class SecouristeView extends Application{
     @Override
     public void start(Stage primaryStage ) throws Exception {
         // Chargement du fichier fxml
-        Parent root = FXMLLoader.load(getClass().getResource("/vue/SecouristeView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/vue/AccueilView.fxml"));
 
         // Charger la police custom
         Font font = Font.loadFont(getClass().getResourceAsStream("/vue/fonts/SF-Pro-Display-Black.otf"), 12);
