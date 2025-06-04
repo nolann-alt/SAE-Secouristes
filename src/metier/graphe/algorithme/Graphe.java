@@ -12,11 +12,23 @@ public class Graphe {
     private HashMap<DPS, Competences> listeDPS;
     private int[][] matriceAdj;
 
-    public Graphe(ArrayList<Secouriste> listeSecouriste, HashMap<DPS, Competences> listeDPSCompetence, int[][] matrice) {
+    public Graphe(ArrayList<Secouriste> listeSecouriste, HashMap<DPS, Competences> listeDPSCompetence) {
         this.listeSecouriste = new ArrayList<>(listeSecouriste);
         this.listeDPS = new HashMap<>(listeDPSCompetence);
-        this.matriceAdj = matrice.clone();
+
+        // INIT MATRIX
+
     }
 
+    public ArrayList<Secouriste> getListeSecouriste() {
+        return this.listeSecouriste;
+    }
 
+    public HashMap<DPS, Competences> getListeDPS() {
+        return this.listeDPS;
+    }
+
+    public int[][] getMatriceAdj() {
+        return this.matriceAdj;
+    }
 }
