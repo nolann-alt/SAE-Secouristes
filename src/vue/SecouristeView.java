@@ -18,7 +18,7 @@ public class SecouristeView extends Application{
         Parent root = FXMLLoader.load(getClass().getResource("/vue/AccueilView.fxml"));
 
         // Charger la police custom
-        Font font = Font.loadFont(getClass().getResourceAsStream("/vue/fonts/SF-Pro-Display-Black.otf"), 12);
+        Font font = Font.loadFont(getClass().getResourceAsStream("/vue/fonts/SF-Pro-Display-Medium.otf"), 12);
         System.out.println("Font loaded: " + (font != null));
 
         // Création de la scene

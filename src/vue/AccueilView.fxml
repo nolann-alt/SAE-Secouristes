@@ -75,9 +75,9 @@
 
    <center>
       <VBox alignment="CENTER" spacing="50">
-         <Button text="S’inscrire" styleClass="main-button" onAction="#handleInscription"/>
-         <Button text="Se connecter" styleClass="main-button" onAction="#handleConnexion"/>
-         <Button text="Compte admin" styleClass="main-button"/>
+         <Button text="S’inscrire" styleClass="create-button" onAction="#handleInscription"/>
+         <Button text="Se connecter" styleClass="create-button" onAction="#handleConnexion"/>
+         <Button text="Compte admin" styleClass="create-button"/>
       </VBox>
    </center>
 

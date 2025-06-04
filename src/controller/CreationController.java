@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -14,6 +16,22 @@ import java.io.IOException;
  * This class allows to manage different elements of the creation view.
  */
 public class CreationController {
+
+    @FXML
+    /** This boolean is used to check if the password is visible or not. */
+    private PasswordField passwordField;
+
+    @FXML
+    /** This boolean is used to check if the password is visible or not. */
+    private TextField visiblePasswordField;
+
+    @FXML
+    /** This boolean is used to check if the password is visible or not. */
+    private ImageView toggleEye;
+
+    /** This boolean is used to check if the password is visible or not. */
+    private boolean passwordVisible = false;
+
     @FXML
     /* This button is used to go back to the previous view. */
     private Button backButton;
@@ -110,5 +128,49 @@ public class CreationController {
     private void onBackRelease() {
         backButton.setTranslateY(0);
         backButton.setOpacity(0.7); // ou 1.0 selon ton besoin
+    }
+
+    @FXML
+    private void togglePasswordVisibility() {
+        if (passwordVisible) {
+            // CAS 1 : mot de passe visible → on repasse en mode masqué
+
+            // Copier le texte du champ visible vers le champ masqué
+            passwordField.setText(visiblePasswordField.getText());
+
+            // Afficher le champ masqué (PasswordField)
+            passwordField.setVisible(true);
+            passwordField.setManaged(true);
+
+            // Masquer le champ visible (TextField)
+            visiblePasswordField.setVisible(false);
+            visiblePasswordField.setManaged(false);
+
+            // Changer l’image de l’icône en "œil fermé"
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../vue/img/eye off 1.png")));
+
+            // Mettre à jour l’état
+            passwordVisible = false;
+
+        } else {
+            // CAS 2 : mot de passe masqué → on le rend visible
+
+            // Copier le texte du champ masqué vers le champ visible
+            visiblePasswordField.setText(passwordField.getText());
+
+            // Afficher le champ visible (TextField)
+            visiblePasswordField.setVisible(true); // On le rend visible
+            visiblePasswordField.setManaged(true); // Et on lui laisse sa place dans le layout
+
+            // Masquer le champ masqué (PasswordField)
+            passwordField.setVisible(false); // On le cache
+            passwordField.setManaged(false); // Et on lui enlève sa place dans le layout
+
+            // Changer l’image de l’icône en "œil ouvert"
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../vue/img/icons8-visible-24.png")));
+
+            // Mettre à jour l’état
+            passwordVisible = true;
+        }
     }
 }

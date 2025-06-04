@@ -23,17 +23,17 @@
 <BorderPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@/vue/styles.css" fx:controller="controller.ConnexionController" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <!-- Utilisation AnchorPane pour placer les éléments avec précisions -->
-        <AnchorPane prefHeight="350.0" prefWidth="394.0" BorderPane.alignment="CENTER" styleClass="anchorPane-connexion">
+        <AnchorPane prefHeight="350.0" prefWidth="394.0" BorderPane.alignment="CENTER" styleClass="anchorPane-connexion-tableau">
 
             <!-- Utilisation de children pour placer plus facilement les éléments car le conteneur n'a pas de structure claire -->
             <children>
 
                 <!-- Placement de la petite barre d'infos en-haut de l'application avec HBox qui place les éléments à la suite -->
-                <HBox alignment="CENTER" prefHeight="44.0" prefWidth="394.0" spacing="3" styleClass="top-container">
+                <HBox alignment="CENTER" prefHeight="44.0" prefWidth="394.0" spacing="3" styleClass="top-container-tableau">
 
                     <!-- Contenu de HBox -->
                     <children>
-                        <Label styleClass="app-time" text="00:00" /> <!-- l'heure -->
+                        <Label styleClass="app-time-tableau" text="00:00" /> <!-- l'heure -->
                         <Region HBox.hgrow="ALWAYS" /> <!-- Espace flexible -->
 
                         <!-- les icônes de statut de l'application-->
@@ -55,39 +55,18 @@
                     </children>
                 </HBox>
 
-                <Button fx:id="backButton"
-                        style="-fx-background-color: transparent; -fx-cursor: hand;"
-                        onMouseEntered="#onBackHover"
-                        onMouseExited="#onBackExit"
-                        onMousePressed="#onBackPress"
-                        onMouseReleased="#onBackRelease"
-                        onAction="#handleBack"
-                        layoutX="10.0" layoutY="50.0"
-                        prefWidth="40" prefHeight="40">
-                    <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@img/icons8-right-arrow-50 1.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-
                 <!-- Texte central avec StackPane -->
                 <StackPane prefWidth="394.0" prefHeight="219"
                            AnchorPane.topAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <VBox alignment="CENTER">
-                        <Label text="Je me" style="-fx-text-fill: white; -fx-font-size: 32px;"/>
+                    <VBox alignment="CENTER_LEFT">
+                        <Label text="Bonjour " style="-fx-text-fill: black; -fx-font-size: 32px;"/>
+                        <Label text="Marin" style="-fx-text-fill: black; -fx-font-size: 32px; -fx-font-weight: bold"/>
                         <Region prefHeight="10"/>
-                        <Label text="connecte" style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;"/>
+                        <Label text="Vous avez" style="-fx-text-fill: black; -fx-font-size: 25px;"/>
+                        <Label text="2 nouvelles notifications" style="-fx-text-fill: #E60023; -fx-font-size: 25px;"/>
                         <Region prefHeight="20"/>
                     </VBox>
                 </StackPane>
-
-                <!-- Courbe -->
-                <Pane prefHeight="100.0" prefWidth="394"
-                      styleClass="curve-shape"
-                      AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0"/>
             </children>
         </AnchorPane>
     </top>
@@ -151,7 +130,7 @@
 
                 <!-- Create Account Button -->
                 <VBox alignment="CENTER">
-                    <Button styleClass="create-button" text="Se connecter" onAction="#handleConnexion">
+                    <Button styleClass="create-button" text="Se connecter">
                         <VBox.margin>
                             <Insets top="20.0" />
                         </VBox.margin>

@@ -164,7 +164,7 @@
     -fx-border-width: 0;
     -fx-font-size: 20px;
     -fx-letter-spacing: -0.02em;
-    -fx-text-fill: #a3a3a3;
+    -fx-text-fill: black;
     -fx-prompt-text-fill: #a3a3a3;
     -fx-alignment: center-left;
     -fx-background-radius: 0;
@@ -183,9 +183,9 @@
 
 /* Checkbox Section */
 .checkbox-container {
-    -fx-padding: 10;
-    -fx-spacing: 10;
-    -fx-alignment: center-left;
+    -fx-padding: 2;
+    -fx-spacing: 2;
+    -fx-alignment: center;
 }
 
 .checkbox-wrapper {
@@ -196,7 +196,7 @@
 .notification-checkbox {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-    -fx-padding: 8 12;
+    -fx-padding: 2 4;
     -fx-background-radius: 100px;
 }
 
@@ -211,25 +211,26 @@
 
 .checkbox-label {
     -fx-text-fill: black;
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
     -fx-letter-spacing: -0.02em;
     -fx-line-spacing: 4px;
-    -fx-text-alignment: center;
+    -fx-text-alignment: left;
     -fx-wrap-text: true;
+    -fx-padding: 0 0 0 10;
 }
 
 /* Create Account Button */
 .create-button {
     -fx-background-color: #E60023;
     -fx-text-fill: white;
-    -fx-font-size: 24px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-letter-spacing: -0.02em;
     -fx-padding: 8 32;
     -fx-background-radius: 12px;
     -fx-cursor: hand;
-    -fx-max-width: 300px;
-    -fx-pref-width: 300px;
+    -fx-max-height: 40;
+    -fx-max-width: 300;
     -fx-alignment: center;
     -fx-border-color: transparent;
 }
@@ -276,4 +277,22 @@
 .back-button:pressed {
     -fx-translate-y: 2;
     -fx-opacity: 0.5;
+}
+
+.top-container-tableau {
+    -fx-background-color: white; /* Couleur de fond */
+    -fx-background-radius: 25px 25px 0 0;
+    -fx-border-radius: 25px 25px 0 0;
+    -fx-padding: 0 20 0 20 ;
+}
+
+.app-time-tableau {
+    -fx-font-size: 16;
+    -fx-text-fill: black;
+}
+
+.anchorPane-connexion-tableau {
+    -fx-background-color: white;
+    -fx-background-radius: 25px 25px 0 0;
+    -fx-border-radius: 25px 25px 0 0;
 }
