@@ -1,5 +1,7 @@
 package metier.persistence;
 
+import java.util.ArrayList;
+
 public class Secouriste {
     private long id;
     private String nom;
@@ -8,6 +10,7 @@ public class Secouriste {
     private String email;
     private String tel;
     private String adresse;
+    private ArrayList<Disponibilite> disponibilites;
 
     public Secouriste(long id, String nom, String prenom, String dateNaissance, String email, String tel, String adresse) {
         this.id = id;
@@ -17,6 +20,7 @@ public class Secouriste {
         this.email = email;
         this.tel = tel;
         this.adresse = adresse;
+        this.disponibilites = new ArrayList<>();
     }
 
 
@@ -74,5 +78,27 @@ public class Secouriste {
 
     public void setAdresse(String adresse) {
         this.adresse = adresse;
+    }
+
+    public void ajouterDispo(Disponibilite laDispo) {
+        if (laDispo == null) {
+            throw new IllegalArgumentException("Erreur ajouterDispo() : le paramètre fournis est à null !");
+        } else {
+            this.disponibilites.add(laDispo);
+        }
+    }
+
+    public void retirerDispo(Disponibilite laDispo) {
+        if (laDispo == null) {
+            throw new IllegalArgumentException("Erreur ajouterDispo() : le paramètre fournis est à null !");
+        } else if ( ! this.disponibilites.contains(laDispo)) {
+            throw new IllegalArgumentException("Erreur retirerDispo() : la disponibilité à supprimer n'est pas présente dans la liste des disponibilités !");
+        } else {
+            this.disponibilites.remove(laDispo);
+        }
+    }
+
+    public ArrayList<Disponibilite> getDispo() {
+        return this.disponibilites;
     }
 }
