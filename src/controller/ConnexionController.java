@@ -1,20 +1,14 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -63,8 +57,8 @@ public class ConnexionController {
      */
     public void initialize() {
         // Charger les images
-        checkedImage = new Image(getClass().getResource("/vue/img/Checkboxes.png").toExternalForm());
-        uncheckedImage = new Image(getClass().getResource("/vue/img/caseunchecked.png").toExternalForm());
+        checkedImage = new Image(getClass().getResource("/ressources/img/Checkboxes.png").toExternalForm());
+        uncheckedImage = new Image(getClass().getResource("/ressources/img/caseunchecked.png").toExternalForm());
 
 
         // Définir image de départ
@@ -87,15 +81,20 @@ public class ConnexionController {
     @FXML
     /**
      * This method is called when the back button is clicked.
-     * It loads the AccueilView.fxml and sets it as the new scene with rounded corners and transparency.
+     * It loads the Accueil.fxml and sets it as the new scene with rounded corners and transparency.
      *
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    private void handleBack(ActionEvent event) throws IOException {
+    private void handleBack(ActionEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
-        GlobalController.switchView("../vue/AccueilView.fxml", (Node) event.getSource());
+        try {
+            GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
+        }
     }
 
     @FXML
@@ -153,7 +152,7 @@ public class ConnexionController {
             visiblePasswordField.setManaged(false);
 
             // Changer l’image de l’icône en "œil fermé"
-            toggleEye.setImage(new Image(getClass().getResourceAsStream("../vue/img/eye off 1.png")));
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/eye off 1.png")));
 
             // Mettre à jour l’état
             passwordVisible = false;
@@ -173,7 +172,7 @@ public class ConnexionController {
             passwordField.setManaged(false); // Et on lui enlève sa place dans le layout
 
             // Changer l’image de l’icône en "œil ouvert"
-            toggleEye.setImage(new Image(getClass().getResourceAsStream("../vue/img/icons8-visible-24.png")));
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/icons8-visible-24.png")));
 
             // Mettre à jour l’état
             passwordVisible = true;
@@ -184,6 +183,11 @@ public class ConnexionController {
     private void handleConnexion(ActionEvent event) throws IOException {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
-        GlobalController.switchView("../vue/TableauDeBordView.fxml", (Node) event.getSource());
+        try {
+            GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue Tableau de Bord : " + e.getMessage());
+        }
     }
 }

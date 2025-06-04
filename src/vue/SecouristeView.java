@@ -15,10 +15,10 @@ public class SecouristeView extends Application{
     @Override
     public void start(Stage primaryStage ) throws Exception {
         // Chargement du fichier fxml
-        Parent root = FXMLLoader.load(getClass().getResource("/vue/AccueilView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ressources/fxml/Accueil.fxml"));
 
         // Charger la police custom
-        Font font = Font.loadFont(getClass().getResourceAsStream("/vue/fonts/SF-Pro-Display-Medium.otf"), 12);
+        Font font = Font.loadFont(getClass().getResourceAsStream("../ressources/fonts/SF-Pro-Display-Medium.otf"), 12);
         System.out.println("Font loaded: " + (font != null));
 
         // Création de la scene

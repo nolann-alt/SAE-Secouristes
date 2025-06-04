@@ -9,17 +9,27 @@ import java.io.IOException;
 public class AccueilController {
 
     @FXML
-    private void handleConnexion(ActionEvent event) throws IOException {
+    private void handleConnexion(ActionEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
-        GlobalController.switchView("../vue/ConnexionView.fxml", (Node) event.getSource());
+        try {
+            GlobalController.switchView("../ressources/fxml/Connexion.fxml", (Node) event.getSource());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue Connexion : " + e.getMessage());
+        }
     }
 
     @FXML
-    private void handleInscription(ActionEvent event) throws IOException {
+    private void handleInscription(ActionEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
-        GlobalController.switchView("../vue/CreationView.fxml", (Node) event.getSource());
+        try {
+            GlobalController.switchView("../ressources/fxml/Creation.fxml", (Node) event.getSource());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue Inscription : " + e.getMessage());
+        }
     }
 
 }
