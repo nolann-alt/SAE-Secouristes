@@ -3,35 +3,25 @@ package metier.persistence;
 /**
  * This class represents the availability of a rescuer on a specific date.
  * It contains the rescuer's ID and the date (day, month, year) of availability.
- *
  * @author Nolann L
  * @author Marin W
  * @author Arthur J
- * @author Mattjieu G
+ * @author Matthieu G
  */
 public class Disponibilite {
     /** The ID of the rescuer */
     private int idSec;
     /** The day of availability */
-    private int jour;
-    /** The month of availability */
-    private int mois;
-    /** The year of availability */
-    private int annee;
+    private Journee dateDispo;
 
     /**
      * Constructs a Disponibilite object with the specified rescuer ID, day, month, and year.
-     *
      * @param idSec  the ID of the rescuer
-     * @param jour   the day of availability
-     * @param mois   the month of availability
-     * @param annee  the year of availability
+     * @param laDate date of the rescuer's disponibility
      */
-    public Disponibilite(int idSec, int jour, int mois, int annee) {
+    public Disponibilite(int idSec, Journee laDate) {
         this.idSec = idSec;
-        this.jour = jour;
-        this.mois = mois;
-        this.annee = annee;
+        this.dateDispo = laDate;
     }
 
     /**
@@ -50,51 +40,11 @@ public class Disponibilite {
         this.idSec = idSec;
     }
 
-    /**
-     * Returns the day of availability.
-     * @return the day
-     */
-    public int getJour() {
-        return jour;
+    public Journee getDateDispo() {
+        return this.dateDispo;
     }
 
-    /**
-     * Sets the day of availability.
-     * @param jour the day to set
-     */
-    public void setJour(int jour) {
-        this.jour = jour;
-    }
-
-    /**
-     * Returns the month of availability.
-     * @return the month
-     */
-    public int getMois() {
-        return mois;
-    }
-
-    /**
-     * Sets the month of availability.
-     * @param mois the month to set
-     */
-    public void setMois(int mois) {
-        this.mois = mois;
-    }
-
-    /**
-     * Returns the year of availability.
-     * @return the year
-     */
-    public int getAnnee() {
-        return annee;
-    }
-
-    /**
-     * Sets the year of availability.
-     * @param annee the year to set
-     */
-    public void setAnnee(int annee) {
-        this.annee = annee;
+    public void setDateDispo(Journee dateDispo) {
+        this.dateDispo = dateDispo;
     }
 }
