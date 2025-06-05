@@ -16,7 +16,7 @@ public class AffectationMngt {
         this.dps = dps;
     }
 
-    public void affecter() {
+    public void affecter(List<Secouriste> secouriste) {
         // appel de l'algorithme d'affectation
     }
 

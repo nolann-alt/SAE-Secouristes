@@ -1,6 +1,13 @@
 package metier.graphe.algorithme;
 
+import metier.persistence.Competences;
+import metier.persistence.DPS;
+import metier.persistence.Possede;
+import metier.persistence.Secouriste;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Affectation {
 
@@ -73,5 +80,10 @@ public class Affectation {
         return hasCycle;
     }
 
+    private ArrayList<HashMap<Secouriste, DPS>> glouton (Graphe g){
+        ArrayList<Possede> secouristes = g.getListeSecouriste();
+        HashMap<DPS, Competences> dispositifs = g.getListeDPS();
+
+    }
 
 }
