@@ -37,7 +37,7 @@
                         <!-- les icônes de statut de l'application-->
                         <ImageView fitHeight="17" fitWidth="17" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../img/icons8-signal-50.png" />
+                                <Image url="@../img/signal.png" />
                             </image>
                         </ImageView>
                         <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true">
@@ -47,7 +47,7 @@
                         </ImageView>
                         <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../img/icons8-batterie-pleine-50.png" />
+                                <Image url="@../img/batterie_pleine.png" />
                             </image>
                         </ImageView>
                     </children>
@@ -57,7 +57,7 @@
                     <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../img/icons8-right-arrow-50 1.png" />
+                                <Image url="@../img/fleche.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -119,7 +119,7 @@
                                 <TextField fx:id="visiblePasswordField" managed="false" promptText="Mot de passe :" styleClass="password-field" visible="false" HBox.hgrow="ALWAYS" />
                                 <ImageView fx:id="toggleEye" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#togglePasswordVisibility" pickOnBounds="true" preserveRatio="true" styleClass="password-toggle">
                                     <image>
-                                        <Image url="@../img/eye off 1.png" />
+                                        <Image url="@../img/oeil_ferme.png" />
                                     </image>
                                 </ImageView>
                             </children>
@@ -137,7 +137,7 @@
                             <graphic>
                                 <ImageView fx:id="checkboxImage" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/Checkboxes.png" />
+                                        <Image url="@../img/case_coche.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -162,3 +162,4 @@
         </VBox>
     </center>
 </BorderPane>
+

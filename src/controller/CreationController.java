@@ -57,8 +57,8 @@ public class CreationController {
      */
     public void initialize() {
         // Charger les images
-        checkedImage = new Image(getClass().getResource("/ressources/img/Checkboxes.png").toExternalForm());
-        uncheckedImage = new Image(getClass().getResource("/ressources/img/caseunchecked.png").toExternalForm());
+        checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
+        uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());
 
 
         // Définir image de départ
@@ -152,7 +152,7 @@ public class CreationController {
             visiblePasswordField.setManaged(false);
 
             // Changer l’image de l’icône en "œil fermé"
-            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/eye off 1.png")));
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/oeil_ferme.png")));
 
             // Mettre à jour l’état
             passwordVisible = false;
@@ -172,7 +172,7 @@ public class CreationController {
             passwordField.setManaged(false); // Et on lui enlève sa place dans le layout
 
             // Changer l’image de l’icône en "œil ouvert"
-            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/icons8-visible-24.png")));
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/oeil_ouvert.png")));
 
             // Mettre à jour l’état
             passwordVisible = true;

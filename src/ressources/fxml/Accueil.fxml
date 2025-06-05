@@ -33,7 +33,7 @@
                   <!-- les icônes de statut de l'application-->
                   <ImageView fitHeight="17" fitWidth="17" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/icons8-signal-50.png" />
+                        <Image url="@../img/signal.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="20" fitWidth="20" pickOnBounds="true" preserveRatio="true">
@@ -43,7 +43,7 @@
                   </ImageView>
                   <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/icons8-batterie-pleine-50.png" />
+                        <Image url="@../img/batterie_pleine.png" />
                      </image>
                   </ImageView>
                </children>
@@ -77,7 +77,6 @@
       <VBox alignment="CENTER" spacing="50">
          <Button text="S’inscrire" styleClass="create-button" onAction="#handleInscription"/>
          <Button text="Se connecter" styleClass="create-button" onAction="#handleConnexion"/>
-         <Button text="Compte admin" styleClass="create-button"/>
       </VBox>
    </center>
 

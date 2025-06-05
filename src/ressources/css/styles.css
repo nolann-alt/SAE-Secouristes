@@ -16,8 +16,8 @@
 /* Style du BorderPane arrondi */
 .rounded-app {
     -fx-background-color: #ffffff; /* Couleur de fond */
-    -fx-background-radius: 25px;   /* Rayon des coins */
-    -fx-border-radius: 25px;       /* Pour harmonisation */
+    -fx-background-radius: 25;   /* Rayon des coins */
+    -fx-border-radius: 25;       /* Pour harmonisation */
 }
 
 .top-container {
@@ -296,3 +296,24 @@
     -fx-background-radius: 25px 25px 0 0;
     -fx-border-radius: 25px 25px 0 0;
 }
+
+.bottom-bar {
+    -fx-background-color: #FFEFEF; /* rose très pâle */
+    -fx-background-radius: 40;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.1, 0, 2);
+}
+
+.nav-label {
+    -fx-text-fill: #000000;
+    -fx-font-weight: normal;
+    -fx-font-size: 12px;
+}
+
+.nav-label-active {
+    -fx-text-fill: #E60023;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+
