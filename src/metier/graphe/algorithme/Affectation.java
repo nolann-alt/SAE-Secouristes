@@ -1,6 +1,10 @@
 package metier.graphe.algorithme;
 
+import metier.persistence.DPS;
+import metier.persistence.Secouriste;
+
 import java.util.HashMap;
+import java.util.List;
 
 public class Affectation {
 
@@ -73,5 +77,6 @@ public class Affectation {
         return hasCycle;
     }
 
+    private List<HashMap<Secouriste, DPS>> glouton (Graphe g){}
 
 }
