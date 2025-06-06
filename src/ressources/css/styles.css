@@ -316,4 +316,8 @@
     -fx-font-size: 12px;
 }
 
-
+/* Pour la barre de navigation flottante */
+.clickable-zone:hover {
+    -fx-background-color: rgba(0,0,0,0.05);
+    -fx-background-radius: 12;
+}
