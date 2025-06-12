@@ -7,7 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import metier.persistence.Secouriste;
-import model.dao.SecouristeDAO;
+import metier.graphe.model.dao.SecouristeDAO;
 
 import java.io.IOException;
 

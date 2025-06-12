@@ -1,4 +1,4 @@
-package model.dao;
+package metier.graphe.model.dao;
 
 import metier.persistence.Disponibilite;
 import metier.persistence.Journee;

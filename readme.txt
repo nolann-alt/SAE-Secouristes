@@ -24,3 +24,4 @@ cp ../src/vue/*.fxml ../class/vue/ && \
 cp ../src/vue/styles.ressources.css ../class/vue/ && \
 mkdir -p ../class/vue/img && cp ../src/vue/img/*.png ../class/vue/img/ && \
 mkdir -p ../class/vue/fonts && cp ../src/vue/fonts/*.otf ../class/vue/fonts/
+

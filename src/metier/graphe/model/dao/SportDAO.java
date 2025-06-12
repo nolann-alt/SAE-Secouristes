@@ -1,16 +1,15 @@
-package model.dao;
+package metier.graphe.model.dao;
 
-import metier.persistence.Journee;
+import metier.persistence.Sport;
 
 import java.sql.*;
 import java.util.*;
 
-public class JourneeDAO extends DAO<Journee> {
+public class SportDAO extends DAO<Sport> {
 
     @Override
-    public int create(Journee j) {
-        String query = "INSERT INTO Journee (jour, mois, annee) VALUES (" +
-                j.getJour() + ", " + j.getMois() + ", " + j.getAnnee() + ")";
+    public int create(Sport sport) {
+        String query = "INSERT INTO Sport (code, nom) VALUES ('" + sport.getCode() + "', '" + sport.getNom() + "')";
         try (Connection connexion = getConnection();
              Statement statement = connexion.createStatement()) {
             return statement.executeUpdate(query);
@@ -21,11 +20,8 @@ public class JourneeDAO extends DAO<Journee> {
     }
 
     @Override
-    public int update(Journee j) {
-        String query = "UPDATE Journee SET jour=" + j.getJour() +
-                ", mois=" + j.getMois() +
-                ", annee=" + j.getAnnee() +
-                " WHERE jour=" + j.getJour() + " AND mois=" + j.getMois() + " AND annee=" + j.getAnnee();
+    public int update(Sport sport) {
+        String query = "UPDATE Sport SET nom='" + sport.getNom() + "' WHERE code='" + sport.getCode() + "'";
         try (Connection connexion = getConnection();
              Statement statement = connexion.createStatement()) {
             return statement.executeUpdate(query);
@@ -36,10 +32,8 @@ public class JourneeDAO extends DAO<Journee> {
     }
 
     @Override
-    public int delete(Journee j) {
-        String query = "DELETE FROM Journee WHERE jour=" + j.getJour() +
-                " AND mois=" + j.getMois() +
-                " AND annee=" + j.getAnnee();
+    public int delete(Sport sport) {
+        String query = "DELETE FROM Sport WHERE code='" + sport.getCode() + "'";
         try (Connection connexion = getConnection();
              Statement statement = connexion.createStatement()) {
             return statement.executeUpdate(query);
@@ -50,16 +44,15 @@ public class JourneeDAO extends DAO<Journee> {
     }
 
     @Override
-    public List<Journee> findAll() {
-        List<Journee> liste = new LinkedList<>();
+    public List<Sport> findAll() {
+        List<Sport> liste = new LinkedList<>();
         try (Connection connexion = getConnection();
              Statement statement = connexion.createStatement();
-             ResultSet rs = statement.executeQuery("SELECT * FROM Journee")) {
+             ResultSet rs = statement.executeQuery("SELECT * FROM Sport")) {
             while (rs.next()) {
-                liste.add(new Journee(
-                        rs.getInt("jour"),
-                        rs.getInt("mois"),
-                        rs.getInt("annee")
+                liste.add(new Sport(
+                        rs.getString("code"),
+                        rs.getString("nom")
                 ));
             }
         } catch (SQLException ex) {
@@ -69,19 +62,21 @@ public class JourneeDAO extends DAO<Journee> {
     }
 
     @Override
-    public Journee findByID(Long id) {
+    public Sport findByID(Long id) {
+        // Ici, le code est une chaîne, donc on ne peut pas utiliser Long.
+        // On retourne null ou on change la signature si besoin.
         return null;
     }
 
-    public Journee findByDate(int jour, int mois, int annee) {
+    // BONUS : méthode utile spécifique
+    public Sport findByCode(String code) {
         try (Connection connexion = getConnection();
              Statement statement = connexion.createStatement();
-             ResultSet rs = statement.executeQuery("SELECT * FROM Journee WHERE jour=" + jour + " AND mois=" + mois + " AND annee=" + annee)) {
+             ResultSet rs = statement.executeQuery("SELECT * FROM Sport WHERE code='" + code + "'")) {
             if (rs.next()) {
-                return new Journee(
-                        rs.getInt("jour"),
-                        rs.getInt("mois"),
-                        rs.getInt("annee")
+                return new Sport(
+                        rs.getString("code"),
+                        rs.getString("nom")
                 );
             }
         } catch (SQLException ex) {
