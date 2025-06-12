@@ -69,7 +69,7 @@
                                             <Insets left="20.0" />
                                         </padding>
                                     </Label>
-                                    <Label style="-fx-text-fill: black; -fx-font-size: 32px; -fx-font-weight: bold" text="Marin" />
+                                    <Label fx:id="prenomLabel" style="-fx-text-fill: black; -fx-font-size: 32px; -fx-font-weight: bold" text="" />
                                 </children>
                             </HBox>
                             <HBox prefHeight="29.0" prefWidth="393.0">
@@ -82,6 +82,18 @@
                                     <Label style="-fx-text-fill: #E60023; -fx-font-size: 20px;" text=" 2 nouvelles notifications" />
                                 </children>
                             </HBox>
+
+                            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="393.0">
+                                <children>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button fx:id="logoutButton"
+                                            text="Déconnexion"
+                                            onAction="#handleLogout"
+                                            style="-fx-background-color: transparent; -fx-text-fill: red; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                                    <Region prefWidth="10"/>
+                                </children>
+                            </HBox>
+
                         </children>
                     </VBox>
                 </children>

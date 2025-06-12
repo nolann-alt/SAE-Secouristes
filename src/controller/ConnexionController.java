@@ -2,13 +2,12 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
+import metier.persistence.Secouriste;
+import model.dao.SecouristeDAO;
 
 import java.io.IOException;
 
@@ -48,6 +47,9 @@ public class ConnexionController {
     private Image checkedImage; // Si la checkbox est coché
     /** This qttrribut is used to checked if the checkbox is unticked */
     private Image uncheckedImage; // Si la checkbox n'est pas coché
+
+    @FXML
+    private TextField emailField;
 
     @FXML
     /**
@@ -183,8 +185,25 @@ public class ConnexionController {
     private void handleConnexion(ActionEvent event) throws IOException {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
+
+        String email = emailField.getText();
+        String password;
+        if (passwordVisible) {
+            password = visiblePasswordField.getText();
+        } else {
+            password = passwordField.getText();
+        }
+
+        SecouristeDAO dao = new SecouristeDAO();
+        Secouriste s = dao.findByEmail(email);
+
         try {
-            GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
+            if  (s != null && s.getMotDePasse().equals(password)) {
+                GlobalController.currentUser = s;
+                GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
+            } else {
+                System.out.println("Email ou mot de passe incorrecte");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Tableau de Bord : " + e.getMessage());

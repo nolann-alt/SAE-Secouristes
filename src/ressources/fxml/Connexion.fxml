@@ -98,7 +98,7 @@
                 <!-- Email Field -->
                 <VBox styleClass="input-container">
                     <children>
-                        <TextField promptText="Adresse email :" styleClass="input-field" />
+                        <TextField fx:id="emailField" promptText="Adresse email :" styleClass="input-field" />
                     </children>
                     <VBox.margin>
                         <Insets top="40.0" />

@@ -86,14 +86,14 @@
                 <!-- Name Field -->
                 <VBox styleClass="input-container">
                     <children>
-                        <TextField promptText="Nom :" styleClass="input-field" />
+                        <TextField fx:id="nomField" promptText="Nom :" styleClass="input-field" />
                     </children>
                 </VBox>
 
                 <!-- First Name Field -->
                 <VBox styleClass="input-container">
                     <children>
-                        <TextField promptText="Prénom :" styleClass="input-field" />
+                        <TextField fx:id="prenomField" promptText="Prénom :" styleClass="input-field" />
                     </children>
                     <VBox.margin>
                         <Insets top="40.0" />
@@ -103,7 +103,7 @@
                 <!-- Email Field -->
                 <VBox styleClass="input-container">
                     <children>
-                        <TextField promptText="Adresse email :" styleClass="input-field" />
+                        <TextField fx:id="emailField" promptText="Adresse email :" styleClass="input-field" />
                     </children>
                     <VBox.margin>
                         <Insets top="40.0" />
@@ -148,7 +148,6 @@
                         <Insets top="20.0" />
                     </VBox.margin>
                 </HBox>
-
 
                 <!-- Create Account Button -->
                 <VBox alignment="CENTER">

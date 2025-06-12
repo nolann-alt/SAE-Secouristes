@@ -321,3 +321,15 @@
     -fx-background-color: rgba(0,0,0,0.05);
     -fx-background-radius: 12;
 }
+
+/* Pour le bouton de déconnexion */
+.logout-button {
+    -fx-background-radius: 15;
+    -fx-border-color: red;
+    -fx-border-radius: 15;
+    -fx-cursor: hand;
+}
+.logout-button:hover {
+    -fx-background-color: #ffe6e6;
+}
+

@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -18,6 +20,12 @@ public class TableauDeBordController implements Initializable {
     /** This ScrollPane is used to display the content of the dashboard. */
     private ScrollPane scrollPane;
 
+    @FXML
+    private Label prenomLabel;
+
+    @FXML
+    private Button logoutButton;
+
     @Override
     /**
      * This method is called to initialize the controller after its root element has been
@@ -25,6 +33,9 @@ public class TableauDeBordController implements Initializable {
      * to handle the scroll event for the ScrollPane.
      */
     public void initialize(URL location, ResourceBundle resources) {
+
+        prenomLabel.setText(GlobalController.currentUser.getPrenom());
+
         // Multiplie la vitesse de scroll
         this.scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             double deltaY = event.getDeltaY() * 3; // Multiplier la vitesse de scroll par 3
@@ -51,6 +62,13 @@ public class TableauDeBordController implements Initializable {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue CalendrierSecouriste : " + e.getMessage());
         }
+    }
+
+
+    @FXML
+    private void handleLogout(ActionEvent event) {
+        GlobalController.currentUser = null;
+        GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
     }
 }
 
