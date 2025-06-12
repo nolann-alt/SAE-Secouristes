@@ -66,9 +66,34 @@ public class TableauDeBordController implements Initializable {
 
 
     @FXML
+    /**
+     * This method is called when the "Logout" button is clicked.
+     * It sets the current user to null and switches the view to Accueil.fxml.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     */
     private void handleLogout(ActionEvent event) {
         GlobalController.currentUser = null;
         GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
+    }
+
+    @FXML
+    /**
+     * This method is called when the back button is clicked.
+     * It loads the NotificationSecouriste.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws IOException If there is an error loading the FXML file.
+     */
+    private void handleAlertes(MouseEvent event) {
+        // On récupère la scène actuelle à partir de l'élément source de l'événement
+        // event.getSource() est le bouton qui a été cliqué (la source)
+        try {
+            GlobalController.switchView("../ressources/fxml/NotificationSecouriste.fxml", (Node) event.getSource());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue NotificationSecouriste : " + e.getMessage());
+        }
     }
 }
 
