@@ -135,7 +135,7 @@
                                                       </image>
                                                    </ImageView>
                                                    <Label prefHeight="18.0" prefWidth="151.0" style="-fx-text-fill: black; -fx-font-size: 12;" text="Jeanne (Administrateur)" textAlignment="CENTER" GridPane.columnIndex="1" />
-                                                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                                                   <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" onMouseClicked="#showPopup">
                                                       <image>
                                                          <Image url="@../img/appel_rouge.png" />
                                                       </image>
@@ -317,12 +317,12 @@
                                              <RowConstraints maxHeight="51.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
                                           </rowConstraints>
                                           <children>
-                                             <Label prefHeight="18.0" prefWidth="284.0" style="-fx-text-fill: black; -fx-font-size: 12;" text="Formation sauvetage en mer avec la Un autre secouriste a été affecté avec vous pour la" GridPane.columnIndex="1">
+                                             <Label prefHeight="18.0" prefWidth="284.0" style="-fx-text-fill: black; -fx-font-size: 12;" text="Un autre secouriste a été affecté avec vous pour" GridPane.columnIndex="1">
                                                 <GridPane.margin>
                                                    <Insets />
                                                 </GridPane.margin>
                                              </Label>
-                                             <Label style="-fx-text-fill: black; -fx-font-size: 12;" text="formation PSC1 en entreprise" GridPane.columnIndex="1">
+                                             <Label style="-fx-text-fill: black; -fx-font-size: 12;" text=" la formation PSC1 en entreprise" GridPane.columnIndex="1">
                                                 <GridPane.margin>
                                                    <Insets />
                                                 </GridPane.margin>
@@ -344,7 +344,7 @@
                            </GridPane>
                         </children>
                      </HBox>
-                      <Button style="-fx-max-height: 40; -fx-max-width: 230;" styleClass="create-button" text="Contacter Admin" textAlignment="CENTER" onAction="#handleContacterAdmin">
+                      <Button onAction="#handleContacterAdmin" style="-fx-max-height: 40; -fx-max-width: 230;" styleClass="create-button" text="Contacter Admin" textAlignment="CENTER">
                           <VBox.margin>
                               <Insets top="20.0" />
                           </VBox.margin>
@@ -385,5 +385,138 @@
             <Insets bottom="40.0" />
         </StackPane.margin>
     </HBox>
+
+    <Rectangle fx:id="overlay" fill="rgba(0,0,0,0.4)" height="852" visible="false" width="394.0" />
+
+    <VBox fx:id="popupPane" alignment="CENTER" maxHeight="401.0" maxWidth="394.0" prefHeight="401.0" prefWidth="394.0" spacing="10" style="-fx-background-color: white;              -fx-background-radius: 10;              -fx-border-color: #333333;              -fx-border-radius: 10;              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 5);" visible="false" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
+        <children>
+            <GridPane prefHeight="401.0" prefWidth="393.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="146.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="140.0" minHeight="10.0" prefHeight="97.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="102.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="392.0" style="-fx-border-color: transparent transparent rgba(136, 136, 136, 0.21) transparent; -fx-border-width: 0 0 2 0;">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="344.0" minWidth="10.0" prefWidth="342.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0" prefWidth="50.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                <children>
+                                    <Label prefHeight="35.0" prefWidth="322.0" style="-fx-text-fill: #E60023; -fx-font-size: 24;" text="Contacter un administrateur" />
+                                </children>
+                            </VBox>
+                            <VBox alignment="CENTER" onMouseClicked="#hidePopup" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../img/croix.png" />
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </VBox>
+                        </children>
+                    </GridPane>
+                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <children>
+                            <Label style="-fx-text-fill: black; -fx-font-size: 15;" text="Veuillez contacter un administrateur uniquement dans les cas suivants :&#10; • Une absence trop rapprochée pour être renseignée dans l’app&#10; • Une notification incohérente&#10; • Un bug de l’app" wrapText="true" />
+                        </children>
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                    </HBox>
+                    <GridPane layoutX="10.0" layoutY="10.0" GridPane.rowIndex="2">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="290.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0" prefWidth="102.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                            <GridPane alignment="CENTER">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <children>
+                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                                        <children>
+                                            <Label style="-fx-text-fill: black; -fx-font-size: 15;" text="Contacter" />
+                                            <Label layoutX="10.0" layoutY="10.0" style="-fx-text-fill: black; -fx-font-size: 15;" text="Jeanne">
+                                                <padding>
+                                                    <Insets left="5.0" />
+                                                </padding>
+                                            </Label>
+                                            <Label layoutX="158.0" layoutY="10.0" style="-fx-text-fill: black; -fx-font-size: 15;" text="(Administrateurs)">
+                                                <padding>
+                                                    <Insets left="5.0" />
+                                                </padding>
+                                            </Label>
+                                        </children>
+                                        <padding>
+                                            <Insets left="10.0" />
+                                        </padding>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                        <children>
+                                            <Label style="-fx-text-fill: black; -fx-font-size: 15;" text="tel : " />
+                                            <Label style="-fx-text-fill: black; -fx-font-size: 15;" text="07 65 14 79 20">
+                                                <padding>
+                                                    <Insets left="5.0" />
+                                                </padding>
+                                            </Label>
+                                        </children>
+                                        <padding>
+                                            <Insets left="10.0" />
+                                        </padding>
+                                    </HBox>
+                                </children>
+                                <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" top="10.0" />
+                                </GridPane.margin>
+                            </GridPane>
+                            <GridPane alignment="CENTER" layoutX="20.0" layoutY="20.0" style="-fx-border-color: transparent transparent transparent rgba(136, 136, 136, 0.21);; -fx-border-width: 0 0 0 2;" GridPane.columnIndex="1">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                        <children>
+                                            <ImageView fitHeight="67.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@../img/profil_secouriste_liste_admins.png" />
+                                                </image>
+                                            </ImageView>
+                                        </children>
+                                    </VBox>
+                                </children>
+                            </GridPane>
+                        </children>
+                    </GridPane>
+                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                        <children>
+                            <Button style="-fx-max-height: 40; -fx-max-width: 230;" styleClass="create-button" text="Appeler" textAlignment="CENTER" />
+                        </children>
+                    </HBox>
+                </children>
+            </GridPane>
+        </children>
+    </VBox>
 
 </StackPane>

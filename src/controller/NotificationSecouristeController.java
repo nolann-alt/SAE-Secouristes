@@ -4,11 +4,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 
 public class NotificationSecouristeController {
 
+    @FXML
+    /**
+     * This VBox is used to hold the popup pane that can be shown or hidden.
+     * It is defined in the FXML file and is used to display additional information or options.
+     */
+    private VBox popupPane;
+
+    @FXML
+    /**
+     * This Rectangle is used as an overlay to darken the background when the popup is visible.
+     * It is defined in the FXML file and is used to create a modal effect.
+     */
+    private Rectangle overlay;
 
     @FXML
     /**
@@ -64,6 +79,26 @@ public class NotificationSecouristeController {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeSemaine : " + e.getMessage());
         }
+    }
+
+    @FXML
+    /**
+     * This method is called when the "Show Popup" button is clicked.
+     * It makes the popup pane visible.
+     */
+    private void showPopup() {
+        popupPane.setVisible(true);
+        overlay.setVisible(true);
+    }
+
+    @FXML
+    /**
+     * This method is called when the "Hide Popup" button is clicked.
+     * It hides the popup pane.
+     */
+    private void hidePopup() {
+        popupPane.setVisible(false);
+        overlay.setVisible(false);
     }
 
 
