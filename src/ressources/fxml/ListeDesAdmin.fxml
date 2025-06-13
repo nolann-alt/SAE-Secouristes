@@ -6,14 +6,18 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CalendrierSecouristeSemaineController">
+<?import javafx.scene.control.Button?>
+<StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ListeDesAdminController">
     <clip>
         <Rectangle arcHeight="50" arcWidth="50" height="852" width="393" />
     </clip>
@@ -52,9 +56,42 @@
                     <!-- TITRES -->
                     <VBox prefHeight="177.0" prefWidth="393.0">
                         <children>
-                            <Pane prefHeight="82.0" prefWidth="393.0" />
-                            <HBox prefHeight="26.0" prefWidth="393.0" />
-                            <HBox prefHeight="29.0" prefWidth="393.0" />
+                            <Pane prefHeight="82.0" prefWidth="393.0">
+                                <children>
+                                    <ImageView fitHeight="82.0" fitWidth="82.0" layoutX="285.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../img/Pfp.png" />
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </Pane>
+                            <HBox prefHeight="26.0" prefWidth="393.0">
+                                <children>
+                                    <Label style="-fx-text-fill: black; -fx-font-size: 32px; -fx-font-weight: bold; -fx-font-family: SF Pro Display Bold;" text="Liste des admin">
+                                        <padding>
+                                            <Insets left="20.0" />
+                                        </padding>
+                                    </Label>
+                                    <Label fx:id="prenomLabel" style="-fx-text-fill: black; -fx-font-size: 32px; -fx-font-weight: bold" text="" />
+                                </children>
+                            </HBox>
+                            <HBox prefHeight="29.0" prefWidth="393.0">
+                                <children>
+                                    <Label style="-fx-text-fill: black; -fx-font-size: 20px;" text="2 admins">
+                                        <padding>
+                                            <Insets left="18.0" />
+                                        </padding></Label>
+                                </children>
+                            </HBox>
+
+                            <HBox alignment="CENTER_RIGHT" prefHeight="15.0" prefWidth="393.0">
+                                <children>
+                                    <Region prefWidth="10.0" />
+                                </children>
+                            </HBox>
+                            <Region opacity="0.21" prefHeight="5.0" prefWidth="393.0" style="-fx-background-color: #ABABAB;" />
+                            <Region prefHeight="15.0" prefWidth="393.0" />
+
                         </children>
                     </VBox>
                 </children>
@@ -65,20 +102,168 @@
         <center>
             <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background-radius: 25; -fx-border-radius: 25;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
                 <content>
-                    <VBox alignment="CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0">
+                    <VBox alignment="TOP_CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0" style="-fx-background-color: white;">
                         <children>
-                            <VBox spacing="5" styleClass="event-list" />
+                            <VBox alignment="TOP_CENTER" prefHeight="196.0" prefWidth="393.0" spacing="5" styleClass="event-list">
+                        <children>
+                           <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                 <GridPane alignment="CENTER" style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-background-radius: 20;">
+                                   <columnConstraints>
+                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="79.0" />
+                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.0" minWidth="10.0" prefWidth="194.0" />
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="3.0" prefWidth="27.0" />
+                                   </columnConstraints>
+                                   <rowConstraints>
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                   </rowConstraints>
+                                    <children>
+                                       <GridPane alignment="BOTTOM_CENTER" prefHeight="95.0" prefWidth="114.0" GridPane.columnIndex="1">
+                                         <columnConstraints>
+                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                         </columnConstraints>
+                                         <rowConstraints>
+                                           <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                           <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                         </rowConstraints>
+                                          <children>
+                                             <GridPane alignment="BASELINE_CENTER" prefHeight="48.0" prefWidth="174.0">
+                                               <columnConstraints>
+                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="84.0" />
+                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.0" minWidth="0.0" prefWidth="108.0" />
+                                               </columnConstraints>
+                                               <rowConstraints>
+                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                               </rowConstraints>
+                                                <children>
+                                                   <Label style="-fx-text-fill: black; -fx-font-size: 24;" text="Marie" GridPane.columnIndex="1">
+                                                      <GridPane.margin>
+                                                         <Insets bottom="10.0" />
+                                                      </GridPane.margin>
+                                                   </Label>
+                                                   <Label layoutX="60.0" layoutY="25.0" style="-fx-text-fill: black; -fx-font-size: 24;" text="Jeanne">
+                                                      <GridPane.margin>
+                                                         <Insets bottom="10.0" />
+                                                      </GridPane.margin>
+                                                   </Label>
+                                                </children>
+                                                <GridPane.margin>
+                                                   <Insets />
+                                                </GridPane.margin>
+                                             </GridPane>
+                                             <Label style="-fx-text-fill: red; -fx-font-size: 16;" text="Administrateur" GridPane.rowIndex="1">
+                                                <padding>
+                                                   <Insets top="10.0" />
+                                                </padding>
+                                             </Label>
+                                          </children>
+                                       </GridPane>
+                                       <ImageView fitHeight="63.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
+                                          <image>
+                                             <Image url="@../img/profil_secouriste_liste_admins.png" />
+                                          </image>
+                                       </ImageView>
+                                       <ImageView fitHeight="34.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" onMouseClicked="#showPopup">
+                                          <image>
+                                             <Image url="@../img/appel_rouge_gros.png" />
+                                          </image>
+                                       </ImageView>
+                                    </children>
+                                    <padding>
+                                       <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                                    </padding>
+                                    <HBox.margin>
+                                       <Insets />
+                                    </HBox.margin>
+                                 </GridPane>
+                              </children>
+                           </HBox>
+                           <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                 <GridPane alignment="CENTER" style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-background-radius: 20;">
+                                    <columnConstraints>
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="79.0" />
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.0" minWidth="10.0" prefWidth="194.0" />
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="3.0" prefWidth="27.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                       <GridPane alignment="BOTTOM_CENTER" prefHeight="95.0" prefWidth="114.0" GridPane.columnIndex="1">
+                                          <columnConstraints>
+                                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          </columnConstraints>
+                                          <rowConstraints>
+                                             <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                             <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                          </rowConstraints>
+                                          <children>
+                                             <GridPane alignment="BASELINE_CENTER" prefHeight="48.0" prefWidth="174.0">
+                                                <columnConstraints>
+                                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="65.0" />
+                                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="0.0" prefWidth="129.0" />
+                                                </columnConstraints>
+                                                <rowConstraints>
+                                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                </rowConstraints>
+                                                <children>
+                                                   <Label prefHeight="35.0" prefWidth="91.0" style="-fx-text-fill: black; -fx-font-size: 24;" text="Madiot" GridPane.columnIndex="1">
+                                                      <GridPane.margin>
+                                                         <Insets bottom="10.0" />
+                                                      </GridPane.margin>
+                                                   </Label>
+                                                   <Label layoutX="60.0" layoutY="25.0" style="-fx-text-fill: black; -fx-font-size: 24;" text="Marc">
+                                                      <GridPane.margin>
+                                                         <Insets bottom="10.0" />
+                                                      </GridPane.margin>
+                                                   </Label>
+                                                </children>
+                                                <GridPane.margin>
+                                                   <Insets />
+                                                </GridPane.margin>
+                                             </GridPane>
+                                             <Label style="-fx-text-fill: red; -fx-font-size: 16;" text="Administrateur" GridPane.rowIndex="1">
+                                                <padding>
+                                                   <Insets top="10.0" />
+                                                </padding>
+                                             </Label>
+                                          </children>
+                                       </GridPane>
+                                       <ImageView fitHeight="63.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
+                                          <image>
+                                             <Image url="@../img/profil_notification_secouriste_marc_gros.png" />
+                                          </image>
+                                       </ImageView>
+                                       <ImageView fitHeight="34.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                                          <image>
+                                             <Image url="@../img/appel_rouge_gros.png" />
+                                          </image>
+                                       </ImageView>
+                                    </children>
+                                    <padding>
+                                       <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                                    </padding>
+                                 </GridPane>
+                              </children></HBox>
+                        </children></VBox>
                         </children>
                     </VBox>
                 </content>
             </ScrollPane>
         </center>
+      <bottom>
+      
+                      <VBox fx:id="popupPane" alignment="CENTER" prefHeight="401.0" prefWidth="393.0" spacing="10" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #333333; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 5);" visible="false" BorderPane.alignment="CENTER">
+              <Label style="-fx-text-fill: black;" text="Je suis une petite page" />
+                          <Button text="Fermer" onAction="#hidePopup" />
+          </VBox>
+      </bottom>
     </BorderPane>
-
     <!-- NAVIGATION BAR FLOTANTE -->
     <HBox fx:id="navBar" alignment="CENTER" maxHeight="70" maxWidth="280.0" spacing="40.0" style="-fx-background-color: #FFEDED; -fx-background-radius: 50; -fx-border-radius: 50; -fx-padding: 10; " StackPane.alignment="BOTTOM_CENTER">
         <children>
-            <VBox alignment="CENTER" onMouseClicked="#handleTableauDeBord" styleClass="clickable-zone" >
+            <VBox alignment="CENTER" onMouseClicked="#handleTableauDeBord" styleClass="clickable-zone">
                 <ImageView fitHeight="36.0" fitWidth="45.0">
                     <image>
                         <Image url="@../img/Accueil_noir.png" />
