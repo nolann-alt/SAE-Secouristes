@@ -3,10 +3,19 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class CalendrierSecouristeMoisController {
+
+public class ListeDesAdminController {
+
+    @FXML
+    /**
+     * This VBox is used to hold the popup pane that can be shown or hidden.
+     * It is defined in the FXML file and is used to display additional information or options.
+     */
+    private VBox popupPane;
 
     @FXML
     /**
@@ -25,5 +34,23 @@ public class CalendrierSecouristeMoisController {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue TableauDeBord : " + e.getMessage());
         }
+    }
+
+    @FXML
+    /**
+     * This method is called when the "Show Popup" button is clicked.
+     * It makes the popup pane visible.
+     */
+    private void showPopup() {
+        popupPane.setVisible(true);
+    }
+
+    @FXML
+    /**
+     * This method is called when the "Hide Popup" button is clicked.
+     * It hides the popup pane.
+     */
+    private void hidePopup() {
+        popupPane.setVisible(false);
     }
 }

@@ -2,6 +2,10 @@
     font-family: "SF Pro Display";
     src: url("../../ressources/fonts/SF-Pro-Display-Black.otf");
 }
+@font-face {
+    font-family: "SF Pro Display Bold";
+    src: url("../../ressources/fonts/SF-Pro-Display-Bold.otf");
+}
 
 /* Désactive le fond de la scène */
 .root {

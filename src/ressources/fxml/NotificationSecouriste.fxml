@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CalendrierSecouristeSemaineController">
+<StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NotificationSecouristeController">
     <clip>
         <Rectangle arcHeight="50" arcWidth="50" height="852" width="393" />
     </clip>
@@ -67,7 +67,7 @@
                             </Pane>
                             <HBox prefHeight="26.0" prefWidth="393.0">
                                 <children>
-                                    <Label style="-fx-text-fill: black; -fx-font-size: 32px; -fx-font-weight: bold;" text="Notifications">
+                                    <Label style="-fx-text-fill: black; -fx-font-size: 32px; -fx-font-weight: bold; -fx-font-family: SF Pro Display Bold;" text="Notifications">
                                         <padding>
                                             <Insets left="20.0" />
                                         </padding>
@@ -156,7 +156,7 @@
                                                    <RowConstraints maxHeight="51.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
                                                </rowConstraints>
                                                 <children>
-                                                   <Label prefHeight="18.0" prefWidth="284.0" style="-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 12;" text="Report compétition de badminton jeudi 27" GridPane.columnIndex="1">
+                                                   <Label prefHeight="18.0" prefWidth="284.0" style="-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 12; -fx-font-family: SF Pro Display Bold;" text="Report compétition de badminton jeudi 27" GridPane.columnIndex="1">
                                                       <GridPane.margin>
                                                          <Insets />
                                                       </GridPane.margin>
@@ -234,7 +234,7 @@
                                                    <RowConstraints maxHeight="51.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
                                                 </rowConstraints>
                                                 <children>
-                                                   <Label prefHeight="18.0" prefWidth="284.0" style="-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 12;" text="Formation sauvetage en mer avec la SNSM" GridPane.columnIndex="1">
+                                                   <Label prefHeight="18.0" prefWidth="284.0" style="-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 12; -fx-font-family: SF Pro Display Bold;" text="Formation sauvetage en mer avec la SNSM" GridPane.columnIndex="1">
                                                       <GridPane.margin>
                                                          <Insets />
                                                       </GridPane.margin>
@@ -344,7 +344,7 @@
                            </GridPane>
                         </children>
                      </HBox>
-                      <Button style="-fx-max-height: 40; -fx-max-width: 230;" styleClass="create-button" text="Contacter Admin" textAlignment="CENTER">
+                      <Button style="-fx-max-height: 40; -fx-max-width: 230;" styleClass="create-button" text="Contacter Admin" textAlignment="CENTER" onAction="#handleContacterAdmin">
                           <VBox.margin>
                               <Insets top="20.0" />
                           </VBox.margin>
