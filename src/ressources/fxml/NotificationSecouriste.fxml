@@ -56,7 +56,7 @@
                     <!-- TITRES -->
                     <VBox prefHeight="177.0" prefWidth="393.0">
                         <children>
-                            <Pane prefHeight="82.0" prefWidth="393.0">
+                            <Pane prefHeight="82.0" prefWidth="393.0" onMouseClicked="#handleProfilClick">
                                 <children>
                                     <ImageView fitHeight="82.0" fitWidth="82.0" layoutX="285.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                                         <image>

@@ -1,16 +1,20 @@
 package controller;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import metier.persistence.Secouriste;
 
 import java.io.IOException;
+import java.util.Stack;
 
 /**
  * This class allows to manage the global view switching in the application.
@@ -19,6 +23,12 @@ import java.io.IOException;
 public class GlobalController {
 
     public static Secouriste currentUser; // ← ajouté pour stocker l'utilisateur connecté
+
+    /**
+     * This stack is used to keep track of the view history.
+     * It allows the application to navigate back to previous views.
+     */
+    private static final Stack<Parent> viewHistory = new Stack<>();
 
 
     /**
@@ -30,36 +40,67 @@ public class GlobalController {
      */
     public static void switchView(String fxmlPath, Node source) {
         try {
-            // Charge le fichier FXML spécifié
-            FXMLLoader loader = new FXMLLoader(GlobalController.class.getResource(fxmlPath));
-            // Charge le parent à partir du fichier FXML
-            Parent root = loader.load();
+            Scene scene = source.getScene();
+            if (scene != null) {
+                // Sauvegarde de la vue actuelle dans l'historique
+                Parent currentView = source.getScene().getRoot();
+                // On la met dans l'historique
+                viewHistory.push(currentView);
 
-            // Crée une nouvelle scène avec fond transparent
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
+                // Chargement de la nouvelle vue à partir du fichier FXML
+                FXMLLoader loader = new FXMLLoader(GlobalController.class.getResource(fxmlPath));
+                // On charge la nouvelle vue
+                Parent newView = loader.load();
 
-            // Récupère l'ancienne scène à partir de la source (le noeud qui a déclenché l'action)
-            Stage oldStage = (Stage) source.getScene().getWindow();
+                // On récupère la scène actuelle à partir de l'élément source de l'événement
+                newView.translateXProperty().set(scene.getWidth()); // Positionne la nouvelle vue hors écran à droite
+                scene.setRoot(newView); // Remplace la vue
 
-            // Crée une nouvelle fenêtre (Stage) avec style transparent
-            Stage newStage = new Stage();
-            newStage.initStyle(StageStyle.TRANSPARENT);
-            newStage.setScene(scene);
-
-            // Taille identique à l'ancien stage
-            newStage.setWidth(oldStage.getWidth());
-            newStage.setHeight(oldStage.getHeight());
-            System.out.println("Nouvelle largeur de la fenêtre : " + newStage.getWidth());
-            System.out.println("Nouvelle hauteur de la fenêtre : " + newStage.getHeight());
-
-            // Positionne la nouvelle fenêtre à la même position que l'ancienne
-            // Affiche la nouvelle scène et ferme l'ancienne
-            newStage.show();
-            oldStage.close();
+                // Crée une transition de droite vers la position normale (0)
+                TranslateTransition transition = new TranslateTransition(Duration.millis(300), newView);
+                transition.setFromX(scene.getWidth());
+                transition.setToX(0);
+                transition.play();
+            } else {
+                System.err.println("Erreur : le Node source n'est pas attaché à une scène.");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue : " + e.getMessage());
         }
+    }
+
+    /**
+     * * This method is called when the back button is clicked.
+     * It switches the view to the previous view stored in the history stack.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws IOException If there is an error loading the FXML file.
+     */
+    public void goToProfil(ActionEvent event) {
+        try {
+            Parent currentView = ((Node) event.getSource()).getScene().getRoot();
+            viewHistory.push(currentView); // On sauvegarde la vue actuelle
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ProfilSecouriste.fxml"));
+            Parent profilView = loader.load();
+
+            Scene scene = ((Node) event.getSource()).getScene();
+            scene.setRoot(profilView);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue ProfilSecouriste : " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * This method returns the view history stack.
+     * It allows access to the previous views for navigation purposes.
+     *
+     * @return The stack containing the history of views.
+     */
+    public static Stack<Parent> getViewHistory() {
+        return viewHistory;
     }
 }

@@ -125,6 +125,6 @@ public class Graphe {
     }
 
     public int[][] getMatriceAdj() {
-        return this.matriceAdj;
+        return null;
     }
 }
