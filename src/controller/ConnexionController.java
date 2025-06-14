@@ -203,6 +203,11 @@ public class ConnexionController {
                 GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
             } else {
                 System.out.println("Email ou mot de passe incorrecte");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Email ou mot de passe incorrect.");
+                alert.showAndWait();
             }
         } catch (Exception e) {
             e.printStackTrace();
