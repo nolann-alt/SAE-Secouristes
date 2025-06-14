@@ -232,7 +232,7 @@ public class CreationController {
             return;
         }
 
-        Secouriste secouriste = new Secouriste(0, nom, prenom, email, password);
+        Secouriste secouriste = new Secouriste(0, nom, prenom, email, password, null);
         int result = dao.create(secouriste);
 
 

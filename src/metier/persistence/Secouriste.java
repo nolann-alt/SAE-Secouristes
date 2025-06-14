@@ -9,14 +9,16 @@ public class Secouriste {
     private String email;
     private ArrayList<Disponibilite> disponibilites;
     private String motDePasse;
+    private String telephone;
 
-    public Secouriste(long id, String nom, String prenom, String email, String motDePasse) {
+    public Secouriste(long id, String nom, String prenom, String email, String motDePasse, String telephone) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.disponibilites = new ArrayList<>();
         this.motDePasse = motDePasse;
+        this.telephone = telephone;
     }
 
     public String getMotDePasse() {
@@ -60,6 +62,14 @@ public class Secouriste {
         this.email = email;
     }
 
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
 
     public void ajouterDispo(Disponibilite laDispo) {
         if (laDispo == null) {
@@ -82,4 +92,5 @@ public class Secouriste {
     public ArrayList<Disponibilite> getDispo() {
         return this.disponibilites;
     }
+
 }

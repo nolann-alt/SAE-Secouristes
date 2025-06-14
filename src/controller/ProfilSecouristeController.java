@@ -8,13 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.util.Duration;
+import metier.graphe.model.dao.SecouristeDAO;
+import metier.persistence.Secouriste;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,6 +43,13 @@ public class ProfilSecouristeController implements Initializable {
     /** This qttrribut is used to checked if the checkbox is unticked */
     private Image uncheckedImage; // Si la checkbox n'est pas coché
 
+    //Pour les modifications d'informations personnelles
+    @FXML private Label nomField;
+    @FXML private Label prenomField;
+    @FXML private Label adresseField;
+    @FXML private Label telephoneField;
+
+
     @Override
     /**
      * This method is called to initialize the controller after its root element has been
@@ -58,6 +65,12 @@ public class ProfilSecouristeController implements Initializable {
             scrollPane.setVvalue(this.scrollPane.getVvalue() - deltaY / this.scrollPane.getContent().getBoundsInLocal().getHeight());
             event.consume(); // empêche le scroll par défaut
         });
+
+        Secouriste user = GlobalController.currentUser;
+        nomField.setText(user.getNom());
+        prenomField.setText(user.getPrenom());
+        adresseField.setText(user.getEmail());
+        telephoneField.setText(user.getTelephone() != null ? user.getTelephone() : "");
     }
 
     @FXML
@@ -139,5 +152,29 @@ public class ProfilSecouristeController implements Initializable {
     private void onBackRelease() {
         backButton.setTranslateY(0);
         backButton.setOpacity(0.7); // ou 1.0 selon ton besoin
+    }
+
+    @FXML
+    private void handleSaveModifications(ActionEvent event) {
+        String nouveauNom = nomField.getText();
+        String nouveauPrenom = prenomField.getText();
+        String nouvelEmail = adresseField.getText();
+        String nouveauTelephone = telephoneField.getText();
+
+        // Appel au DAO pour mettre à jour
+        Secouriste secouriste = GlobalController.getCurrentUser();
+        secouriste.setNom(nouveauNom);
+        secouriste.setPrenom(nouveauPrenom);
+        secouriste.setEmail(nouvelEmail);
+        secouriste.setTelephone(nouveauTelephone);
+
+        SecouristeDAO dao = new SecouristeDAO();
+        dao.update(secouriste);
+        System.out.println("Profil mis à jour !");
+    }
+
+    @FXML
+    private void handleEditProfil(ActionEvent event) {
+        GlobalController.switchView("../ressources/fxml/InfosSecouriste.fxml", (Node) event.getSource());
     }
 }

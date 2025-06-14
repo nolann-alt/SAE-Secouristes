@@ -9,7 +9,7 @@ import javafx.event.ActionEvent;
 import metier.persistence.Secouriste;
 import metier.graphe.model.dao.SecouristeDAO;
 
-import java.io.IOException;
+import java.io.*;
 
 /**
  * This class allows to manage different elements of the connexion view.
@@ -51,6 +51,9 @@ public class ConnexionController {
     @FXML
     private TextField emailField;
 
+    //pour "se souvenir de moi"
+    private final String FILE_PATH = "remember_me.txt";
+
     @FXML
     /**
      * This method is called to initialize the controller after its root element has been
@@ -58,6 +61,10 @@ public class ConnexionController {
      * to bind the checkbox state to the image displayed.
      */
     public void initialize() {
+
+        //Vérifie si il ne s'est pas déjà connecté
+        loadRememberedEmail();
+
         // Charger les images
         checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
         uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());
@@ -212,6 +219,37 @@ public class ConnexionController {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Tableau de Bord : " + e.getMessage());
+        }
+
+        if (customCheckbox.isSelected()) {
+            saveEmail(email);
+        } else {
+            new File(FILE_PATH).delete(); // Si décoché, on supprime
+        }
+    }
+
+    // Sauvegarder l'email
+    private void saveEmail(String email) {
+        try (FileWriter writer = new FileWriter(FILE_PATH)) {
+            writer.write(email);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Charger l'email s'il existe
+    private void loadRememberedEmail() {
+        File file = new File(FILE_PATH);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String savedEmail = reader.readLine();
+                if (savedEmail != null) {
+                    emailField.setText(savedEmail);
+                    customCheckbox.setSelected(true);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
