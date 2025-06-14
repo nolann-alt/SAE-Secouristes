@@ -6,21 +6,25 @@ public class Secouriste {
     private long id;
     private String nom;
     private String prenom;
-    private String dateNaissance;
     private String email;
-    private String tel;
-    private String adresse;
     private ArrayList<Disponibilite> disponibilites;
+    private String motDePasse;
 
-    public Secouriste(long id, String nom, String prenom, String dateNaissance, String email, String tel, String adresse) {
+    public Secouriste(long id, String nom, String prenom, String email, String motDePasse) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
-        this.dateNaissance = dateNaissance;
         this.email = email;
-        this.tel = tel;
-        this.adresse = adresse;
         this.disponibilites = new ArrayList<>();
+        this.motDePasse = motDePasse;
+    }
+
+    public String getMotDePasse() {
+        return motDePasse;
+    }
+
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
     }
 
 
@@ -48,14 +52,6 @@ public class Secouriste {
         this.prenom = prenom;
     }
 
-    public String getDateNaissance() {
-        return this.dateNaissance;
-    }
-
-    public void setDateNaissance(String dateNaissance) {
-        this.dateNaissance = dateNaissance;
-    }
-
     public String getEmail() {
         return this.email;
     }
@@ -64,21 +60,6 @@ public class Secouriste {
         this.email = email;
     }
 
-    public String getTel() {
-        return this.tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-
-    public String getAdresse() {
-        return this.adresse;
-    }
-
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
 
     public void ajouterDispo(Disponibilite laDispo) {
         if (laDispo == null) {

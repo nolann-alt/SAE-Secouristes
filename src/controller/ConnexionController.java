@@ -2,13 +2,12 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
+import metier.persistence.Secouriste;
+import metier.graphe.model.dao.SecouristeDAO;
 
 import java.io.IOException;
 
@@ -50,6 +49,9 @@ public class ConnexionController {
     private Image uncheckedImage; // Si la checkbox n'est pas coché
 
     @FXML
+    private TextField emailField;
+
+    @FXML
     /**
      * This method is called to initialize the controller after its root element has been
      * processed. It is used to set up the initial state of the controller and
@@ -57,8 +59,8 @@ public class ConnexionController {
      */
     public void initialize() {
         // Charger les images
-        checkedImage = new Image(getClass().getResource("/ressources/img/Checkboxes.png").toExternalForm());
-        uncheckedImage = new Image(getClass().getResource("/ressources/img/caseunchecked.png").toExternalForm());
+        checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
+        uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());
 
 
         // Définir image de départ
@@ -152,7 +154,7 @@ public class ConnexionController {
             visiblePasswordField.setManaged(false);
 
             // Changer l’image de l’icône en "œil fermé"
-            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/eye off 1.png")));
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/oeil_ferme.png")));
 
             // Mettre à jour l’état
             passwordVisible = false;
@@ -172,7 +174,7 @@ public class ConnexionController {
             passwordField.setManaged(false); // Et on lui enlève sa place dans le layout
 
             // Changer l’image de l’icône en "œil ouvert"
-            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/icons8-visible-24.png")));
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/oeil_ouvert.png")));
 
             // Mettre à jour l’état
             passwordVisible = true;
@@ -183,8 +185,25 @@ public class ConnexionController {
     private void handleConnexion(ActionEvent event) throws IOException {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
+
+        String email = emailField.getText();
+        String password;
+        if (passwordVisible) {
+            password = visiblePasswordField.getText();
+        } else {
+            password = passwordField.getText();
+        }
+
+        SecouristeDAO dao = new SecouristeDAO();
+        Secouriste s = dao.findByEmail(email);
+
         try {
-            GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
+            if  (s != null && s.getMotDePasse().equals(password)) {
+                GlobalController.currentUser = s;
+                GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
+            } else {
+                System.out.println("Email ou mot de passe incorrecte");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Tableau de Bord : " + e.getMessage());

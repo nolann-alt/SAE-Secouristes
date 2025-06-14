@@ -5,7 +5,7 @@ package metier.persistence;
  */
 public class Possede {
     private String intituleComp;
-    private int idSecouriste;
+    private long idSecouriste;
 
     public Possede(String intituleComp, int idSecouriste) {
         this.intituleComp = intituleComp;
@@ -20,7 +20,7 @@ public class Possede {
         this.intituleComp = intituleComp;
     }
 
-    public int getIdSecouriste() {
+    public long getIdSecouriste() {
         return this.idSecouriste;
     }
 

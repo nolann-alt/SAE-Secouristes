@@ -4,9 +4,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import metier.persistence.Secouriste;
 
 import java.io.IOException;
 
@@ -15,6 +17,9 @@ import java.io.IOException;
  * It provides a method to switch between different views using FXML files.
  */
 public class GlobalController {
+
+    public static Secouriste currentUser; // ← ajouté pour stocker l'utilisateur connecté
+
 
     /**
      * Switches the current view to a new view specified by the FXML file path.
@@ -56,7 +61,5 @@ public class GlobalController {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue : " + e.getMessage());
         }
-
-
     }
 }

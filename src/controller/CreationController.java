@@ -3,12 +3,11 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import metier.persistence.Secouriste;
+import metier.graphe.model.dao.SecouristeDAO;
 
 import java.io.IOException;
 
@@ -49,6 +48,14 @@ public class CreationController {
     /** This qttrribut is used to checked if the checkbox is unticked */
     private Image uncheckedImage; // Si la checkbox n'est pas coché
 
+    // pour Marin
+    @FXML private TextField nomField;
+    @FXML private TextField prenomField;
+    @FXML private TextField emailField;
+
+    //label erreur
+    @FXML private Label errorLabel;
+
     @FXML
     /**
      * This method is called to initialize the controller after its root element has been
@@ -57,8 +64,8 @@ public class CreationController {
      */
     public void initialize() {
         // Charger les images
-        checkedImage = new Image(getClass().getResource("/ressources/img/Checkboxes.png").toExternalForm());
-        uncheckedImage = new Image(getClass().getResource("/ressources/img/caseunchecked.png").toExternalForm());
+        checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
+        uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());
 
 
         // Définir image de départ
@@ -152,7 +159,7 @@ public class CreationController {
             visiblePasswordField.setManaged(false);
 
             // Changer l’image de l’icône en "œil fermé"
-            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/eye off 1.png")));
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/oeil_ferme.png")));
 
             // Mettre à jour l’état
             passwordVisible = false;
@@ -172,7 +179,7 @@ public class CreationController {
             passwordField.setManaged(false); // Et on lui enlève sa place dans le layout
 
             // Changer l’image de l’icône en "œil ouvert"
-            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/icons8-visible-24.png")));
+            toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/oeil_ouvert.png")));
 
             // Mettre à jour l’état
             passwordVisible = true;
@@ -190,11 +197,63 @@ public class CreationController {
     private void handleCreationCompte(ActionEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
-        try {
-            GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
+
+        String nom = nomField.getText();
+        String prenom = prenomField.getText();
+        String email = emailField.getText();
+        String password;
+
+        if (visiblePasswordField.isVisible()) {
+            password = visiblePasswordField.getText();
+        } else {
+            password = passwordField.getText();
         }
+
+        //Programmation défensive
+        if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            System.out.println(" Tous les champs sont requis ");
+            showAlert("Tous les champs sont requis.");
+            return;
+        }
+
+        SecouristeDAO dao = new SecouristeDAO();
+
+        //Programmation défensive
+        if (dao.findByEmail(email) != null) {
+            System.out.println("Email déjà utilisé !");
+            showAlert("Un compte avec cet email existe déjà !");
+            return;
+        }
+
+        //Programmation défensive
+        if (!email.contains("@")) {
+            System.out.println("L'email doit contenir un @ !!");
+            showAlert("L'email doit contenir un '@' !");
+            return;
+        }
+
+        Secouriste secouriste = new Secouriste(0, nom, prenom, email, password);
+        int result = dao.create(secouriste);
+
+
+        if (result > 0) { //vérifier si l'inscription a marché
+            try {
+                GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
+            }
+        } else {
+            System.out.println("Inscription Echoué !");
+            showAlert("L'inscription a échoué. Veuillez réessayer.");
+        }
+    }
+    //pour les pop up
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur d'inscription");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
