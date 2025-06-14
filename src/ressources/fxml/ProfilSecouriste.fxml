@@ -149,7 +149,7 @@
                                              </HBox>
                                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                                                 <children>
-                                                   <Button fx:id="editButton" onAction="#handleEditProfil" mnemonicParsing="false" prefHeight="33.0" prefWidth="20.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Button">
+                                                   <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleEditInfos" prefHeight="33.0" prefWidth="20.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Button">
                                                       <graphic>
                                                          <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                             <image>

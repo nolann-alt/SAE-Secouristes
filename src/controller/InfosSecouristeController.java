@@ -51,11 +51,6 @@ public class InfosSecouristeController implements Initializable {
     }
 
     @FXML
-    private void handleDeconnexion(ActionEvent event) {
-        GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
-    }
-
-    @FXML
     private void handleSaveProfil(ActionEvent event) {
         utilisateur.setNom(nomField.getText());
         utilisateur.setPrenom(prenomField.getText());
@@ -73,5 +68,12 @@ public class InfosSecouristeController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText("Les coordonnées ont été mises à jour avec succès.");
         alert.showAndWait();
+
+        try {
+            GlobalController.switchView("../ressources/fxml/ProfilSecouriste.fxml", (Node) event.getSource());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue ProfilSecouriste : " + e.getMessage());
+        }
     }
 }

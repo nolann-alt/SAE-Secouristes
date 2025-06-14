@@ -174,7 +174,12 @@ public class ProfilSecouristeController implements Initializable {
     }
 
     @FXML
-    private void handleEditProfil(ActionEvent event) {
-        GlobalController.switchView("../ressources/fxml/InfosSecouriste.fxml", (Node) event.getSource());
+    private void handleEditInfos(ActionEvent event) {
+        try {
+            GlobalController.switchView("../ressources/fxml/InfosSecouriste.fxml", (Node) event.getSource());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue : " + e.getMessage());
+        }
     }
 }
