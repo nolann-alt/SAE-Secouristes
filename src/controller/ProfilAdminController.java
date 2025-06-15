@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,18 +8,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.util.Duration;
-import metier.graphe.model.dao.SecouristeDAO;
 import metier.persistence.Secouriste;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ProfilSecouristeController implements Initializable {
+public class ProfilAdminController implements Initializable {
 
     @FXML
     /** This ScrollPane is used to display the content of the dashboard. */
@@ -31,11 +27,10 @@ public class ProfilSecouristeController implements Initializable {
     public Button backButton;
 
     //Pour les modifications d'informations personnelles
-    @FXML private Label nomField;
-    @FXML private Label prenomField;
-    @FXML private Label adresseField;
-    @FXML private Label telephoneField;
-
+    @FXML private javafx.scene.control.Label nomField;
+    @FXML private javafx.scene.control.Label prenomField;
+    @FXML private javafx.scene.control.Label adresseField;
+    @FXML private javafx.scene.control.Label telephoneField;
 
     @Override
     /**
@@ -100,73 +95,6 @@ public class ProfilSecouristeController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
-        }
-    }
-
-    @FXML
-    /**
-     * This method is called when the back button is hovered over.
-     * It changes the opacity of the back button to indicate hover state.
-     */
-    private void onBackHover() {
-        backButton.setOpacity(0.7);
-    }
-
-    @FXML
-    /**
-     * This method is called when the mouse exits the back button area.
-     * It resets the opacity of the back button to its normal state.
-     */
-    private void onBackExit() {
-        backButton.setOpacity(1.0);
-    }
-
-    @FXML
-    /**
-     * This method is called when the back button is pressed.
-     * It changes the position and opacity of the back button to indicate press state.
-     */
-    private void onBackPress() {
-        backButton.setTranslateY(2);
-        backButton.setOpacity(0.5);
-    }
-
-    @FXML
-    /**
-     * This method is called when the back button is released.
-     * It resets the position and opacity of the back button to its normal state.
-     */
-    private void onBackRelease() {
-        backButton.setTranslateY(0);
-        backButton.setOpacity(0.7); // ou 1.0 selon ton besoin
-    }
-
-    @FXML
-    private void handleSaveModifications(ActionEvent event) {
-        String nouveauNom = nomField.getText();
-        String nouveauPrenom = prenomField.getText();
-        String nouvelEmail = adresseField.getText();
-        String nouveauTelephone = telephoneField.getText();
-
-        // Appel au DAO pour mettre à jour
-        Secouriste secouriste = GlobalController.getCurrentUser();
-        secouriste.setNom(nouveauNom);
-        secouriste.setPrenom(nouveauPrenom);
-        secouriste.setEmail(nouvelEmail);
-        secouriste.setTelephone(nouveauTelephone);
-
-        SecouristeDAO dao = new SecouristeDAO();
-        dao.update(secouriste);
-        System.out.println("Profil mis à jour !");
-    }
-
-    @FXML
-    private void handleEditInfos(ActionEvent event) {
-        try {
-            GlobalController.switchView("../ressources/fxml/InfosSecouriste.fxml", (Node) event.getSource());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue : " + e.getMessage());
         }
     }
 }

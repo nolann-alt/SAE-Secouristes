@@ -35,7 +35,7 @@ public class SecouristeView extends Application{
         PauseTransition pause = new PauseTransition(Duration.seconds(3));
         pause.setOnFinished(e -> {
             try {
-                Parent mainRoot = FXMLLoader.load(getClass().getResource("/ressources/fxml/Accueil.fxml"));
+                Parent mainRoot = FXMLLoader.load(getClass().getResource("/ressources/fxml/TableauDeBordAdmin.fxml"));
                 Scene mainScene = new Scene(mainRoot);
                 mainScene.setFill(Color.TRANSPARENT);
                 primaryStage.setScene(mainScene);
