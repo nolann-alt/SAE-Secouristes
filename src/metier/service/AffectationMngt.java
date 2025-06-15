@@ -1,23 +1,26 @@
 package metier.service;
 
-import metier.persistence.DPS;
-import metier.persistence.Secouriste;
+import metier.persistence.*;
+import metier.graphe.algorithme.Affectation;
 import java.util.*;
 
 /**
  * This class allow to affect a secouriste to a task.
  */
 public class AffectationMngt {
-    private List<Secouriste> secouriste;
-    private List<DPS> dps;
+    private ArrayList<Possede> secouristeComp;
+    private HashMap<DPS, Competences> dpsComp;
 
-    public AffectationMngt(List<Secouriste> secouriste, List<DPS> dps) {
-        this.secouriste = secouriste;
-        this.dps = dps;
+    Affectation elements = new Affectation(secouristeComp, dpsComp);
+
+    public AffectationMngt(ArrayList<Possede> secouristeComp, HashMap<DPS, Competences> dpsComp) {
+        this.secouristeComp = secouristeComp;
+        this.dpsComp = dpsComp;
     }
 
-    public void affecter(List<Secouriste> secouriste) {
+    public void affecter() {
         // appel de l'algorithme d'affectation
+        elements.glouton(secouristeComp, dpsComp);
     }
 
 

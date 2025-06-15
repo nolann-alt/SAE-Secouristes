@@ -9,12 +9,13 @@ import java.util.*;
 
 public class Affectation {
 
-    private HashMap<String, String>  competences;
-    /*
-    public Affectation(competences) {
+    private ArrayList<Possede> secouristeComp;
+    private HashMap<DPS, Competences> dpsComp;
 
+    public Affectation(ArrayList<Possede> secouristeComp, HashMap<DPS, Competences> dpsComp) {
+        this.secouristeComp = secouristeComp;
+        this.dpsComp = dpsComp;
     }
-    */
     // public void remplissage
 
 
@@ -78,9 +79,7 @@ public class Affectation {
         return hasCycle;
     }
 
-    private List<Map.Entry<Secouriste, DPS>> glouton(Graphe g) {
-        ArrayList<Possede> secouristeComp = g.getListeSecouriste();
-        HashMap<DPS, Competences> dpsComp = g.getListeDPS();
+    public List<Map.Entry<Secouriste, DPS>> glouton(ArrayList<Possede> secouristeComp, HashMap<DPS, Competences> dpsComp) {
 
         // Liste des secouristes (distincts)
         HashMap<Long, Secouriste> idToSecouriste = new HashMap<>();
