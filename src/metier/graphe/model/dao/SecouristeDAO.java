@@ -23,8 +23,11 @@ public class SecouristeDAO extends DAO<Secouriste> {
 
     @Override
     public int update(Secouriste s) {
-        String query = "UPDATE Secouriste SET nom='" + s.getNom() + "', prenom='" + s.getPrenom() +
-                "', email='" + s.getEmail() + "' WHERE id=" + s.getId();
+        String query = "UPDATE Secouriste SET nom='" + s.getNom() +
+                "', prenom='" + s.getPrenom() +
+                "', email='" + s.getEmail() +
+                "', telephone='" + s.getTelephone() +
+                "' WHERE id=" + s.getId();
         try (Connection connexion = getConnection();
              Statement statement = connexion.createStatement()) {
             return statement.executeUpdate(query);
@@ -33,6 +36,7 @@ public class SecouristeDAO extends DAO<Secouriste> {
             return -1;
         }
     }
+
 
     @Override
     public int delete(Secouriste s) {
@@ -58,7 +62,8 @@ public class SecouristeDAO extends DAO<Secouriste> {
                         rs.getString("nom"),
                         rs.getString("prenom"),
                         rs.getString("email"),
-                        rs.getString("motDePasse")
+                        rs.getString("motDePasse"),
+                        rs.getString("telephone")
                 ));
             }
         } catch (SQLException ex) {
@@ -78,7 +83,8 @@ public class SecouristeDAO extends DAO<Secouriste> {
                         rs.getString("nom"),
                         rs.getString("prenom"),
                         rs.getString("email"),
-                        rs.getString("motDePasse")
+                        rs.getString("motDePasse"),
+                        rs.getString("telephone")
                 );
             }
         } catch (SQLException ex) {
@@ -97,7 +103,8 @@ public class SecouristeDAO extends DAO<Secouriste> {
                         rs.getString("nom"),
                         rs.getString("prenom"),
                         rs.getString("email"),
-                        rs.getString("motDePasse")
+                        rs.getString("motDePasse"),
+                        rs.getString("telephone")
                 );
             }
         } catch (SQLException ex) {

@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.shape.Rectangle?>
-<StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TableauDeBordController">
+
+<StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TableauDeBordAdminController">
     <clip>
-        <Rectangle arcWidth="50" arcHeight="50" width="393" height="852" />
+        <Rectangle arcHeight="50" arcWidth="50" height="852" width="393" />
     </clip>
 
     <!-- CONTENEUR PRINCIPAL -->
@@ -53,11 +53,11 @@
                     <!-- TITRES -->
                     <VBox prefHeight="177.0" prefWidth="393.0">
                         <children>
-                            <Pane prefHeight="82.0" prefWidth="393.0">
+                            <Pane onMouseClicked="#handleProfilAdmin" prefHeight="82.0" prefWidth="393.0">
                                 <children>
                                     <ImageView fitHeight="82.0" fitWidth="82.0" layoutX="285.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                                         <image>
-                                            <Image url="@../img/Pfp.png" />
+                                            <Image url="@../img/PfpAdmin.png" />
                                         </image>
                                     </ImageView>
                                 </children>
@@ -83,6 +83,13 @@
                                 </children>
                             </HBox>
 
+                            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="393.0">
+                                <children>
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Region prefWidth="10" />
+                                </children>
+                            </HBox>
+
                         </children>
                     </VBox>
                 </children>
@@ -93,19 +100,14 @@
         <center>
             <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background-radius: 25; -fx-border-radius: 25;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
                 <content>
-                    <VBox alignment="CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0">
+                    <VBox alignment="CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0" style="-fx-background-color: white;">
                         <children>
                             <VBox spacing="5" styleClass="event-list" />
-                            <Button styleClass="create-button" text="Modifier disponibilités">
+                            <Button styleClass="create-button" text="Créer DPS">
                                 <VBox.margin>
                                     <Insets top="20.0" />
                                 </VBox.margin>
                             </Button>
-                            <ImageView fitHeight="286.0" fitWidth="311.15" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../img/map.png" />
-                                </image>
-                            </ImageView>
                         </children>
                     </VBox>
                 </content>
@@ -114,7 +116,7 @@
     </BorderPane>
 
     <!-- NAVIGATION BAR FLOTANTE -->
-    <HBox fx:id="navBar" alignment="CENTER" maxHeight="70" maxWidth="280.0" spacing="40.0" style="-fx-background-color: #FFEDED; -fx-background-radius: 50; -fx-border-radius: 50; -fx-padding: 10; " StackPane.alignment="BOTTOM_CENTER">
+    <HBox fx:id="navBar" alignment="CENTER" maxHeight="70" maxWidth="346.0" spacing="40.0" style="-fx-background-color: #FFEDED; -fx-background-radius: 50; -fx-border-radius: 50; -fx-padding: 10; " StackPane.alignment="BOTTOM_CENTER">
         <children>
             <VBox alignment="CENTER">
                 <ImageView fitHeight="36.0" fitWidth="45.0">
@@ -130,17 +132,26 @@
                     </image>
                 </ImageView>
             </VBox>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER" onMouseClicked="#handleAlertes" styleClass="clickable-zone">
                 <ImageView fitHeight="36.0" fitWidth="45.0">
                     <image>
                         <Image url="@../img/Alertes_noir.png" />
                     </image>
                 </ImageView>
             </VBox>
+         <VBox alignment="CENTER" layoutX="213.0" layoutY="20.0" onMouseClicked="#handleAlertes" styleClass="clickable-zone">
+            <children>
+               <ImageView fitHeight="36.0" fitWidth="45.0">
+                  <image>
+                     <Image url="@../img/effectif.png" />
+                  </image>
+               </ImageView>
+            </children>
+         </VBox>
         </children>
-      <StackPane.margin>
-         <Insets bottom="40.0" />
-      </StackPane.margin>
+        <StackPane.margin>
+            <Insets bottom="40.0" />
+        </StackPane.margin>
     </HBox>
 
 </StackPane>
