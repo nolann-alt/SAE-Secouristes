@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
+import metier.graphe.model.dao.AdminDAO;
+import metier.persistence.Admin;
 import metier.persistence.Secouriste;
 import metier.graphe.model.dao.SecouristeDAO;
 
@@ -201,6 +203,18 @@ public class ConnexionController {
             password = passwordField.getText();
         }
 
+        // Tentative d'authentification comme Admin
+        AdminDAO adminDAO = new AdminDAO();
+        Admin admin = adminDAO.findByEmailAndPassword(email, password);
+        if (admin != null) {
+            // Authentification admin réussie
+            GlobalController.setCurrentAdmin(admin);
+            GlobalController.switchView("../ressources/fxml/ProfilAdmin.fxml", (Node) event.getSource());
+            return;
+        }
+
+
+        // Tentative d'authentification comme Secouriste
         SecouristeDAO dao = new SecouristeDAO();
         Secouriste s = dao.findByEmail(email);
 

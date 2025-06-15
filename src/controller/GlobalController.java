@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import metier.persistence.Admin;
 import metier.persistence.Secouriste;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ import java.util.Stack;
 public class GlobalController {
 
     public static Secouriste currentUser; // ← ajouté pour stocker l'utilisateur connecté
+
+    private static Admin currentAdmin;
 
     /**
      * This stack is used to keep track of the view history.
@@ -110,5 +113,15 @@ public class GlobalController {
      */
     public static Secouriste getCurrentUser() {
         return currentUser;
+    }
+
+    // Setter pour l'admin
+    public static void setCurrentAdmin(Admin admin) {
+        currentAdmin = admin;
+    }
+
+    // Getter pour l'admin
+    public static Admin getCurrentAdmin() {
+        return currentAdmin;
     }
 }
