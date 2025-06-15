@@ -103,4 +103,12 @@ public class GlobalController {
     public static Stack<Parent> getViewHistory() {
         return viewHistory;
     }
+
+    /**
+     * This method returns the current user of the application.
+     * @return The current Secouriste user.
+     */
+    public static Secouriste getCurrentUser() {
+        return currentUser;
+    }
 }
