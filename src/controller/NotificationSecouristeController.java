@@ -38,7 +38,7 @@ public class NotificationSecouristeController {
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/ListeDesAdmin.fxml", (Node) event.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue ListeDesAdmin : " + e.getMessage());
         }
@@ -57,7 +57,7 @@ public class NotificationSecouristeController {
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue TableauDeBord : " + e.getMessage());
         }
@@ -75,7 +75,7 @@ public class NotificationSecouristeController {
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaine.fxml", (Node) mouseEvent.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeSemaine : " + e.getMessage());
         }
@@ -114,7 +114,7 @@ public class NotificationSecouristeController {
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/ProfilSecouriste.fxml", (Node) event.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue ProfilSecouriste : " + e.getMessage());
         }

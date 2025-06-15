@@ -14,7 +14,7 @@ public class AccueilController {
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/Connexion.fxml", (Node) event.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Connexion : " + e.getMessage());
         }
@@ -26,7 +26,7 @@ public class AccueilController {
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/Creation.fxml", (Node) event.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Inscription : " + e.getMessage());
         }

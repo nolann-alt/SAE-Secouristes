@@ -41,8 +41,7 @@ public class GlobalController {
      * @param source   The node that triggered the action to switch views.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public static void switchView(String fxmlPath, Node source) {
-        try {
+    public static void switchView(String fxmlPath, Node source) throws IOException {
             Scene scene = source.getScene();
             if (scene != null) {
                 // Sauvegarde de la vue actuelle dans l'historique
@@ -67,10 +66,6 @@ public class GlobalController {
             } else {
                 System.err.println("Erreur : le Node source n'est pas attaché à une scène.");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue : " + e.getMessage());
-        }
     }
 
     /**
@@ -78,7 +73,6 @@ public class GlobalController {
      * It switches the view to the previous view stored in the history stack.
      *
      * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
      */
     public void goToProfil(ActionEvent event) {
         try {

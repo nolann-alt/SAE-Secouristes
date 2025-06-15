@@ -97,7 +97,7 @@ public class ProfilSecouristeController implements Initializable {
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
         }
@@ -164,7 +164,7 @@ public class ProfilSecouristeController implements Initializable {
     private void handleEditInfos(ActionEvent event) {
         try {
             GlobalController.switchView("../ressources/fxml/InfosSecouriste.fxml", (Node) event.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue : " + e.getMessage());
         }
