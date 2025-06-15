@@ -48,11 +48,11 @@ public class ProfilAdminController implements Initializable {
             event.consume(); // empêche le scroll par défaut
         });
 
-        Secouriste user = GlobalController.currentUser;
-        nomField.setText(user.getNom());
-        prenomField.setText(user.getPrenom());
-        adresseField.setText(user.getEmail());
-        telephoneField.setText(user.getTelephone() != null ? user.getTelephone() : "");
+//        Secouriste user = GlobalController.currentUser;
+//        nomField.setText(user.getNom());
+//        prenomField.setText(user.getPrenom());
+//        adresseField.setText(user.getEmail());
+//        telephoneField.setText(user.getTelephone() != null ? user.getTelephone() : "");
     }
 
     @FXML
