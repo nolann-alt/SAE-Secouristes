@@ -103,7 +103,7 @@
                     <VBox alignment="CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0" style="-fx-background-color: white;">
                         <children>
                             <VBox spacing="5" styleClass="event-list" />
-                            <Button styleClass="create-button" text="Créer DPS">
+                            <Button styleClass="create-button" text="Créer DPS" onAction="#handleCreateDPS">
                                 <VBox.margin>
                                     <Insets top="20.0" />
                                 </VBox.margin>

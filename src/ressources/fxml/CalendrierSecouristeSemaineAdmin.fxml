@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ListeDesSecouristesAdminController">
+<StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CalendrierSecouristeSemaineAdminController">
     <clip>
         <Rectangle arcHeight="50" arcWidth="50" height="852" width="393" />
     </clip>
@@ -75,7 +75,7 @@
                     </image>
                 </ImageView>
             </VBox>
-            <VBox alignment="CENTER" onMouseClicked="#handleCalendrierAdminSemaine" styleClass="clickable-zone">
+            <VBox alignment="CENTER">
                 <ImageView fitHeight="36.0" fitWidth="45.0">
                     <image>
                         <Image url="@../img/Planning_rouge.png" />
@@ -89,7 +89,7 @@
                     </image>
                 </ImageView>
             </VBox>
-            <VBox alignment="CENTER" layoutX="213.0" layoutY="20.0">
+            <VBox alignment="CENTER" layoutX="213.0" layoutY="20.0" onMouseClicked="#handleEffectif" styleClass="clickable-zone">
                 <children>
                     <ImageView fitHeight="36.0" fitWidth="45.0">
                         <image>

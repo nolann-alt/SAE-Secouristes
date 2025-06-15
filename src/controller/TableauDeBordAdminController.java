@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -64,7 +65,23 @@ public class TableauDeBordAdminController implements Initializable {
         }
     }
 
+    @FXML
+    /**
+     * This method is called when the back button is clicked.
+     * It loads the AlertesAdmin.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws IOException If there is an error loading the FXML file.
+     */
     public void handleAlertesAdmin(MouseEvent mouseEvent) {
+        // On récupère la scène actuelle à partir de l'élément source de l'événement
+        // event.getSource() est le bouton qui a été cliqué (la source)
+        try {
+            GlobalController.switchView("../ressources/fxml/AlertesAdmin.fxml", (Node) mouseEvent.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue AlertesAdmin : " + e.getMessage());
+        }
     }
 
     @FXML
@@ -83,6 +100,25 @@ public class TableauDeBordAdminController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue ListeDesSecouristesAdmin : " + e.getMessage());
+        }
+    }
+
+    @FXML
+    /**
+     * This method is called when the back button is clicked.
+     * It loads the CalendrierSecouristeMoisAdmin.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws IOException If there is an error loading the FXML file.
+     */
+    public void handleCreateDPS(ActionEvent actionEvent) {
+        // On récupère la scène actuelle à partir de l'élément source de l'événement
+        // event.getSource() est le bouton qui a été cliqué (la source)
+        try {
+            GlobalController.switchView("../ressources/fxml/CalendrierSecouristeMoisAdmin.fxml", (Node) actionEvent.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeMoisAdmin : " + e.getMessage());
         }
     }
 }

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
@@ -202,7 +203,7 @@
                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                </rowConstraints>
                                                 <children>
-                                                                    <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleEditInfos" prefHeight="32.0" prefWidth="71.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Button" GridPane.columnIndex="1">
+                                                                    <Button mnemonicParsing="false" onAction="#showPopup" prefHeight="32.0" prefWidth="71.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Button" GridPane.columnIndex="1">
                                                                         <graphic>
                                                                             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                                                                 <image>
@@ -287,5 +288,203 @@
             </ScrollPane>
         </center>
     </BorderPane>
+
+    <Rectangle fx:id="overlay" fill="rgba(0,0,0,0.4)" height="852" visible="false" width="394.0" />
+
+    <VBox fx:id="popupPane" alignment="CENTER" maxHeight="401.0" maxWidth="394.0" prefHeight="380.0" prefWidth="394.0" spacing="10" style="-fx-background-color: white;              -fx-background-radius: 10;              -fx-border-color: #333333;              -fx-border-radius: 10;              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 5);" visible="false" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
+        <children>
+            <GridPane prefHeight="380.0" prefWidth="393.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="204.0" minHeight="10.0" prefHeight="198.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="102.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="392.0" style="-fx-border-color: transparent transparent rgba(136, 136, 136, 0.21) transparent; -fx-border-width: 0 0 2 0;">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="344.0" minWidth="10.0" prefWidth="342.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.0" minWidth="10.0" prefWidth="50.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                <children>
+                                    <Label prefHeight="35.0" prefWidth="322.0" style="-fx-text-fill: #E60023; -fx-font-size: 24;" text="Modifier compétences" />
+                                </children>
+                            </VBox>
+                            <VBox alignment="CENTER" onMouseClicked="#hidePopup" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                                <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../img/croix.png" />
+                                        </image>
+                                    </ImageView>
+                                </children>
+                            </VBox>
+                        </children>
+                    </GridPane>
+                    <HBox prefHeight="61.0" prefWidth="392.0" GridPane.rowIndex="1">
+                        <children>
+                            <Label style="-fx-text-fill: black; -fx-font-size: 16;" text="Sélectionner les compétences pour Marin" wrapText="true" />
+                        </children>
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                    </HBox>
+                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                        <children>
+                            <Button style="-fx-max-height: 40; -fx-max-width: 230;" styleClass="create-button" text="Valider" textAlignment="CENTER" />
+                        </children>
+                    </HBox>
+               <GridPane alignment="CENTER" GridPane.rowIndex="2">
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container">
+                        <children>
+                           <CheckBox fx:id="customCheckbox" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="CO" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container" GridPane.columnIndex="1">
+                        <children>
+                           <CheckBox fx:id="customCheckbox1" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage1" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="CP" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container" GridPane.columnIndex="2">
+                        <children>
+                           <CheckBox fx:id="customCheckbox2" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage2" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="CE" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container" GridPane.rowIndex="1">
+                        <children>
+                           <CheckBox fx:id="customCheckbox3" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage3" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="PBC" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <children>
+                           <CheckBox fx:id="customCheckbox4" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage4" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="PBF" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <children>
+                           <CheckBox fx:id="customCheckbox5" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage5" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="PSE1" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container" GridPane.rowIndex="2">
+                        <children>
+                           <CheckBox fx:id="customCheckbox6" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage6" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="PSE2" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <children>
+                           <CheckBox fx:id="customCheckbox7" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage7" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="SSA" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" spacing="10" styleClass="checkbox-container" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <children>
+                           <CheckBox fx:id="customCheckbox8" styleClass="notification-checkbox">
+                              <graphic>
+                                 <ImageView fx:id="checkboxImage8" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../img/case_coche.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </CheckBox>
+                           <Label styleClass="checkbox-label" text="VPSP" wrapText="true" HBox.hgrow="ALWAYS" />
+                        </children>
+                     </HBox>
+                  </children>
+               </GridPane>
+                </children>
+            </GridPane>
+        </children>
+    </VBox>
 
 </StackPane>
