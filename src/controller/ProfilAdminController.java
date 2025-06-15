@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import javafx.util.Duration;
+import metier.persistence.Admin;
 import metier.persistence.Secouriste;
 
 import java.io.IOException;
@@ -47,6 +48,14 @@ public class ProfilAdminController implements Initializable {
             scrollPane.setVvalue(this.scrollPane.getVvalue() - deltaY / this.scrollPane.getContent().getBoundsInLocal().getHeight());
             event.consume(); // empêche le scroll par défaut
         });
+
+        Admin admin = GlobalController.getCurrentAdmin();
+        if (admin != null) {
+            nomField.setText(admin.getNom());
+            prenomField.setText(admin.getPrenom());
+            adresseField.setText(admin.getEmail());
+            telephoneField.setText("Non disponible");
+        }
 
 //        Secouriste user = GlobalController.currentUser;
 //        nomField.setText(user.getNom());

@@ -209,7 +209,12 @@ public class ConnexionController {
         if (admin != null) {
             // Authentification admin réussie
             GlobalController.setCurrentAdmin(admin);
-            GlobalController.switchView("../ressources/fxml/ProfilAdmin.fxml", (Node) event.getSource());
+            if (customCheckbox.isSelected()) {
+                saveEmail(email);
+            } else {
+                new File(FILE_PATH).delete();
+            }
+            GlobalController.switchView("../ressources/fxml/TableauDeBordAdmin.fxml", (Node) event.getSource());
             return;
         }
 
