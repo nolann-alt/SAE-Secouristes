@@ -18,9 +18,10 @@ public class AffectationMngt {
         this.dpsComp = dpsComp;
     }
 
-    public void affecter() {
+    public List<Map.Entry<Secouriste, DPS>> affecter() {
         // appel de l'algorithme d'affectation
-        elements.glouton(secouristeComp, dpsComp);
+        List<Map.Entry<Secouriste, DPS>> affectationGloutonne = elements.glouton(secouristeComp, dpsComp);
+        return affectationGloutonne;
     }
 
 
