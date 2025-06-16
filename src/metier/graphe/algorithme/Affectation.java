@@ -3,7 +3,6 @@ package metier.graphe.algorithme;
 import metier.persistence.Competences;
 import metier.persistence.DPS;
 import metier.persistence.Possede;
-import metier.persistence.Secouriste;
 
 import java.util.*;
 
@@ -79,35 +78,33 @@ public class Affectation {
         return hasCycle;
     }
 
-    public List<Map.Entry<Secouriste, DPS>> glouton(ArrayList<Possede> secouristeComp, HashMap<DPS, Competences> dpsComp) {
+    public List<metier.persistence.Affectation> glouton(ArrayList<Possede> secouristeComp, HashMap<DPS, Competences> dpsComp) {
 
-        // Liste des secouristes (distincts)
-        HashMap<Long, Secouriste> idToSecouriste = new HashMap<>();
-        for (Possede p : secouristeComp) {
-            idToSecouriste.put(p.getIdSecouriste(), p.getSecouriste());
-        }
-        List<Long> idsSecouristes = new ArrayList<>(idToSecouriste.keySet());
-
-        // Construction d'une map Compétence -> Liste<Secouriste> qui la possède
-        HashMap<String, List<Secouriste>> competenceToSecouristes = new HashMap<>();
+        HashMap<String, List<Integer>> competenceToSecouristes = new HashMap<>();
         for (Possede p : secouristeComp) {
             String comp = p.getIntitule();
-            competenceToSecouristes.putIfAbsent(comp, new ArrayList<>());
-            competenceToSecouristes.get(comp).add(p.getSecouriste());
+            int idSec = (int) p.getIdSecouriste(); // cast long -> int
+
+            competenceToSecouristes
+                    .computeIfAbsent(comp, k -> new ArrayList<>())
+                    .add(idSec);
         }
 
-        List<Map.Entry<Secouriste, DPS>> resultats = new ArrayList<>();
-        LinkedHashSet<Long> secouristesUtilises = new LinkedHashSet<>();
+        List<metier.persistence.Affectation> resultats = new ArrayList<>();
+        HashSet<Integer> secouristesUtilises = new HashSet<>();
 
-        for (DPS dps : dpsComp.keySet()) {
-            String compDemandee = dpsComp.get(dps).getIntitule();
-            List<Secouriste> candidats = competenceToSecouristes.getOrDefault(compDemandee, new ArrayList<>());
+        for (Map.Entry<DPS, Competences> entry : dpsComp.entrySet()) {
+            DPS dps = entry.getKey();
+            String compDemandee = entry.getValue().getIntitule();
+            int idDps = (int) dps.getId();
 
-            for (Secouriste s : candidats) {
-                if (!secouristesUtilises.contains(s.getId())) {
-                    resultats.add(new AbstractMap.SimpleEntry<>(s, dps));
-                    secouristesUtilises.add(s.getId());
-                    break; // on passe au DPS suivant
+            List<Integer> candidats = competenceToSecouristes.getOrDefault(compDemandee, new ArrayList<>());
+
+            for (int idSecouriste : candidats) {
+                if (!secouristesUtilises.contains(idSecouriste)) {
+                    resultats.add(new metier.persistence.Affectation(idSecouriste, compDemandee, idDps));
+                    secouristesUtilises.add(idSecouriste);
+                    break;
                 }
             }
         }
