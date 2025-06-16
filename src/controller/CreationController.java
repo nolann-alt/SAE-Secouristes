@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -10,11 +11,23 @@ import metier.persistence.Secouriste;
 import metier.graphe.model.dao.SecouristeDAO;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 
 /**
  * This class allows to manage different elements of the creation view.
  */
 public class CreationController {
+
+    @FXML private Label timeLabel;
 
     @FXML
     /** This boolean is used to check if the password is visible or not. */
@@ -63,6 +76,7 @@ public class CreationController {
      * to bind the checkbox state to the image displayed.
      */
     public void initialize() {
+        HeureController.afficherHeure(timeLabel);
         // Charger les images
         checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
         uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());

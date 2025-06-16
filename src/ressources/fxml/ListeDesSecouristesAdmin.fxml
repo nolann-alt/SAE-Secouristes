@@ -29,7 +29,7 @@
                     <!-- BARRE D'INFOS -->
                     <HBox alignment="CENTER" prefHeight="44.0" prefWidth="393.0" spacing="3.0" styleClass="top-container-tableau">
                         <children>
-                            <Label styleClass="app-time-tableau" text="00:00" />
+                            <Label fx:id="timeLabel" styleClass="app-time-tableau" text="00:00" />
                             <Region HBox.hgrow="ALWAYS" />
                             <ImageView fitHeight="17" fitWidth="17" pickOnBounds="true" preserveRatio="true">
                                 <image>

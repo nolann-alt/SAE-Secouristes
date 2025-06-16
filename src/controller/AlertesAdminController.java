@@ -1,12 +1,32 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 
-public class AlertesAdminController {
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
+
+public class AlertesAdminController implements Initializable {
+
+    @FXML private Label timeLabel;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        HeureController.afficherHeure(timeLabel);
+    }
+
     @FXML
     /**
      * This method is called when the back button is clicked.

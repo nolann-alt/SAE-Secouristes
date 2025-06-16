@@ -16,8 +16,17 @@ import metier.persistence.Secouriste;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 
 public class ProfilAdminController implements Initializable {
+
+    @FXML private Label timeLabel;
 
     @FXML
     /** This ScrollPane is used to display the content of the dashboard. */
@@ -40,6 +49,8 @@ public class ProfilAdminController implements Initializable {
      * to handle the scroll event for the ScrollPane.
      */
     public void initialize(URL location, ResourceBundle resources) {
+
+        HeureController.afficherHeure(timeLabel);
 
         // Multiplie la vitesse de scroll
         this.scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {

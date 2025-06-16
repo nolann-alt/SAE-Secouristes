@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -12,11 +13,23 @@ import metier.persistence.Secouriste;
 import metier.graphe.model.dao.SecouristeDAO;
 
 import java.io.*;
+import java.net.URL;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 
 /**
  * This class allows to manage different elements of the connexion view.
  */
 public class ConnexionController {
+
+    @FXML private Label timeLabel;
 
     @FXML
     /** This boolean is used to check if the password is visible or not. */
@@ -63,6 +76,7 @@ public class ConnexionController {
      * to bind the checkbox state to the image displayed.
      */
     public void initialize() {
+        HeureController.afficherHeure(timeLabel);
 
         //Vérifie si il ne s'est pas déjà connecté
         loadRememberedEmail();

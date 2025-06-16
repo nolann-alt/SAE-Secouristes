@@ -34,7 +34,7 @@
                     <!-- BARRE D'INFOS -->
                     <HBox alignment="CENTER" prefHeight="44.0" prefWidth="393.0" spacing="3.0" styleClass="top-container">
                         <children>
-                            <Label styleClass="app-time" text="00:00" /> <!-- l'heure -->
+                            <Label fx:id="timeLabel" styleClass="app-time" text="00:00" /> <!-- l'heure -->
                             <Region HBox.hgrow="ALWAYS" /> <!-- Espace flexible -->
 
                             <!-- les icônes de statut de l'application-->

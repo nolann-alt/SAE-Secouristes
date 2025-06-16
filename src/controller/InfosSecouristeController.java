@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import metier.graphe.model.dao.SecouristeDAO;
 import metier.persistence.Secouriste;
@@ -15,8 +12,17 @@ import metier.persistence.Secouriste;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 
 public class InfosSecouristeController implements Initializable {
+
+    @FXML private Label timeLabel;
 
     @FXML private ScrollPane scrollPane;
     @FXML private Button backButton;
@@ -29,6 +35,8 @@ public class InfosSecouristeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        HeureController.afficherHeure(timeLabel);
+
         utilisateur = GlobalController.getCurrentUser();
 
         if (utilisateur != null) {

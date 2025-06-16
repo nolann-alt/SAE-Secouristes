@@ -33,7 +33,7 @@
 
                     <!-- Contenu de HBox -->
                     <children>
-                        <Label styleClass="app-time" text="00:00" /> <!-- l'heure -->
+                        <Label fx:id="timeLabel" styleClass="app-time" text="00:00" /> <!-- l'heure -->
                         <Region HBox.hgrow="ALWAYS" /> <!-- Espace flexible -->
 
                         <!-- les icônes de statut de l'application-->

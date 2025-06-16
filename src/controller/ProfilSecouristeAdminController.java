@@ -19,8 +19,17 @@ import metier.persistence.Secouriste;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 
 public class ProfilSecouristeAdminController implements Initializable{
+
+    @FXML private Label timeLabel;
 
     @FXML
     /** This checkbox is used to select the custom option in the creation view. */
@@ -71,6 +80,7 @@ public class ProfilSecouristeAdminController implements Initializable{
      * to handle the scroll event for the ScrollPane.
      */
     public void initialize(URL location, ResourceBundle resources) {
+        HeureController.afficherHeure(timeLabel);
 
         Secouriste user = GlobalController.getSelectedSecouriste();
 

@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -16,13 +17,19 @@ import metier.graphe.model.dao.SecouristeDAO;
 import metier.persistence.Secouriste;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class ListeDesSecouristesAdminController {
+
+    @FXML private Label timeLabel;
 
     @FXML private VBox eventList;
 
     public void initialize() {
+        HeureController.afficherHeure(timeLabel);
+
         loadSecouristes();
     }
 
@@ -172,5 +179,4 @@ public class ListeDesSecouristesAdminController {
         card.getChildren().addAll(avatar, infoBox, spacer, arrow);
         return card;
     }
-
 }

@@ -2,11 +2,22 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class AccueilController {
+public class AccueilController implements Initializable {
+
+    @FXML private Label timeLabel;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        HeureController.afficherHeure(timeLabel);
+    }
 
     @FXML
     private void handleConnexion(ActionEvent event) {

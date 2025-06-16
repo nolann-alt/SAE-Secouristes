@@ -65,7 +65,7 @@
         <center>
             <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background-radius: 25; -fx-border-radius: 25;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
                 <content>
-                    <VBox alignment="CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0">
+                    <VBox alignment="CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0" style="-fx-background-color: white;">
                         <children>
                             <VBox spacing="5" styleClass="event-list" />
                         </children>
@@ -78,7 +78,7 @@
     <!-- NAVIGATION BAR FLOTANTE -->
     <HBox fx:id="navBar" alignment="CENTER" maxHeight="70" maxWidth="280.0" spacing="40.0" style="-fx-background-color: #FFEDED; -fx-background-radius: 50; -fx-border-radius: 50; -fx-padding: 10; " StackPane.alignment="BOTTOM_CENTER">
         <children>
-            <VBox alignment="CENTER" onMouseClicked="#handleTableauDeBord" styleClass="clickable-zone" >
+            <VBox alignment="CENTER" onMouseClicked="#handleTableauDeBord" styleClass="clickable-zone">
                 <ImageView fitHeight="36.0" fitWidth="45.0">
                     <image>
                         <Image url="@../img/Accueil_noir.png" />
@@ -92,7 +92,7 @@
                     </image>
                 </ImageView>
             </VBox>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER" onMouseClicked="#handleAlertes" styleClass="clickable-zone">
                 <ImageView fitHeight="36.0" fitWidth="45.0">
                     <image>
                         <Image url="@../img/Alertes_noir.png" />
