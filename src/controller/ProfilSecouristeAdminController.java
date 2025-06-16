@@ -72,6 +72,8 @@ public class ProfilSecouristeAdminController implements Initializable{
      */
     public void initialize(URL location, ResourceBundle resources) {
 
+        Secouriste user = GlobalController.getSelectedSecouriste();
+
         // Multiplie la vitesse de scroll
         this.scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             double deltaY = event.getDeltaY() * 3; // Multiplier la vitesse de scroll par 3
@@ -101,11 +103,10 @@ public class ProfilSecouristeAdminController implements Initializable{
             }
         });
 
-//        Secouriste user = GlobalController.currentUser;
-//        nomField.setText(user.getNom());
-//        prenomField.setText(user.getPrenom());
-//        adresseField.setText(user.getEmail());
-//        telephoneField.setText(user.getTelephone() != null ? user.getTelephone() : "");
+        nomField.setText(user.getNom());
+        prenomField.setText(user.getPrenom());
+        adresseField.setText(user.getEmail());
+        telephoneField.setText(user.getTelephone() != null ? user.getTelephone() : "");
     }
 
     @FXML

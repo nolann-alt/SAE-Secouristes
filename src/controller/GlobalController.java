@@ -27,6 +27,8 @@ public class GlobalController {
 
     private static Admin currentAdmin;
 
+    private static Secouriste selectedSecouriste;
+
     /**
      * This stack is used to keep track of the view history.
      * It allows the application to navigate back to previous views.
@@ -117,5 +119,13 @@ public class GlobalController {
     // Getter pour l'admin
     public static Admin getCurrentAdmin() {
         return currentAdmin;
+    }
+
+    public static void setSelectedSecouriste(Secouriste s) {
+        selectedSecouriste = s;
+    }
+
+    public static Secouriste getSelectedSecouriste() {
+        return selectedSecouriste;
     }
 }

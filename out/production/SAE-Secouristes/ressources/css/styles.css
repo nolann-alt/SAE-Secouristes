@@ -2,6 +2,10 @@
     font-family: "SF Pro Display";
     src: url("../../ressources/fonts/SF-Pro-Display-Black.otf");
 }
+@font-face {
+    font-family: "SF Pro Display Bold";
+    src: url("../../ressources/fonts/SF-Pro-Display-Bold.otf");
+}
 
 /* Désactive le fond de la scène */
 .root {
@@ -35,6 +39,13 @@
     -fx-background-color: #E60023;
     -fx-background-radius: 25px 25px 0 0;
     -fx-border-radius: 25px 25px 0 0;
+}
+
+.anchorPane-connexion-profil {
+    -fx-background-color: #E60023;
+    -fx-padding: 0;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
 }
 
 .curve-shape {
@@ -332,4 +343,3 @@
 .logout-button:hover {
     -fx-background-color: #ffe6e6;
 }
-
