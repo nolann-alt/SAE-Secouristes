@@ -95,6 +95,8 @@ public class ProfilSecouristeAdminController implements Initializable{
 
     @FXML private HBox competenceContainer;
 
+    @FXML private Label titrePopupLabel;
+
 
     @Override
     /**
@@ -262,6 +264,8 @@ public class ProfilSecouristeAdminController implements Initializable{
      * It makes the popup pane visible.
      */
     private void showPopup() {
+        titrePopupLabel.setText("Sélectionner les compétences pour " + secouriste.getPrenom());
+
         popupPane.setVisible(true);
         overlay.setVisible(true);
 

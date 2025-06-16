@@ -209,48 +209,41 @@ public class CreationController {
      * @throws IOException If there is an error loading the FXML file.
      */
     private void handleCreationCompte(ActionEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
+        String nom = nomField.getText().trim();
+        String prenom = prenomField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = visiblePasswordField.isVisible() ? visiblePasswordField.getText() : passwordField.getText();
 
-        String nom = nomField.getText();
-        String prenom = prenomField.getText();
-        String email = emailField.getText();
-        String password;
-
-        if (visiblePasswordField.isVisible()) {
-            password = visiblePasswordField.getText();
-        } else {
-            password = passwordField.getText();
+        // Vérifier les champs vides
+        if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            showAlert("Tous les champs sont requis.");
+            return;
         }
 
-        //Programmation défensive
-        if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            System.out.println(" Tous les champs sont requis ");
-            showAlert("Tous les champs sont requis.");
+        // Vérifier nom et prénom
+        if (!estNomValide(nom) || !estNomValide(prenom)) {
+            showAlert("❌ Le nom et le prénom ne doivent contenir que des lettres, des tirets ou des espaces.");
+            return;
+        }
+
+        // Vérifier email
+        if (!email.contains("@")) {
+            showAlert("L'email doit contenir un '@'.");
             return;
         }
 
         SecouristeDAO dao = new SecouristeDAO();
 
-        //Programmation défensive
         if (dao.findByEmail(email) != null) {
-            System.out.println("Email déjà utilisé !");
             showAlert("Un compte avec cet email existe déjà !");
             return;
         }
 
-        //Programmation défensive
-        if (!email.contains("@")) {
-            System.out.println("L'email doit contenir un @ !!");
-            showAlert("L'email doit contenir un '@' !");
-            return;
-        }
-
+        // Créer le secouriste sans numéro de téléphone
         Secouriste secouriste = new Secouriste(0, nom, prenom, email, password, null);
         int result = dao.create(secouriste);
 
-
-        if (result > 0) { //vérifier si l'inscription a marché
+        if (result > 0) {
             try {
                 GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
             } catch (Exception e) {
@@ -258,10 +251,14 @@ public class CreationController {
                 System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
             }
         } else {
-            System.out.println("Inscription Echoué !");
             showAlert("L'inscription a échoué. Veuillez réessayer.");
         }
     }
+
+    private boolean estNomValide(String nom) {
+        return nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ\\-\\s]+$");
+    }
+
     //pour les pop up
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

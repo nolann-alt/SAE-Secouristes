@@ -75,6 +75,30 @@ public class InfosSecouristeController implements Initializable {
         SecouristeDAO dao = new SecouristeDAO();
         dao.update(utilisateur);
 
+        String nouveauNom = nomField.getText().trim();
+        String nouveauPrenom = prenomField.getText().trim();
+        String nouveauTelephone = telephoneField.getText().trim();
+
+        // Vérification NOM & PRÉNOM
+        if (!estNomValide(nouveauNom) || !estNomValide(nouveauPrenom)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur de saisie");
+            alert.setHeaderText(null);
+            alert.setContentText("Le nom et le prénom ne doivent contenir que des lettres, des tirets ou des espaces.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Vérification TÉLÉPHONE
+        if (!nouveauTelephone.isEmpty() && !estTelephoneValide(nouveauTelephone)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Format incorrect");
+            alert.setHeaderText(null);
+            alert.setContentText("Le numéro de téléphone doit être au format : XX XX XX XX XX.");
+            alert.showAndWait();
+            return;
+        }
+
         System.out.println("Coordonnées mises à jour.");
 
         // Afficher un popup de confirmation
@@ -90,5 +114,13 @@ public class InfosSecouristeController implements Initializable {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue ProfilSecouriste : " + e.getMessage());
         }
+    }
+
+    private boolean estNomValide(String nom) {
+        return nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ\\-\\s]+$");
+    }
+
+    private boolean estTelephoneValide(String numero) {
+        return numero.matches("^\\d{2}( \\d{2}){4}$");
     }
 }
