@@ -10,7 +10,6 @@ public class DPS {
     public DPS(long id, int horaireDepart, int horaireFin) {
         this.id = id;
         this.horaireDepart = horaireDepart;
-        this.horaireFin = DPS.this.horaireFin;
     }
     
     public long getId() {

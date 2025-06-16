@@ -1,6 +1,7 @@
 package metier.persistence;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Secouriste {
     private long id;
@@ -10,6 +11,7 @@ public class Secouriste {
     private ArrayList<Disponibilite> disponibilites;
     private String motDePasse;
     private String telephone;
+    private List<Competences> competences;
 
     public Secouriste(long id, String nom, String prenom, String email, String motDePasse, String telephone) {
         this.id = id;
@@ -68,6 +70,14 @@ public class Secouriste {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public List<Competences> getCompetences() {
+        return competences;
+    }
+
+    public void setCompetences(List<Competences> competences) {
+        this.competences = competences;
     }
 
 

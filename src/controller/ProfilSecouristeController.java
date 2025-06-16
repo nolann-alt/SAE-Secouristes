@@ -5,6 +5,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,12 +13,17 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.HBox;
 import javafx.util.Duration;
+import metier.graphe.model.dao.PossedeDAO;
 import metier.graphe.model.dao.SecouristeDAO;
+import metier.persistence.Competences;
 import metier.persistence.Secouriste;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -45,6 +51,8 @@ public class ProfilSecouristeController implements Initializable {
     @FXML private Label adresseField;
     @FXML private Label telephoneField;
 
+    @FXML private HBox competenceContainer;
+
 
     @Override
     /**
@@ -55,6 +63,14 @@ public class ProfilSecouristeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         HeureController.afficherHeure(timeLabel);
 
+        Secouriste user = GlobalController.getCurrentUser();
+
+        // Recharger les compétences depuis la BDD
+        PossedeDAO possedeDAO = new PossedeDAO();
+        List<Competences> competences = possedeDAO.findCompetencesBySecouriste(user.getId());
+        user.setCompetences(competences);
+        afficherPastillesCompetences(competences);
+
         // Multiplie la vitesse de scroll
         this.scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             double deltaY = event.getDeltaY() * 3; // Multiplier la vitesse de scroll par 3
@@ -63,7 +79,6 @@ public class ProfilSecouristeController implements Initializable {
             event.consume(); // empêche le scroll par défaut
         });
 
-        Secouriste user = GlobalController.currentUser;
         nomField.setText(user.getNom());
         prenomField.setText(user.getPrenom());
         adresseField.setText(user.getEmail());
@@ -177,6 +192,29 @@ public class ProfilSecouristeController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue : " + e.getMessage());
+        }
+    }
+
+    /**
+     * Affiche les pastilles représentant les compétences dans le conteneur dédié.
+     * @param competences Liste des compétences du secouriste à afficher
+     */
+    private void afficherPastillesCompetences(List<Competences> competences) {
+        // Vide le conteneur
+        competenceContainer.getChildren().clear();
+
+        // Pour chaque compétence
+        for (Competences comp : competences) {
+            Label pastille = new Label(comp.getIntitule());
+
+            pastille.setStyle("-fx-background-color: white; " +
+                    "-fx-text-fill: #E60023; " +
+                    "-fx-font-size: 20; " +
+                    "-fx-border-color: #E60023; " +
+                    "-fx-border-radius: 30; " +
+                    "-fx-background-radius: 30;");
+            pastille.setPadding(new Insets(10, 20, 10, 20));
+            competenceContainer.getChildren().add(pastille);
         }
     }
 }
