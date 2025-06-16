@@ -94,18 +94,11 @@ public class ProfilSecouristeController implements Initializable {
      * @param event The ActionEvent triggered by the button click.
      */
     private void handleBack(ActionEvent event) {
-        if (!GlobalController.getViewHistory().isEmpty()) {
-            // Permet de revenir à la vue précédente, viewHistory est une Stack qui contient les vues précédentes
-            Parent previousView = GlobalController.getViewHistory().pop();
-            // On récupère la scène actuelle à partir de l'élément source de l'événement
-            Scene scene = ((Node) event.getSource()).getScene();
-            scene.setRoot(previousView);
-
-            // Crée une transition de gauche vers la position normale (0)
-            TranslateTransition transition = new TranslateTransition(Duration.millis(300), previousView);
-            transition.setFromX(-scene.getWidth());
-            transition.setToX(0);
-            transition.play();
+        try {
+            GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du retour au tableau de bord : " + e.getMessage());
         }
     }
 
