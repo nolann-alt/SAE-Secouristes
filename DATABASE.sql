@@ -21,6 +21,16 @@ CREATE TABLE IF NOT EXISTS Admin (
     motDePasse VARCHAR(255) NOT NULL
 );
 
+--Table possède (compétences) :
+
+CREATE TABLE Possede (
+         idSecouriste INT,
+         intitule VARCHAR(255),
+         PRIMARY KEY (idSecouriste, intitule),
+         FOREIGN KEY (idSecouriste) REFERENCES Secouriste(id)
+    );
+
+
 -- Insert d’un admin de test
 INSERT INTO Admin (nom, prenom, email, motDePasse) VALUES
 ('Gouelo', 'Matthieu', 'matthieu.gouelo@ambulympics.fr', 'rootroot');
