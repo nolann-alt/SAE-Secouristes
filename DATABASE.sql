@@ -1,3 +1,6 @@
+-- Supprimmer la base de donnée
+DROP DATABASE secours2030;
+
 -- Créer la base de données
 CREATE DATABASE IF NOT EXISTS secours2030;
 USE secours2030;
@@ -24,13 +27,15 @@ CREATE TABLE IF NOT EXISTS Admin (
 --Table possède (compétences) :
 
 CREATE TABLE Possede (
-         idSecouriste INT,
-         intitule VARCHAR(255),
-         PRIMARY KEY (idSecouriste, intitule),
-         FOREIGN KEY (idSecouriste) REFERENCES Secouriste(id)
-    );
+     idSecouriste INT,
+     intitule VARCHAR(255),
+     PRIMARY KEY (idSecouriste, intitule),
+     FOREIGN KEY (idSecouriste) REFERENCES Secouriste(id)
+);
 
 
 -- Insert d’un admin de test
 INSERT INTO Admin (nom, prenom, email, motDePasse) VALUES
 ('Gouelo', 'Matthieu', 'matthieu.gouelo@ambulympics.fr', 'rootroot');
+
+INSERT INTO Admin (nom, prenom, email, motDePasse) VALUES ('a', 'a', 'a@ambulympics.fr', 'a');
