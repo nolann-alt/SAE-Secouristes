@@ -3,10 +3,17 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import metier.graphe.model.dao.SecouristeDAO;
+import metier.persistence.Secouriste;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ListeDesSecouristesAdminController {
+
+    @FXML private VBox EventList;
+
     @FXML
     /**
      * This method is called when the back button is clicked.
@@ -100,5 +107,11 @@ public class ListeDesSecouristesAdminController {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue TableauDeBordAdmin : " + e.getMessage());
         }
+    }
+
+    //Pour ajouter une carte
+    private void loadSecouristes() {
+        SecouristeDAO secouristeDAO = new SecouristeDAO();
+        List<Secouriste> secouristes = secouristeDAO.findAll();
     }
 }
