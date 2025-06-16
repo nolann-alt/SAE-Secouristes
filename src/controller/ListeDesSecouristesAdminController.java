@@ -1,32 +1,12 @@
 package controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import metier.persistence.Admin;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class TableauDeBordAdminController implements Initializable {
-
-    @FXML
-    private Label prenomLabel;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        Admin admin = GlobalController.getCurrentAdmin();
-        if (admin != null) {
-            prenomLabel.setText(admin.getPrenom());
-        }
-    }
-
-
+public class ListeDesSecouristesAdminController {
     @FXML
     /**
      * This method is called when the back button is clicked.
@@ -35,7 +15,7 @@ public class TableauDeBordAdminController implements Initializable {
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    private void handleProfilAdmin(MouseEvent event) {
+    private void handleProfilClick(MouseEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
@@ -49,16 +29,35 @@ public class TableauDeBordAdminController implements Initializable {
     @FXML
     /**
      * This method is called when the back button is clicked.
+     * It loads the ProfilSecouristeAdmin.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     * @throws IOException If there is an error loading the FXML file.
+     */
+    private void showProfil(MouseEvent event) {
+        // On récupère la scène actuelle à partir de l'élément source de l'événement
+        // event.getSource() est le bouton qui a été cliqué (la source)
+        try {
+            GlobalController.switchView("../ressources/fxml/ProfilSecouristeAdmin.fxml", (Node) event.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue ProfilSecouristeAdmin : " + e.getMessage());
+        }
+    }
+
+    @FXML
+    /**
+     * This method is called when the back button is clicked.
      * It loads the CalendrierAdminSemaine.fxml and sets it as the new scene with rounded corners and transparency.
      *
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleCalendrierAdmin(MouseEvent mouseEvent) {
+    private void handleCalendrierAdminSemaine(MouseEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
-            GlobalController.switchView("../ressources/fxml/CalendrierAdminSemaine.fxml", (Node) mouseEvent.getSource());
+            GlobalController.switchView("../ressources/fxml/CalendrierAdminSemaine.fxml", (Node) event.getSource());
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue CalendrierAdminSemaine : " + e.getMessage());
@@ -73,11 +72,11 @@ public class TableauDeBordAdminController implements Initializable {
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleAlertesAdmin(MouseEvent mouseEvent) {
+    private void handleAlertesAdmin(MouseEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
-            GlobalController.switchView("../ressources/fxml/AlertesAdmin.fxml", (Node) mouseEvent.getSource());
+            GlobalController.switchView("../ressources/fxml/AlertesAdmin.fxml", (Node) event.getSource());
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue AlertesAdmin : " + e.getMessage());
@@ -87,38 +86,19 @@ public class TableauDeBordAdminController implements Initializable {
     @FXML
     /**
      * This method is called when the back button is clicked.
-     * It loads the ListeDesSecouristesAdmin.fxml and sets it as the new scene with rounded corners and transparency.
+     * It loads the TableauDeBordAdmin.fxml and sets it as the new scene with rounded corners and transparency.
      *
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleEffectif(MouseEvent mouseEvent) {
+    private void handleAccueil(MouseEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
-            GlobalController.switchView("../ressources/fxml/ListeDesSecouristesAdmin.fxml", (Node) mouseEvent.getSource());
+            GlobalController.switchView("../ressources/fxml/TableauDeBordAdmin.fxml", (Node) event.getSource());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue ListeDesSecouristesAdmin : " + e.getMessage());
-        }
-    }
-
-    @FXML
-    /**
-     * This method is called when the back button is clicked.
-     * It loads the CalendrierSecouristeMoisAdmin.fxml and sets it as the new scene with rounded corners and transparency.
-     *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
-     */
-    public void handleCreateDPS(ActionEvent actionEvent) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
-        try {
-            GlobalController.switchView("../ressources/fxml/CalendrierSecouristeMoisAdmin.fxml", (Node) actionEvent.getSource());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeMoisAdmin : " + e.getMessage());
+            System.out.println("Erreur lors du chargement de la vue TableauDeBordAdmin : " + e.getMessage());
         }
     }
 }

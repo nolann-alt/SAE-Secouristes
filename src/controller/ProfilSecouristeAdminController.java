@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,16 +10,45 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import metier.graphe.model.dao.SecouristeDAO;
 import metier.persistence.Secouriste;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ProfilSecouristeController implements Initializable {
+public class ProfilSecouristeAdminController implements Initializable{
+
+    @FXML
+    /** This checkbox is used to select the custom option in the creation view. */
+    private CheckBox customCheckbox;  // checkbox du fxml
+
+    @FXML
+    /** This image view is used to display the checkbox image in the creation view. */
+    private ImageView checkboxImage; // image de la checkbox dans le fxml
+
+    /** This attribute is used to checked if the checkbox is ticked */
+    private Image checkedImage; // Si la checkbox est coché
+
+    /** This attribute is used to checked if the checkbox is unticked */
+    private Image uncheckedImage; // Si la checkbox n'est pas coché
+
+    @FXML
+    /**
+     * This VBox is used to hold the popup pane that can be shown or hidden.
+     * It is defined in the FXML file and is used to display additional information or options.
+     */
+    private VBox popupPane;
+
+    @FXML
+    /**
+     * This Rectangle is used as an overlay to darken the background when the popup is visible.
+     * It is defined in the FXML file and is used to create a modal effect.
+     */
+    private Rectangle overlay;
 
     @FXML
     /** This ScrollPane is used to display the content of the dashboard. */
@@ -35,7 +63,6 @@ public class ProfilSecouristeController implements Initializable {
     @FXML private Label prenomField;
     @FXML private Label adresseField;
     @FXML private Label telephoneField;
-
 
     @Override
     /**
@@ -53,11 +80,32 @@ public class ProfilSecouristeController implements Initializable {
             event.consume(); // empêche le scroll par défaut
         });
 
-        Secouriste user = GlobalController.currentUser;
-        nomField.setText(user.getNom());
-        prenomField.setText(user.getPrenom());
-        adresseField.setText(user.getEmail());
-        telephoneField.setText(user.getTelephone() != null ? user.getTelephone() : "");
+        // Charger les images
+        checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
+        uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());
+
+
+        // Définir image de départ
+        checkboxImage.setImage(uncheckedImage);
+
+        // Mettre à jour l’image dynamiquement selon l’état
+        // obs c'est ce qui permet de surveiller les changements de la propriété
+        // wasSelected c'est l'état précédent de la checkbox
+        // isNowSelected c'est l'état actuel de la checkbox
+        customCheckbox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            // Changement de l'image en fonction de isNowSelected
+            if (isNowSelected == true) {
+                checkboxImage.setImage(checkedImage);
+            } else {
+                checkboxImage.setImage(uncheckedImage);
+            }
+        });
+
+//        Secouriste user = GlobalController.currentUser;
+//        nomField.setText(user.getNom());
+//        prenomField.setText(user.getPrenom());
+//        adresseField.setText(user.getEmail());
+//        telephoneField.setText(user.getTelephone() != null ? user.getTelephone() : "");
     }
 
     @FXML
@@ -87,20 +135,40 @@ public class ProfilSecouristeController implements Initializable {
     @FXML
     /**
      * This method is called when the back button is clicked.
-     * It loads the Accueil.fxml and sets it as the new scene with rounded corners and transparency.
+     * It loads the CalendrierSecouristeSemaineAdmin.fxml and sets it as the new scene with rounded corners and transparency.
      *
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    private void handleDeconnexion(ActionEvent event) {
+    public void handleConsulterCalendrier(ActionEvent actionEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
-            GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
+            GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaineAdmin.fxml", (Node) actionEvent.getSource());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
+            System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeSemaineAdmin : " + e.getMessage());
         }
+    }
+
+    @FXML
+    /**
+     * This method is called when the "Show Popup" button is clicked.
+     * It makes the popup pane visible.
+     */
+    private void showPopup() {
+        popupPane.setVisible(true);
+        overlay.setVisible(true);
+    }
+
+    @FXML
+    /**
+     * This method is called when the "Hide Popup" button is clicked.
+     * It hides the popup pane.
+     */
+    private void hidePopup() {
+        popupPane.setVisible(false);
+        overlay.setVisible(false);
     }
 
     @FXML
@@ -139,34 +207,5 @@ public class ProfilSecouristeController implements Initializable {
     private void onBackRelease() {
         backButton.setTranslateY(0);
         backButton.setOpacity(0.7); // ou 1.0 selon ton besoin
-    }
-
-    @FXML
-    private void handleSaveModifications(ActionEvent event) {
-        String nouveauNom = nomField.getText();
-        String nouveauPrenom = prenomField.getText();
-        String nouvelEmail = adresseField.getText();
-        String nouveauTelephone = telephoneField.getText();
-
-        // Appel au DAO pour mettre à jour
-        Secouriste secouriste = GlobalController.getCurrentUser();
-        secouriste.setNom(nouveauNom);
-        secouriste.setPrenom(nouveauPrenom);
-        secouriste.setEmail(nouvelEmail);
-        secouriste.setTelephone(nouveauTelephone);
-
-        SecouristeDAO dao = new SecouristeDAO();
-        dao.update(secouriste);
-        System.out.println("Profil mis à jour !");
-    }
-
-    @FXML
-    private void handleEditInfos(ActionEvent event) {
-        try {
-            GlobalController.switchView("../ressources/fxml/InfosSecouriste.fxml", (Node) event.getSource());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue : " + e.getMessage());
-        }
     }
 }

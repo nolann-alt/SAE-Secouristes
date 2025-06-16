@@ -98,7 +98,7 @@ public class CreationController {
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
         }
