@@ -15,8 +15,8 @@ public class HeureController {
      * @param timeLabel le label à mettre à jour
      */
     public static void afficherHeure(Label timeLabel) {
+        //Pour le chargement
         if (timeLabel == null) {
-            System.err.println("⚠️ Le label est null.");
             return;
         }
 

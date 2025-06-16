@@ -167,6 +167,52 @@ public class ProfilSecouristeAdminController implements Initializable{
         });
     }
 
+    //Pour les changements avec des compétences déjà acquises
+    private void initialiserCheckboxesDepuisCompetences(List<Competences> competences) {
+        List<String> competencesPossedees = new ArrayList<>();
+        for (Competences c : competences) {
+            competencesPossedees.add(c.getIntitule());
+        }
+
+        //Vérifier si la compétences n'est pas déjà acquise -> coché
+        if (competencesPossedees.contains("CO")) {
+            customCheckbox.setSelected(true);
+            checkboxImage.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("CP")) {
+            customCheckbox1.setSelected(true);
+            checkboxImage1.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("CE")) {
+            customCheckbox2.setSelected(true);
+            checkboxImage2.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("PBC")) {
+            customCheckbox3.setSelected(true);
+            checkboxImage3.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("PBF")) {
+            customCheckbox4.setSelected(true);
+            checkboxImage4.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("PSE1")) {
+            customCheckbox5.setSelected(true);
+            checkboxImage5.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("PSE2")) {
+            customCheckbox6.setSelected(true);
+            checkboxImage6.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("SSA")) {
+            customCheckbox7.setSelected(true);
+            checkboxImage7.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("VPSP")) {
+            customCheckbox8.setSelected(true);
+            checkboxImage8.setImage(checkedImage);
+        }
+    }
+
     @FXML
     /**
      * This method is called when the back button is clicked.
@@ -218,6 +264,9 @@ public class ProfilSecouristeAdminController implements Initializable{
     private void showPopup() {
         popupPane.setVisible(true);
         overlay.setVisible(true);
+
+        // Initialiser les cases cochées selon les compétences déjà enregistrées
+        initialiserCheckboxesDepuisCompetences(secouriste.getCompetences());
     }
 
     @FXML
