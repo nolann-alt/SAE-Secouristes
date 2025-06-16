@@ -21,7 +21,7 @@
    <children>
       <BorderPane fx:id="mainBorderPane" prefHeight="852.0" prefWidth="393.0" style="-fx-background-color: white;">
          <top>
-            <VBox prefWidth="393.0" BorderPane.alignment="CENTER">
+            <VBox prefWidth="393.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="CENTER" prefHeight="44.0" prefWidth="393.0" spacing="3.0" styleClass="top-container">
                      <children>
