@@ -34,7 +34,7 @@ public class Graphe {
         for (Map.Entry<DPS, Competences> couple : this.listeDPSComp.entrySet()) {
             DPS unDPS = couple.getKey();
             Competences uneComp = couple.getValue();
-            Besoin unBesoin = new Besoin(1, uneComp.getIntitule(), unDPS.getId());
+            Besoin unBesoin = new Besoin(1, uneComp.getIntitule(), (int) unDPS.getId());
             this.indexBesoin.put(ind, unBesoin);
             ind++;
         }
@@ -79,7 +79,7 @@ public class Graphe {
                 long idDPS = leBesoin.getIdDPS();
                 String laCompetence = leBesoin.getIntituleComp();
 
-                Affectation uneAffectation = new Affectation(idSecouriste, laCompetence, idDPS);
+                Affectation uneAffectation = new Affectation((int) idSecouriste, laCompetence, (int) idDPS);
                 lesAffectations.add(uneAffectation);
             }
         }

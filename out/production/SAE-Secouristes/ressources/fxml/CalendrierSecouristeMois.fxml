@@ -57,11 +57,13 @@
                         <children>
                             <HBox alignment="CENTER" prefHeight="29.0" prefWidth="394.0" spacing="10.0">
                                 <children>
-                                    <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
-                                        <image>
-                                            <Image url="@../img/superieur.png" />
-                                        </image>
-                                    </ImageView>
+                                    <VBox alignment="CENTER" onMouseClicked="#handleRetourSemaine" styleClass="clickable-zone">
+                                        <ImageView fitHeight="25.0" fitWidth="25.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../img/superieur.png" />
+                                            </image>
+                                        </ImageView>
+                                    </VBox>
                                     <Label style="-fx-text-fill: black; -fx-font-size: 24;" text="Mois" />
                                 </children>
                             </HBox>

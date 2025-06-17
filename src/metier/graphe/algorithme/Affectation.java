@@ -3,18 +3,20 @@ package metier.graphe.algorithme;
 import metier.persistence.Competences;
 import metier.persistence.DPS;
 import metier.persistence.Possede;
+import metier.persistence.Secouriste;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Affectation {
 
-    private ArrayList<Possede> secouristeComp;
-    private HashMap<DPS, Competences> dpsComp;
+    private HashMap<String, String>  competences;
+    /*
+    public Affectation(competences) {
 
-    public Affectation(ArrayList<Possede> secouristeComp, HashMap<DPS, Competences> dpsComp) {
-        this.secouristeComp = secouristeComp;
-        this.dpsComp = dpsComp;
     }
+    */
     // public void remplissage
 
 
@@ -24,6 +26,8 @@ public class Affectation {
 
         int cout;
         String[] choix;
+
+        return null;
     }
 
     /**
@@ -78,39 +82,10 @@ public class Affectation {
         return hasCycle;
     }
 
-    public List<metier.persistence.Affectation> glouton(ArrayList<Possede> secouristeComp, HashMap<DPS, Competences> dpsComp) {
-
-        HashMap<String, List<Integer>> competenceToSecouristes = new HashMap<>();
-        for (Possede p : secouristeComp) {
-            String comp = p.getIntitule();
-            int idSec = (int) p.getIdSecouriste(); // cast long -> int
-
-            competenceToSecouristes
-                    .computeIfAbsent(comp, k -> new ArrayList<>())
-                    .add(idSec);
-        }
-
-        List<metier.persistence.Affectation> resultats = new ArrayList<>();
-        HashSet<Integer> secouristesUtilises = new HashSet<>();
-
-        for (Map.Entry<DPS, Competences> entry : dpsComp.entrySet()) {
-            DPS dps = entry.getKey();
-            String compDemandee = entry.getValue().getIntitule();
-            int idDps = (int) dps.getId();
-
-            List<Integer> candidats = competenceToSecouristes.getOrDefault(compDemandee, new ArrayList<>());
-
-            for (int idSecouriste : candidats) {
-                if (!secouristesUtilises.contains(idSecouriste)) {
-                    resultats.add(new metier.persistence.Affectation(idSecouriste, compDemandee, idDps));
-                    secouristesUtilises.add(idSecouriste);
-                    break;
-                }
-            }
-        }
-
-        return resultats;
+    private ArrayList<HashMap<Secouriste, DPS>> glouton (Graphe g){
+        ArrayList<Possede> secouristes = g.getListeSecouriste();
+        HashMap<DPS, Competences> dispositifs = g.getListeDPS();
+        return null;
     }
-
 
 }

@@ -59,11 +59,13 @@
                             <HBox alignment="CENTER" prefHeight="29.0" prefWidth="394.0" spacing="10.0">
                                 <children>
                                     <Label style="-fx-text-fill: black; -fx-font-size: 24;" text="Semaine" />
-                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                        <image>
-                                            <Image url="@../img/superieur.png" />
-                                        </image>
-                                    </ImageView>
+                                    <VBox alignment="CENTER" onMouseClicked="#handleRetourMois" styleClass="clickable-zone">
+                                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../img/superieur.png" />
+                                            </image>
+                                        </ImageView>
+                                    </VBox>
                                 </children>
                             </HBox>
                             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="381.0" style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-background-radius: 20;">

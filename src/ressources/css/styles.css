@@ -344,3 +344,9 @@
     -fx-background-color: #ffe6e6;
 }
 
+#labelMoisActuel {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+

@@ -380,4 +380,15 @@ public class CalendrierSecouristeSemaineController {
         }
         return calendar;
     }
+
+    @FXML
+    private void handleRetourMois(MouseEvent event) {
+        try {
+            GlobalController.switchView("../ressources/fxml/CalendrierSecouristeMois.fxml", (Node) event.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du retour au calendrier mois : " + e.getMessage());
+        }
+    }
+
 }
