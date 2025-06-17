@@ -143,24 +143,24 @@ public class CalendrierSecouristeMoisController implements Initializable {
     private void afficherMois(int month) {
         gridMois.getChildren().clear();
 
-        // Récupération des informations du mois
-        LocalDate date = LocalDate.now().withMonth(month);
-        YearMonth yearMonth = YearMonth.from(date);
+        // Mettre à jour le label avec le nom du mois sélectionné
+        String nomMois = LocalDate.of(2000, month, 1)
+                .getMonth()
+                .getDisplayName(java.time.format.TextStyle.FULL, Locale.FRENCH);
+        labelMoisActuel.setText(nomMois.substring(0, 1).toUpperCase() + nomMois.substring(1));
+
+        YearMonth yearMonth = YearMonth.of(LocalDate.now().getYear(), month);
         LocalDate firstOfMonth = yearMonth.atDay(1);
         DayOfWeek dayOfWeek = firstOfMonth.getDayOfWeek();
-        int offset = (dayOfWeek.getValue() + 6) % 7; // Décalage du premier jour
-
+        int offset = (dayOfWeek.getValue() + 6) % 7;
         int lengthOfMonth = yearMonth.lengthOfMonth();
-        int jour = 1;
 
-        // Boucle pour remplir la grille semaine par semaine
+        int jour = 1;
         for (int ligne = 0; ligne < 6; ligne++) {
             for (int colonne = 0; colonne < 7; colonne++) {
                 if (ligne == 0 && colonne < offset) {
-                    // Cellule vide avant le début du mois
                     gridMois.add(new Label(""), colonne, ligne);
                 } else if (jour <= lengthOfMonth) {
-                    // Ajout d’un jour du mois
                     Label labelJour = new Label(String.valueOf(jour));
                     labelJour.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: black;");
                     labelJour.setAlignment(Pos.CENTER);
