@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class DAO<T> {
 
     private static final String URL = "jdbc:mysql://localhost:3306/secours2030";
-    private static final String USER = "Marin";
+    private static final String USER = "Nolann";
     private static final String PASSWORD = "rootroot";
 
     protected Connection getConnection() throws SQLException {

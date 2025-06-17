@@ -36,7 +36,7 @@ CREATE TABLE Possede (
 -- Table DPS :
 
 CREATE TABLE DPS (
-                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                     id INT AUTO_INCREMENT PRIMARY KEY,
                      label VARCHAR(255) NOT NULL,
                      date DATE NOT NULL,
                      heure_debut TIME NOT NULL,
@@ -69,6 +69,9 @@ CREATE TABLE Affectation (
 INSERT INTO Affectation (idSecouriste, idDPS)
 VALUES (1, 1);
 
+INSERT INTO DPS (label, date, heure_debut, heure_fin, couleur)
+VALUES ('DPS test du 18 juin', '2025-06-18', '16:00:00', '22:00:00', 'RED');
+
 -- Table Sport :
 
 CREATE TABLE Sport (
@@ -84,3 +87,12 @@ INSERT INTO Admin (nom, prenom, email, motDePasse) VALUES
 ('Gouelo', 'Matthieu', 'matthieu.gouelo@ambulympics.fr', 'rootroot');
 
 INSERT INTO Admin (nom, prenom, email, motDePasse) VALUES ('a', 'a', 'a@ambulympics.fr', 'a');
+
+
+CREATE TABLE Affectation (
+                             idSecouriste INT,
+                             idDPS INT,
+                             PRIMARY KEY (idSecouriste, idDPS),
+                             FOREIGN KEY (idSecouriste) REFERENCES Secouriste(id),
+                             FOREIGN KEY (idDPS) REFERENCES DPS(id)
+);

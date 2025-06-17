@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -14,7 +15,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<?import javafx.scene.layout.AnchorPane?>
 <StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TableauDeBordController">
     <clip>
         <Rectangle arcHeight="50" arcWidth="50" height="852" width="393" />
@@ -54,7 +54,7 @@
                     <!-- TITRES -->
                     <VBox prefHeight="177.0" prefWidth="393.0">
                         <children>
-                            <Pane prefHeight="82.0" prefWidth="393.0" onMouseClicked="#handleProfilClick">
+                            <Pane onMouseClicked="#handleProfilClick" prefHeight="82.0" prefWidth="393.0">
                                 <children>
                                     <ImageView fitHeight="82.0" fitWidth="82.0" layoutX="285.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                                         <image>
@@ -99,35 +99,17 @@
 
         <!-- CONTENU CENTRAL SCROLLABLE -->
         <center>
-            <ScrollPane fx:id="scrollPane"
-                        fitToWidth="true"
-                        hbarPolicy="NEVER"
-                        vbarPolicy="NEVER"
-                        BorderPane.alignment="CENTER"
-                        style="-fx-background-color: transparent; -fx-background-radius: 25; -fx-border-radius: 25;">
+            <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background-radius: 25; -fx-border-radius: 25;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
                 <content>
-                    <VBox alignment="CENTER"
-                          prefHeight="869.0"
-                          prefWidth="393.0"
-                          spacing="20.0"
-                          style="-fx-background-color: white;">
+                    <VBox alignment="CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0" style="-fx-background-color: white;">
 
-                        <ScrollPane fx:id="scrollPaneCalendar"
-                                    fitToWidth="true"
-                                    hbarPolicy="NEVER"
-                                    vbarPolicy="NEVER"
-                                    prefHeight="534.0"
-                                    prefWidth="373.0"
-                                    style="-fx-background: transparent; -fx-background-color: transparent;">
+                        <ScrollPane fx:id="scrollPaneCalendar" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="NEVER">
                             <!-- Clip pour forcer les coins arrondis -->
                             <clip>
                                 <Rectangle arcHeight="25" arcWidth="25" height="534" width="373" />
                             </clip>
                             <content>
-                                <AnchorPane fx:id="calendarPane"
-                                            prefHeight="534.0"
-                                            prefWidth="373.0"
-                                            style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-background-radius: 25;" />
+                                <AnchorPane fx:id="calendarPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="834.0" prefWidth="373.0" style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-background-radius: 25;" />
                             </content>
                         </ScrollPane>
 
@@ -139,10 +121,7 @@
                             </VBox.margin>
                         </Button>
 
-                        <ImageView fitHeight="286.0"
-                                   fitWidth="311.15"
-                                   pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="286.0" fitWidth="311.15" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../img/map.png" />
                             </image>
