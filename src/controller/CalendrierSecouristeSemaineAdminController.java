@@ -38,6 +38,7 @@ public class CalendrierSecouristeSemaineAdminController {
             System.out.println("Erreur lors du chargement de la vue TableauDeBordAdmin : " + e.getMessage());
         }
     }
+
     @FXML
     /**
      * This method is called when the back button is clicked.

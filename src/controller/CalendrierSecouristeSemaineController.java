@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -11,24 +10,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Duration;
 import metier.graphe.model.EventData;
 import metier.service.PlanningMngtSec;
-
-
 import java.io.IOException;
 import java.util.*;
 
@@ -104,6 +95,8 @@ public class CalendrierSecouristeSemaineController {
 
         addEvent(LocalDate.now(), "Réunion hebdomadaire secouristes", LocalTime.of(7, 0), LocalTime.of(8, 15), Color.YELLOW);
         addEvent(LocalDate.now(), "Formation PSC1 en Entreprise", LocalTime.of(8, 30), LocalTime.of(10, 15), Color.BLUE);
+        System.out.println(LocalDate.of(2025, 6, 18));
+        System.out.println(LocalTime.of(7, 0));
 
         displayDay(today);
     }
