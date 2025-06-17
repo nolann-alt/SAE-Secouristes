@@ -21,7 +21,6 @@ import javafx.scene.text.TextAlignment;
 import metier.graphe.model.EventData;
 import metier.graphe.model.dao.DPSDAO;
 import metier.persistence.DPS;
-import metier.persistence.Secouriste;
 import metier.service.PlanningMngtSec;
 import java.io.IOException;
 import java.util.*;
@@ -61,7 +60,6 @@ public class CalendrierSecouristeSemaineController {
 
     /** This attributes define the height of each hour slot in pixels */
     private final int hourHeight = 60; // 60 pixels par heure
-
 
     /**
      * This list holds the events for the current day.
@@ -368,47 +366,47 @@ public class CalendrierSecouristeSemaineController {
         }
     }
 
-    public AnchorPane getCalendarDayNow(LocalDate day) {
-        AnchorPane calendar = new AnchorPane();
-        double totalHeight = (endHour - startHour) * hourHeight + 200; // Heures + espace
-        calendar.setMinHeight(totalHeight);
-
-        // Création d'une liste d'événements pour le jour spécifié
-        List<EventData> events = this.eventMap.get(day);
-
-        if (events != null) {
-            for (EventData event : events) {
-                // Calcul de la position verticale (Y) du début de l'événement
-                double startY = (event.getStart().getHour() + (event.getStart().getMinute() / 60.0) - startHour) * hourHeight;
-                // Calcul de la hauteur de l'événement en pixels
-                double height = ((event.getEnd().toSecondOfDay() - event.getStart().toSecondOfDay()) / 3600.0) * hourHeight;
-
-                Rectangle rect = new Rectangle(100, startY, 200, height);
-                rect.setFill(new Color(event.getColor().getRed(), event.getColor().getGreen(), event.getColor().getBlue(), 0.2));
-                rect.setStroke(event.getColor());
-
-                VBox textContainer = new VBox();
-                // Même dimension que rect
-                textContainer.setLayoutX(100);
-                textContainer.setLayoutY(startY);
-                textContainer.setPrefSize(200, height);
-                textContainer.setAlignment(Pos.CENTER);
-
-                Label labelText = new Label(event.getStart() + " - " + event.getEnd() + "\n" + event.getLabel());
-                labelText.setStyle("-fx-text-fill: black;");
-                labelText.setWrapText(true); // Permet de revenir à la ligne
-                labelText.setTextAlignment(TextAlignment.CENTER); // Centre le texte à l'intérieur du Label
-                labelText.setAlignment(Pos.CENTER); // Centre dans la VBox
-                labelText.setMaxWidth(195); // Limite la largeur pour forcer les retours à la ligne
-
-                textContainer.getChildren().add(labelText);
-                calendar.getChildren().addAll(rect, textContainer);
-            }
-        } else {
-            System.err.println("La lsite d'évènement est vide pour la méthode getCalendarDayNow");
-        }
-        return calendar;
-    }
+//    public AnchorPane getCalendarDayNow(LocalDate day) {
+//        AnchorPane calendar = new AnchorPane();
+//        double totalHeight = (endHour - startHour) * hourHeight + 200; // Heures + espace
+//        calendar.setMinHeight(totalHeight);
+//
+//        // Création d'une liste d'événements pour le jour spécifié
+//        List<EventData> events = this.eventMap.get(day);
+//
+//        if (events != null) {
+//            for (EventData event : events) {
+//                // Calcul de la position verticale (Y) du début de l'événement
+//                double startY = (event.getStart().getHour() + (event.getStart().getMinute() / 60.0) - startHour) * hourHeight;
+//                // Calcul de la hauteur de l'événement en pixels
+//                double height = ((event.getEnd().toSecondOfDay() - event.getStart().toSecondOfDay()) / 3600.0) * hourHeight;
+//
+//                Rectangle rect = new Rectangle(100, startY, 200, height);
+//                rect.setFill(new Color(event.getColor().getRed(), event.getColor().getGreen(), event.getColor().getBlue(), 0.2));
+//                rect.setStroke(event.getColor());
+//
+//                VBox textContainer = new VBox();
+//                // Même dimension que rect
+//                textContainer.setLayoutX(100);
+//                textContainer.setLayoutY(startY);
+//                textContainer.setPrefSize(200, height);
+//                textContainer.setAlignment(Pos.CENTER);
+//
+//                Label labelText = new Label(event.getStart() + " - " + event.getEnd() + "\n" + event.getLabel());
+//                labelText.setStyle("-fx-text-fill: black;");
+//                labelText.setWrapText(true); // Permet de revenir à la ligne
+//                labelText.setTextAlignment(TextAlignment.CENTER); // Centre le texte à l'intérieur du Label
+//                labelText.setAlignment(Pos.CENTER); // Centre dans la VBox
+//                labelText.setMaxWidth(195); // Limite la largeur pour forcer les retours à la ligne
+//
+//                textContainer.getChildren().add(labelText);
+//                calendar.getChildren().addAll(rect, textContainer);
+//            }
+//        } else {
+//            System.err.println("La lsite d'évènement est vide pour la méthode getCalendarDayNow");
+//        }
+//        return calendar;
+//    }
 
     @FXML
     private void handleRetourMois(MouseEvent event) {
