@@ -82,7 +82,7 @@ public class CalendrierMoisAdminController implements Initializable {
     }
 
     // Crée un bouton de mois avec son apparence selon qu'il est sélectionné ou non
-    public Button createMonthButton(int month, int currentMonth, int currentDay) {
+    private Button createMonthButton(int month, int currentMonth, int currentDay) {
         VBox vbox = new VBox(); // Conteneur vertical pour afficher le mois + chiffre
         Button btn = new Button();
 
@@ -224,7 +224,7 @@ public class CalendrierMoisAdminController implements Initializable {
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleEffectif(MouseEvent mouseEvent) {
+    private void handleEffectif(MouseEvent mouseEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {

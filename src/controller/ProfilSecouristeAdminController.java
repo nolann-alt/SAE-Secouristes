@@ -240,7 +240,7 @@ public class ProfilSecouristeAdminController implements Initializable{
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleConsulterCalendrier(ActionEvent actionEvent) {
+    private void handleConsulterCalendrier(ActionEvent actionEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {

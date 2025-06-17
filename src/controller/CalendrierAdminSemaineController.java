@@ -114,7 +114,7 @@ public class CalendrierAdminSemaineController {
      * @param today The current date to compare against.
      * @return A Button styled for the specified day.
      */
-    public Button createDayButton(LocalDate date, LocalDate today) {
+    private Button createDayButton(LocalDate date, LocalDate today) {
         // Clone la structure en pur Java
         VBox vbox = new VBox();
         Button btn = new Button();
@@ -281,7 +281,7 @@ public class CalendrierAdminSemaineController {
      * @param end The end time of the event.
      * @param color The color of the event.
      */
-    public void addEvent(LocalDate day, String label, LocalTime start, LocalTime end, Color color) {
+    private void addEvent(LocalDate day, String label, LocalTime start, LocalTime end, Color color) {
         // Création d'une liste d'événements pour le jour spécifié
         List<EventData> events = eventMap.computeIfAbsent(day, d -> new ArrayList<>());
 
@@ -326,7 +326,7 @@ public class CalendrierAdminSemaineController {
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleEffectif(MouseEvent mouseEvent) {
+    private void handleEffectif(MouseEvent mouseEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {

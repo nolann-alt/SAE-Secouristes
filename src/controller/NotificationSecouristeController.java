@@ -88,7 +88,7 @@ public class NotificationSecouristeController {
      *
      * @param mouseEvent The MouseEvent triggered by the button click.
      */
-    public void handleCalendrierSecouriste(MouseEvent mouseEvent) {
+    private void handleCalendrierSecouriste(MouseEvent mouseEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {

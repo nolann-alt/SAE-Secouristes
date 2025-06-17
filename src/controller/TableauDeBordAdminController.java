@@ -65,7 +65,7 @@ public class TableauDeBordAdminController implements Initializable {
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleCalendrierAdmin(MouseEvent mouseEvent) {
+    private void handleCalendrierAdmin(MouseEvent mouseEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
@@ -84,7 +84,7 @@ public class TableauDeBordAdminController implements Initializable {
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleAlertesAdmin(MouseEvent mouseEvent) {
+    private void handleAlertesAdmin(MouseEvent mouseEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
@@ -103,7 +103,7 @@ public class TableauDeBordAdminController implements Initializable {
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleEffectif(MouseEvent mouseEvent) {
+    private void handleEffectif(MouseEvent mouseEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
@@ -122,7 +122,7 @@ public class TableauDeBordAdminController implements Initializable {
      * @param event The ActionEvent triggered by the button click.
      * @throws IOException If there is an error loading the FXML file.
      */
-    public void handleCreateDPS(ActionEvent actionEvent) {
+    private void handleCreateDPS(ActionEvent actionEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {

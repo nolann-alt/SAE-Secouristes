@@ -20,11 +20,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import metier.graphe.model.EventData;
+import metier.service.PlanningMngtSec;
 
 
 import java.io.IOException;
@@ -114,7 +116,7 @@ public class CalendrierSecouristeSemaineController {
      * @param today The current date to compare against.
      * @return A Button styled for the specified day.
      */
-    public Button createDayButton(LocalDate date, LocalDate today) {
+    private Button createDayButton(LocalDate date, LocalDate today) {
         // Clone la structure en pur Java
         VBox vbox = new VBox();
         Button btn = new Button();
@@ -201,6 +203,17 @@ public class CalendrierSecouristeSemaineController {
             // h + "h00" : Formatage du texte de l'heure
             Text hourText = new Text(10, (h - startHour) * hourHeight + 15, h + "h00");
             calendarPane.getChildren().add(hourText);
+
+            // Ligne horizontale pour chaque heure
+            Line hourLine = new Line();
+            hourLine.setStartX(60); // Position de début sur l'axe X (après le texte de l'heure)
+            hourLine.setEndX(1000); // Largeur du planning
+            hourLine.setStartY((h - startHour) * hourHeight);
+            hourLine.setEndY((h - startHour) * hourHeight);
+            hourLine.setStroke(Color.LIGHTGRAY); // Couleur des lignes
+            hourLine.setStrokeWidth(1); // Épaisseur fine
+
+            calendarPane.getChildren().add(hourLine);
         }
 
         // Ajustement de la hauteur minimale pour le ScrollPane
@@ -281,7 +294,7 @@ public class CalendrierSecouristeSemaineController {
      * @param end The end time of the event.
      * @param color The color of the event.
      */
-    public void addEvent(LocalDate day, String label, LocalTime start, LocalTime end, Color color) {
+    private void addEvent(LocalDate day, String label, LocalTime start, LocalTime end, Color color) {
         // Création d'une liste d'événements pour le jour spécifié
         List<EventData> events = eventMap.computeIfAbsent(day, d -> new ArrayList<>());
 
@@ -296,6 +309,9 @@ public class CalendrierSecouristeSemaineController {
         // Si l'événement n'existe pas, on le crée et l'ajoute à la liste
         EventData newEvent = new EventData(label, start, end, color);
         events.add(newEvent);
+
+        PlanningMngtSec ajout = new PlanningMngtSec();
+        ajout.addEvent(day, newEvent);
 
         System.out.println("Événement ajouté : " + label + " de " + start + " à " + end);
 
