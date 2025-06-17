@@ -95,8 +95,6 @@ public class CalendrierSecouristeSemaineController {
             daySelector.getChildren().add(bouton);
         }
 
-        addEvent(LocalDate.now(), "Réunion hebdomadaire secouristes", LocalTime.of(7, 0), LocalTime.of(8, 15), Color.YELLOW);
-        addEvent(LocalDate.now(), "Formation PSC1 en Entreprise", LocalTime.of(8, 30), LocalTime.of(10, 15), Color.BLUE);
         System.out.println(LocalDate.of(2025, 6, 18));
         System.out.println(LocalTime.of(7, 0));
 

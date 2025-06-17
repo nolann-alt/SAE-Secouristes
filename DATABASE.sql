@@ -49,6 +49,11 @@ CREATE TABLE DPS (
                      FOREIGN KEY (sportAssocie) REFERENCES Sport(nom)
 );
 
+-- Insert DPS :
+
+INSERT INTO DPS (label, date, heure_debut, heure_fin, couleur)
+VALUES ('DPS test du 18 juin', '2025-06-18', '08:00:00', '09:00:00', 'BLUE');
+
 -- Table Sport :
 
 CREATE TABLE Sport (
