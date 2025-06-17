@@ -9,10 +9,12 @@ public class SportDAO extends DAO<Sport> {
 
     @Override
     public int create(Sport sport) {
-        String query = "INSERT INTO Sport (code, nom) VALUES ('" + sport.getCode() + "', '" + sport.getNom() + "')";
+        String query = "INSERT INTO Sport (code, nom) VALUES (?, ?)";
         try (Connection connexion = getConnection();
-             Statement statement = connexion.createStatement()) {
-            return statement.executeUpdate(query);
+             PreparedStatement ps = connexion.prepareStatement(query)) {
+            ps.setString(1, sport.getCode());
+            ps.setString(2, sport.getNom());
+            return ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             return -1;
@@ -21,10 +23,12 @@ public class SportDAO extends DAO<Sport> {
 
     @Override
     public int update(Sport sport) {
-        String query = "UPDATE Sport SET nom='" + sport.getNom() + "' WHERE code='" + sport.getCode() + "'";
+        String query = "UPDATE Sport SET nom = ? WHERE code = ?";
         try (Connection connexion = getConnection();
-             Statement statement = connexion.createStatement()) {
-            return statement.executeUpdate(query);
+             PreparedStatement ps = connexion.prepareStatement(query)) {
+            ps.setString(1, sport.getNom());
+            ps.setString(2, sport.getCode());
+            return ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             return -1;
@@ -33,10 +37,11 @@ public class SportDAO extends DAO<Sport> {
 
     @Override
     public int delete(Sport sport) {
-        String query = "DELETE FROM Sport WHERE code='" + sport.getCode() + "'";
+        String query = "DELETE FROM Sport WHERE code = ?";
         try (Connection connexion = getConnection();
-             Statement statement = connexion.createStatement()) {
-            return statement.executeUpdate(query);
+             PreparedStatement ps = connexion.prepareStatement(query)) {
+            ps.setString(1, sport.getCode());
+            return ps.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
             return -1;
@@ -46,9 +51,10 @@ public class SportDAO extends DAO<Sport> {
     @Override
     public List<Sport> findAll() {
         List<Sport> liste = new LinkedList<>();
+        String query = "SELECT * FROM Sport";
         try (Connection connexion = getConnection();
-             Statement statement = connexion.createStatement();
-             ResultSet rs = statement.executeQuery("SELECT * FROM Sport")) {
+             PreparedStatement ps = connexion.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 liste.add(new Sport(
                         rs.getString("code"),
@@ -63,21 +69,21 @@ public class SportDAO extends DAO<Sport> {
 
     @Override
     public Sport findByID(Long id) {
-        // Ici, le code est une chaîne, donc on ne peut pas utiliser Long.
-        // On retourne null ou on change la signature si besoin.
-        return null;
+        return null; // Inapplicable, la clé primaire est de type String
     }
 
-    // BONUS : méthode utile spécifique
     public Sport findByCode(String code) {
+        String query = "SELECT * FROM Sport WHERE code = ?";
         try (Connection connexion = getConnection();
-             Statement statement = connexion.createStatement();
-             ResultSet rs = statement.executeQuery("SELECT * FROM Sport WHERE code='" + code + "'")) {
-            if (rs.next()) {
-                return new Sport(
-                        rs.getString("code"),
-                        rs.getString("nom")
-                );
+             PreparedStatement ps = connexion.prepareStatement(query)) {
+            ps.setString(1, code);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Sport(
+                            rs.getString("code"),
+                            rs.getString("nom")
+                    );
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

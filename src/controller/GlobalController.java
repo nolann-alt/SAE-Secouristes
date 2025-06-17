@@ -23,7 +23,7 @@ import java.util.Stack;
  */
 public class GlobalController {
 
-    public static Secouriste currentUser; // ← ajouté pour stocker l'utilisateur connecté
+    public static Secouriste currentUser; // pour stocker l'utilisateur connecté
 
     private static Admin currentAdmin;
 

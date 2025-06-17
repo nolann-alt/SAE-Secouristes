@@ -32,10 +32,13 @@ public class InfosSecouristeController implements Initializable {
     @FXML private TextField telephoneField;
 
     private Secouriste utilisateur;
+    private Secouriste utilisateurOriginal;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         HeureController.afficherHeure(timeLabel);
+
 
         utilisateur = GlobalController.getCurrentUser();
 
@@ -67,13 +70,6 @@ public class InfosSecouristeController implements Initializable {
 
     @FXML
     private void handleSaveProfil(ActionEvent event) {
-        utilisateur.setNom(nomField.getText());
-        utilisateur.setPrenom(prenomField.getText());
-        utilisateur.setEmail(adresseField.getText());
-        utilisateur.setTelephone(telephoneField.getText());
-
-        SecouristeDAO dao = new SecouristeDAO();
-        dao.update(utilisateur);
 
         String nouveauNom = nomField.getText().trim();
         String nouveauPrenom = prenomField.getText().trim();
@@ -98,6 +94,14 @@ public class InfosSecouristeController implements Initializable {
             alert.showAndWait();
             return;
         }
+
+        utilisateur.setNom(nomField.getText());
+        utilisateur.setPrenom(prenomField.getText());
+        utilisateur.setEmail(adresseField.getText());
+        utilisateur.setTelephone(telephoneField.getText());
+
+        SecouristeDAO dao = new SecouristeDAO();
+        dao.update(utilisateur);
 
         System.out.println("Coordonnées mises à jour.");
 

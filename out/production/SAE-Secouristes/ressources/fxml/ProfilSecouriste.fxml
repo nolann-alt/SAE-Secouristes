@@ -18,12 +18,14 @@
 <?import javafx.scene.shape.Rectangle?>
 
 <StackPane prefHeight="852.0" prefWidth="393.0" style="-fx-background-color: white;" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProfilSecouristeController">
-    <clip>
-        <Rectangle arcHeight="50" arcWidth="50" height="852" width="393" />
-    </clip>
+    <!--
+<clip>
+    <Rectangle arcHeight="50" arcWidth="50" height="852" width="393" />
+</clip>
+-->
 
     <!-- CONTENEUR PRINCIPAL -->
-    <BorderPane fx:id="mainBorderPane" prefHeight="852.0" prefWidth="393.0" style="-fx-background-color: white;">
+    <BorderPane fx:id="mainBorderPane" prefHeight="852.0" prefWidth="393.0" style="-fx-background-color: transparent;">
 
         <!-- TOP BARRE -->
         <top>
