@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -209,4 +210,10 @@ public class CalendrierSecouristeMoisController implements Initializable {
     private void handleAlertes(MouseEvent event) throws IOException {
         GlobalController.switchView("../ressources/fxml/NotificationSecouriste.fxml", (Node) event.getSource());
     }
+
+    @FXML
+    private void handleRetourSemaine(MouseEvent event) throws IOException {
+        GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaine.fxml", (Node) event.getSource());
+    }
+
 }
