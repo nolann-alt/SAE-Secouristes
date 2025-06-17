@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
+<?import javafx.scene.layout.AnchorPane?>
 <StackPane prefHeight="852.0" prefWidth="393.0" styleClass="rounded-app" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TableauDeBordController">
     <clip>
         <Rectangle arcHeight="50" arcWidth="50" height="852" width="393" />
@@ -98,25 +99,59 @@
 
         <!-- CONTENU CENTRAL SCROLLABLE -->
         <center>
-            <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background-radius: 25; -fx-border-radius: 25;" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
+            <ScrollPane fx:id="scrollPane"
+                        fitToWidth="true"
+                        hbarPolicy="NEVER"
+                        vbarPolicy="NEVER"
+                        BorderPane.alignment="CENTER"
+                        style="-fx-background-color: transparent; -fx-background-radius: 25; -fx-border-radius: 25;">
                 <content>
-                    <VBox alignment="CENTER" prefHeight="869.0" prefWidth="393.0" spacing="20.0" style="-fx-background-color: white;">
-                        <children>
-                            <VBox spacing="5" styleClass="event-list" />
-                            <Button styleClass="create-button" text="Modifier disponibilités">
-                                <VBox.margin>
-                                    <Insets top="20.0" />
-                                </VBox.margin>
-                            </Button>
-                            <ImageView fitHeight="286.0" fitWidth="311.15" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../img/map.png" />
-                                </image>
-                            </ImageView>
-                        </children>
+                    <VBox alignment="CENTER"
+                          prefHeight="869.0"
+                          prefWidth="393.0"
+                          spacing="20.0"
+                          style="-fx-background-color: white;">
+
+                        <ScrollPane fx:id="scrollPaneCalendar"
+                                    fitToWidth="true"
+                                    hbarPolicy="NEVER"
+                                    vbarPolicy="NEVER"
+                                    prefHeight="534.0"
+                                    prefWidth="373.0"
+                                    style="-fx-background: transparent; -fx-background-color: transparent;">
+                            <!-- Clip pour forcer les coins arrondis -->
+                            <clip>
+                                <Rectangle arcHeight="25" arcWidth="25" height="534" width="373" />
+                            </clip>
+                            <content>
+                                <AnchorPane fx:id="calendarPane"
+                                            prefHeight="534.0"
+                                            prefWidth="373.0"
+                                            style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-background-radius: 25;" />
+                            </content>
+                        </ScrollPane>
+
+                        <VBox spacing="5" styleClass="event-list" />
+
+                        <Button styleClass="create-button" text="Modifier disponibilités">
+                            <VBox.margin>
+                                <Insets top="20.0" />
+                            </VBox.margin>
+                        </Button>
+
+                        <ImageView fitHeight="286.0"
+                                   fitWidth="311.15"
+                                   pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../img/map.png" />
+                            </image>
+                        </ImageView>
+
                     </VBox>
                 </content>
             </ScrollPane>
+
         </center>
     </BorderPane>
 

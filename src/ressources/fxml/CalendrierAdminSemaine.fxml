@@ -79,7 +79,7 @@
                         <children>
                            <HBox alignment="CENTER" spacing="10.0">
                               <children>
-                                 <Label style="-fx-text-fill: #E60023; -fx-font-size: 24;" text="Aujourd'hui" />
+                                 <Label fx:id="timeLabel" style="-fx-text-fill: #E60023; -fx-font-size: 24;" text="Aujourd'hui" />
                               </children>
                            </HBox>
                         </children>

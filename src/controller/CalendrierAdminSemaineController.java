@@ -87,14 +87,21 @@ public class CalendrierAdminSemaineController {
             LocalDate day = startOfWeek.plusDays(i);
             Button bouton;
             bouton = createDayButton(day, today);
-            bouton.setOnAction(e -> displayDay(day));
+            bouton.setOnAction(e -> {
+                displayDay(day);
+                if (!day.equals(today)) {
+                    timeLabel.setText(day.format(DateTimeFormatter.ofPattern("EEEE", Locale.FRENCH)) + " " + day.getDayOfMonth() + " " + day.getMonth().getDisplayName(java.time.format.TextStyle.FULL, Locale.FRENCH));
+                } else {
+                    timeLabel.setText("Aujourd'hui");
+                }
+            });
             daySelector.getChildren().add(bouton);
         }
 
         addEvent(LocalDate.now(), "DPS 1", LocalTime.of(9, 0), LocalTime.of(10, 0), Color.BLUE);
         addEvent(LocalDate.now(), "DPS 2", LocalTime.of(12, 0), LocalTime.of(13, 0), Color.GREEN);
 
-        addEvent(LocalDate.of(2025, 6, 17), "DPS 3", LocalTime.of(8, 0), LocalTime.of(13, 0), Color.RED);
+        addEvent(LocalDate.of(2025, 6, 16), "DPS 3", LocalTime.of(8, 0), LocalTime.of(13, 0), Color.RED);
 
         displayDay(today);
     }
@@ -112,7 +119,8 @@ public class CalendrierAdminSemaineController {
         VBox vbox = new VBox();
         Button btn = new Button();
 
-        if (today == date) {
+        System.out.println("la date : " + date + " aujourd'hui : " + today);
+        if (today.equals(date)) {
             vbox.setAlignment(Pos.CENTER);
             vbox.setStyle("-fx-background-color: #E60023; -fx-background-radius: 10;");
             vbox.setPrefSize(41, 50);
@@ -251,8 +259,12 @@ public class CalendrierAdminSemaineController {
         textContainer.setPrefSize(200, height);
         textContainer.setAlignment(Pos.CENTER);
 
-        Text labelText = new Text(start + " - " + end + "\n" + label);
-        labelText.setTextAlignment(TextAlignment.CENTER);
+        Label labelText = new Label(start + " - " + end + "\n" + label);
+        labelText.setStyle("-fx-text-fill: black;");
+        labelText.setWrapText(true); // Permet de revenir à la ligne
+        labelText.setTextAlignment(TextAlignment.CENTER); // Centre le texte à l'intérieur du Label
+        labelText.setAlignment(Pos.CENTER); // Centre dans la VBox
+        labelText.setMaxWidth(195); // Limite la largeur pour forcer les retours à la ligne
 
         textContainer.getChildren().add(labelText);
         calendarPane.getChildren().addAll(rect, textContainer);
@@ -286,8 +298,8 @@ public class CalendrierAdminSemaineController {
         events.add(newEvent);
 
         System.out.println("Événement ajouté : " + label + " de " + start + " à " + end);
-
     }
+
     @FXML
     /**
      * This method is called when the back button is clicked.

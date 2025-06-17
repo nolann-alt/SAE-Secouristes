@@ -12,19 +12,22 @@ import javafx.scene.input.ScrollEvent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.util.*;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import metier.graphe.model.EventData;
 
 
-
-public class TableauDeBordController implements Initializable {
-
-    @FXML private Label timeLabel;
+public class TableauDeBordController {
 
     @FXML
     /** This ScrollPane is used to display the content of the dashboard. */
@@ -34,16 +37,54 @@ public class TableauDeBordController implements Initializable {
     private Label prenomLabel;
 
     @FXML
-    private Button logoutButton;
+    /**
+     * This label is used to display the current time in the application.
+     * It is updated every second to show the current time in the format "HH:mm:ss".
+     */
+    private Label timeLabel;
 
-    @Override
+    @FXML
+    /**
+     * This HBox is used to hold the buttons for selecting days of the week.
+     * It is defined in the FXML file and is used to display the buttons for each day.
+     */
+    private HBox daySelector;
+
+    @FXML
+    /**
+     * This AnchorPane is used to display the calendar for the selected week.
+     * It is defined in the FXML file and is used to show the schedule for each day.
+     */
+    private AnchorPane calendarPane;
+
+    /** This attributes define the start hours of the calendar display */
+    private final int startHour = 7;
+
+    /** This attributes define the end hours of the calendar display */
+    private final int endHour = 22;
+
+    /** This attributes define the height of each hour slot in pixels */
+    private final int hourHeight = 60; // 60 pixels par heure
+
+    /**
+     * This list holds the events for the current day.
+     * Each event is represented by a LocalTime array containing the start and end times.
+     */
+    private final Map<LocalDate, List<EventData>> eventMap = new HashMap<>();
+
     /**
      * This method is called to initialize the controller after its root element has been
      * processed. It is used to set up the initial state of the controller and
      * to handle the scroll event for the ScrollPane.
      */
-    public void initialize(URL location, ResourceBundle resources) {
-        HeureController.afficherHeure(timeLabel);
+    public void initialize() {
+        // Afficher les jours (par ex : Lun 24, Mar 25...)
+        LocalDate today = LocalDate.now(); // Charge la date du jour
+        CalendrierSecouristeSemaineController calendrierSecouriste = new CalendrierSecouristeSemaineController();
+
+        calendarPane.getChildren().add(calendrierSecouriste.getCalendarDayNow(today));
+
+        HeureController.afficherHeure(this.timeLabel);
 
         prenomLabel.setText(GlobalController.currentUser.getPrenom());
 
