@@ -244,7 +244,7 @@ public class ProfilSecouristeAdminController implements Initializable{
         // On récupère la scène actuelle à partir de l'élément source de l'événement
         // event.getSource() est le bouton qui a été cliqué (la source)
         try {
-            GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaineAdmin.fxml", (Node) actionEvent.getSource());
+            GlobalController.switchView("../ressources/fxml/CalendrierSecouristeMoisAdmin.fxml", (Node) actionEvent.getSource());
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeSemaineAdmin : " + e.getMessage());
