@@ -33,6 +33,31 @@ CREATE TABLE Possede (
      FOREIGN KEY (idSecouriste) REFERENCES Secouriste(id)
 );
 
+-- Table DPS :
+
+CREATE TABLE DPS (
+                     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                     label VARCHAR(255) NOT NULL,
+                     date DATE NOT NULL,
+                     heure_debut TIME NOT NULL,
+                     heure_fin TIME NOT NULL,
+                     sportAssocie VARCHAR(100),
+                     codeSite INT,
+                     lieu VARCHAR(255),
+                     description TEXT,
+                     couleur VARCHAR(20),
+                     FOREIGN KEY (sportAssocie) REFERENCES Sport(nom)
+);
+
+-- Table Sport :
+
+CREATE TABLE Sport (
+                       nom VARCHAR(100) PRIMARY KEY,
+                       niveau_de_risque VARCHAR(50),
+                       competences_requises TEXT
+);
+
+
 
 -- Insert d’un admin de test
 INSERT INTO Admin (nom, prenom, email, motDePasse) VALUES
