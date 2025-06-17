@@ -26,6 +26,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import metier.graphe.model.EventData;
+import metier.graphe.model.dao.DPSDAO;
+import metier.persistence.DPS;
 import metier.service.PlanningMngtSec;
 
 
@@ -79,18 +81,12 @@ public class CalendrierSecouristeSemaineController {
      */
     public void initialize() {
 
-        // Afficher les jours (par ex : Lun 24, Mar 25...)
-        LocalDate today = LocalDate.now(); // Charge la date du jour
-
-        // Calcule le début de la semaine en faisant le calcul à partir du jour actuel
-        // Exemple : Si aujourd'hui est Mercredi, on va afficher les jours de Lundi à Dimanche
-        // -1 car getDayOfWeek().getValue() retourne 1 pour Lundi, 2 pour Mardi, etc.
-        LocalDate startOfWeek = today.minusDays(today.getDayOfWeek().getValue() - 1); // .minusday permet de retirer le nombre de jour
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.minusDays(today.getDayOfWeek().getValue() - 1);
 
         for (int i = 0; i < 7; i++) {
             LocalDate day = startOfWeek.plusDays(i);
-            Button bouton;
-            bouton = createDayButton(day, today);
+            Button bouton = createDayButton(day, today);
             bouton.setOnAction(e -> {
                 displayDay(day);
                 if (!day.equals(today)) {
@@ -102,8 +98,20 @@ public class CalendrierSecouristeSemaineController {
             daySelector.getChildren().add(bouton);
         }
 
-        addEvent(LocalDate.now(), "Réunion hebdomadaire secouristes", LocalTime.of(7, 0), LocalTime.of(8, 15), Color.YELLOW);
-        addEvent(LocalDate.now(), "Formation PSC1 en Entreprise", LocalTime.of(8, 30), LocalTime.of(10, 15), Color.BLUE);
+        // Charger tous les DPS depuis la base et les afficher
+        DPSDAO dao = new DPSDAO();
+        List<DPS> tousLesDps = dao.findAll();
+
+        for (DPS dps : tousLesDps) {
+            LocalDate date = dps.getDate().toLocalDate();
+            LocalTime debut = dps.getHeureDebut().toLocalTime();
+            LocalTime fin = dps.getHeureFin().toLocalTime();
+            String label = dps.getLabel();
+
+            Color couleur = Color.ORANGE;
+            EventData event = new EventData(label, debut, fin, couleur);
+            eventMap.computeIfAbsent(date, d -> new ArrayList<>()).add(event);
+        }
 
         displayDay(today);
     }
@@ -406,5 +414,4 @@ public class CalendrierSecouristeSemaineController {
             System.out.println("Erreur lors du retour au calendrier mois : " + e.getMessage());
         }
     }
-
 }
