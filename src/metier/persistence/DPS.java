@@ -1,43 +1,76 @@
 package metier.persistence;
 
+import java.sql.Date;
+import java.sql.Time;
+
 public class DPS {
     private long id;
-    private int horaireDepart;
-    private int horaireFin;
+    private String label;
+    private Date date;
+    private Time heureDebut;
+    private Time heureFin;
     private String sportAssocie;
     private int codeSite;
+    private String lieu;
+    private String description;
+    private String couleur;
 
-    public DPS(long id, int horaireDepart, int horaireFin) {
+    public DPS(long id, String label, Date date, Time heureDebut, Time heureFin, String sportAssocie, int codeSite, String lieu, String description) {
         this.id = id;
-        this.horaireDepart = horaireDepart;
+        this.label = label;
+        this.date = date;
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
+        this.sportAssocie = sportAssocie;
+        this.codeSite = codeSite;
+        this.lieu = lieu;
+        this.description = description;
     }
-    
+
+    // Getters & Setters
+
     public long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public int getHoraireDepart() {
-        return this.horaireDepart;
+    public String getLabel() {
+        return label;
     }
 
-    public void setHoraireDepart(int horaireDepart) {
-        this.horaireDepart = horaireDepart;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-    public int getHoraireFin() {
-        return this.horaireFin;
+    public Date getDate() {
+        return date;
     }
 
-    public void setHoraireFin(int horaireFin) {
-        this.horaireFin = horaireFin;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Time getHeureDebut() {
+        return heureDebut;
+    }
+
+    public void setHeureDebut(Time heureDebut) {
+        this.heureDebut = heureDebut;
+    }
+
+    public Time getHeureFin() {
+        return heureFin;
+    }
+
+    public void setHeureFin(Time heureFin) {
+        this.heureFin = heureFin;
     }
 
     public String getSportAssocie() {
-        return this.sportAssocie;
+        return sportAssocie;
     }
 
     public void setSportAssocie(String sportAssocie) {
@@ -45,10 +78,34 @@ public class DPS {
     }
 
     public int getCodeSite() {
-        return this.codeSite;
+        return codeSite;
     }
 
     public void setCodeSite(int codeSite) {
         this.codeSite = codeSite;
+    }
+
+    public String getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCouleur() {
+        return couleur;
+    }
+
+    public void setCouleur(String couleur) {
+        this.couleur = couleur;
     }
 }
