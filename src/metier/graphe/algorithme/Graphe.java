@@ -1,120 +1,127 @@
 package metier.graphe.algorithme;
 
-import metier.persistence.Competences;
-import metier.persistence.DPS;
-import metier.persistence.Possede;
-import metier.persistence.Secouriste;
+import metier.persistence.*;
+import metier.persistence.Affectation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 public class Graphe {
     private ArrayList<Possede> listeSecouristeComp;
     private HashMap<DPS, Competences> listeDPSComp;
+    private int[][] matAdj;
+    private int[] meilleureCombin;
+    private int scoreActuel;
+    private int bestScore;
+    private HashMap<Integer, Long> indexSecouriste;
+    private HashMap<Integer, Besoin> indexBesoin;
 
     public Graphe(ArrayList<Possede> listeSecouristeComp, HashMap<DPS, Competences> listeDPSComp) {
         this.listeSecouristeComp = new ArrayList<>(listeSecouristeComp);
         this.listeDPSComp = new HashMap<>(listeDPSComp);
 
-
-        // SECOURISTE
-        ArrayList<Long> listeSecouriste = new ArrayList<>();
-        for (Possede secComp : this.listeSecouristeComp) {
-            if (!listeSecouriste.contains(secComp.getIdSecouriste())) {
-                listeSecouriste.add(secComp.getIdSecouriste());
+        this.indexSecouriste = new HashMap<>();
+        int ind = 0;
+        for (Possede p : this.listeSecouristeComp) {
+            long idSec = p.getIdSecouriste();
+            if (!this.indexSecouriste.containsValue(idSec)) {
+                this.indexSecouriste.put(ind, idSec);
+                ind++;
             }
         }
-        // Associe un id de secouriste et son indice dans la matrice
-        HashMap<Long, Integer> indexSecouriste = new HashMap<>();
-        for (int i = 0 ; i < listeSecouriste.size() ; i++) {
-            indexSecouriste.put(listeSecouriste.get(i), i);
+        // Associe un indice dans la matrice à un id de Besoin
+        this.indexBesoin = new HashMap<>();
+        ind = 0;
+        for (Map.Entry<DPS, Competences> couple : this.listeDPSComp.entrySet()) {
+            DPS unDPS = couple.getKey();
+            Competences uneComp = couple.getValue();
+            Besoin unBesoin = new Besoin(1, uneComp.getIntitule(), unDPS.getId());
+            this.indexBesoin.put(ind, unBesoin);
+            ind++;
         }
 
+        int taille = Math.max(this.indexSecouriste.size(), this.indexBesoin.size());
+        this.matAdj = new int[taille][taille];
 
-        // DPS & COMPETENCES
-        ArrayList<DPS> listeDPS = new ArrayList<>();
-        ArrayList<String> listeComp = new ArrayList<>();
-        for (DPS unDPS : this.listeDPSComp.keySet()) {
-            if ( ! listeDPS.contains(unDPS)) {
-                listeDPS.add(unDPS);
-            }
-            if ( ! listeComp.contains(this.listeDPSComp.get(unDPS))) {
-                listeComp.add(this.listeDPSComp.get(unDPS).getIntitule());
-            }
-        }
-        // Associe un id de DPS et son indice dans la matrice
-        HashMap<DPS, Integer> indexDPS = new HashMap<>();
-        for (int i = 0 ; i < listeDPS.size() ; i++) {
-            indexDPS.put(listeDPS.get(i), i);
-        }
-        // Associe un id de Compétence et son indice dans la matrice
-        HashMap<String, Integer> indexComp = new HashMap<>();
-        for (int i = 0 ; i < listeDPS.size() ; i++) {
-            indexComp.put(listeComp.get(i), i);
-        }
+        for (int i = 0 ; i < this.indexSecouriste.size() ; i++) {
+            long idSecouriste = this.indexSecouriste.get(i);
 
+            for (int j = 0 ; j < this.indexBesoin.size() ; j++) {
+                Besoin b = this.indexBesoin.get(j);
+                String compRequise = b.getIntituleComp();
 
-        // CREATION DES MATRICES
-        int taille = Math.max(listeSecouriste.size(), listeComp.size());
-
-        // Matrice Secourite - Comp
-        int[][] matSecouristeCompetence = new int[taille][taille];
-
-        for (Possede secComp : this.listeSecouristeComp) {
-            int secIdx = indexSecouriste.get(secComp.getIdSecouriste());
-            int compIdx = indexComp.get(secComp.getIntitule());
-            matSecouristeCompetence[secIdx][compIdx] = 1;
-        }
-
-
-        // Matrice DPS - Comp
-        taille = Math.max(listeDPS.size(), listeComp.size());
-        int[][] matDPSCompetence = new int[taille][taille];
-
-        for (HashMap.Entry<DPS, Competences> couple : this.listeDPSComp.entrySet()) {
-            int dpsIdx = indexDPS.get(couple.getKey());
-            int compIdx = indexComp.get(couple.getValue().getIntitule());
-            matDPSCompetence[dpsIdx][compIdx] = 1;
-        }
-
-
-        // Matrice Secouriste - DPS
-        taille = Math.max(listeSecouriste.size(), listeDPS.size());
-        int[][] matSecouristeDPS = new int[taille][taille];
-
-        for (int sec = 0; sec < listeSecouriste.size(); sec++) {
-            for (int dps = 0; dps < listeDPS.size(); dps++) {
-                boolean compatible = true;
-                for (int comp = 0; comp < listeComp.size(); comp++) {
-                    if (matDPSCompetence[dps][comp] == 1 && matSecouristeCompetence[sec][comp] == 0) {
-                        compatible = false;
+                for (Possede p : listeSecouristeComp) {
+                    if (p.getIdSecouriste() == idSecouriste && p.getIntitule().equals(compRequise)) {
+                        this.matAdj[i][j] = 1;
                     }
                 }
-                if (compatible) {
-                    matSecouristeDPS[sec][dps] = 1;
-                }
             }
         }
-
-
-
-        /*
-        matriceAdj = new int[listeSecouristeComp.size()][listeDPS.size()];
-        // INIT MATRIX
-        for (int i = 0; i<listeSecouristeComp.size(); i++) {
-            for (int j = 0; j<listeDPSComp.size(); j++) {
-                Competences compDPS = listeDPSComp.get(listeDPS.get(j));
-                String compSecouriste = listeSecouristeComp.get(i).getIntitule();
-                if (compSecouriste.equals(compDPS.getIntitule())) {
-                    matriceAdj[i][j] = 1;
-                }
-            }
-        }
-        */
-
     }
+
+
+    /**
+     * Exhaustiv affectation algorithm
+     * @return
+     */
+    public ArrayList<Affectation> affectationExhaustive() {
+        ArrayList<Affectation> lesAffectations = new ArrayList<>();
+        int[] combinaison = new int[this.matAdj.length]; // indice = indice secouriste ; valeur = indice du DPS
+        boolean[] colUtilisee = new boolean[this.matAdj.length]; // indice = numero de colonne dans la matrice = DPS
+        this.scoreActuel = 0;
+        this.bestScore = 0;
+
+        backTracking(combinaison, colUtilisee, 0);
+
+        for (int i = 0 ; i < this.meilleureCombin.length ; i++) {
+            if (this.indexSecouriste.containsKey(i)) {
+                long idSecouriste = this.indexSecouriste.get(i);
+                Besoin leBesoin = this.indexBesoin.get(this.meilleureCombin[i]);
+                long idDPS = leBesoin.getIdDPS();
+                String laCompetence = leBesoin.getIntituleComp();
+
+                Affectation uneAffectation = new Affectation(idSecouriste, laCompetence, idDPS);
+                lesAffectations.add(uneAffectation);
+            }
+        }
+        return lesAffectations;
+    }
+
+    /**
+     * dps : indice DPS
+     * sec : indice secouriste
+     * @return Return a list of couples of index (secouristeIndex, DPSIndex)
+     */
+    private void backTracking(int[] combinaison, boolean[] colUtilisee, int ligne) {
+        if (ligne == this.matAdj.length - 1) {
+            if (this.scoreActuel > this.bestScore) {
+                this.bestScore = this.scoreActuel;
+                this.meilleureCombin = combinaison.clone();
+            }
+            return;
+        }
+        for (int col = 0 ; col < this.matAdj.length ; col++) {
+            if ( ! colUtilisee[col] ) {
+                colUtilisee[col] = true;
+                combinaison[ligne] = col;
+                this.scoreActuel = this.scoreActuel + this.matAdj[ligne][col];
+
+                /*
+                 Si on trouve un combinaison qui a pour score la taille de la matrice alors on arrête la recherche.
+                 Ex : si on a une matrice de 5 secouristes et 5 DPS, le score max théorique est de 5.
+                 Donc si on trouve une combinaison d'affectation = 5 alors on trouvera pas de solution + optimal
+                 */
+                if (this.scoreActuel == this.matAdj.length) {
+                    this.bestScore = this.scoreActuel;
+                    this.meilleureCombin = combinaison.clone();
+                    return; // retour à la méthode appelante dans la pile d'exécution
+                }
+                backTracking(combinaison, colUtilisee, ligne + 1);
+                scoreActuel -= this.matAdj[ligne][col];
+                colUtilisee[col] = false;
+            }
+        }
+    }
+
 
     public ArrayList<Possede> getListeSecouriste() {
         return this.listeSecouristeComp;
@@ -125,6 +132,6 @@ public class Graphe {
     }
 
     public int[][] getMatriceAdj() {
-        return null;
+        return this.matAdj;
     }
 }
