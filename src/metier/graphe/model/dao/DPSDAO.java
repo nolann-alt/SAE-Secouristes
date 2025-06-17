@@ -118,4 +118,35 @@ public class DPSDAO extends DAO<DPS> {
         }
         return list;
     }
+
+    public List<DPS> findBySecouriste(long idSecouriste) {
+        List<DPS> list = new ArrayList<>();
+        String query = "SELECT DPS.* FROM DPS " +
+                "JOIN Affectation ON DPS.id = Affectation.idDPS " +
+                "WHERE Affectation.idSecouriste = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setLong(1, idSecouriste);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                DPS dps = new DPS(
+                        rs.getLong("id"),
+                        rs.getString("label"),
+                        rs.getDate("date"),
+                        rs.getTime("heure_debut"),
+                        rs.getTime("heure_fin"),
+                        rs.getString("sportAssocie"),
+                        rs.getInt("codeSite"),
+                        rs.getString("lieu"),
+                        rs.getString("description")
+                );
+                dps.setCouleur(rs.getString("couleur"));
+                list.add(dps);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return list;
+    }
+
 }

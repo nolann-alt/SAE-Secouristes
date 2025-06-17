@@ -21,6 +21,7 @@ import javafx.scene.text.TextAlignment;
 import metier.graphe.model.EventData;
 import metier.graphe.model.dao.DPSDAO;
 import metier.persistence.DPS;
+import metier.persistence.Secouriste;
 import metier.service.PlanningMngtSec;
 import java.io.IOException;
 import java.util.*;
@@ -61,6 +62,7 @@ public class CalendrierSecouristeSemaineController {
     /** This attributes define the height of each hour slot in pixels */
     private final int hourHeight = 60; // 60 pixels par heure
 
+
     /**
      * This list holds the events for the current day.
      * Each event is represented by a LocalTime array containing the start and end times.
@@ -99,10 +101,12 @@ public class CalendrierSecouristeSemaineController {
         System.out.println(LocalTime.of(7, 0));
 
 
-        DPSDAO dao = new DPSDAO();
-        List<DPS> tousLesDps = dao.findAll();
+        long curentUser = GlobalController.getCurrentUser().getId();
 
-        for (DPS dps : tousLesDps) {
+        DPSDAO dao = new DPSDAO();
+        List<DPS> affectes = dao.findBySecouriste(curentUser);
+
+        for (DPS dps : affectes) {
             LocalDate date = dps.getDate().toLocalDate();
             LocalTime debut = dps.getHeureDebut().toLocalTime();
             LocalTime fin = dps.getHeureFin().toLocalTime();

@@ -54,6 +54,21 @@ CREATE TABLE DPS (
 INSERT INTO DPS (label, date, heure_debut, heure_fin, couleur)
 VALUES ('DPS test du 18 juin', '2025-06-18', '08:00:00', '09:00:00', 'BLUE');
 
+-- Table Affectation
+
+CREATE TABLE Affectation (
+                             idSecouriste BIGINT,
+                             idDPS BIGINT,
+                             PRIMARY KEY (idSecouriste, idDPS),
+                             FOREIGN KEY (idSecouriste) REFERENCES Secouriste(id),
+                             FOREIGN KEY (idDPS) REFERENCES DPS(id)
+);
+
+-- Insert Affactation
+
+INSERT INTO Affectation (idSecouriste, idDPS)
+VALUES (1, 1);
+
 -- Table Sport :
 
 CREATE TABLE Sport (
