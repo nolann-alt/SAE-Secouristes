@@ -19,6 +19,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import metier.graphe.model.EventData;
+import metier.graphe.model.dao.DPSDAO;
+import metier.persistence.DPS;
 import metier.service.PlanningMngtSec;
 import java.io.IOException;
 import java.util.*;
@@ -97,6 +99,22 @@ public class CalendrierSecouristeSemaineController {
         addEvent(LocalDate.now(), "Formation PSC1 en Entreprise", LocalTime.of(8, 30), LocalTime.of(10, 15), Color.BLUE);
         System.out.println(LocalDate.of(2025, 6, 18));
         System.out.println(LocalTime.of(7, 0));
+
+
+        DPSDAO dao = new DPSDAO();
+        List<DPS> tousLesDps = dao.findAll();
+
+        for (DPS dps : tousLesDps) {
+            LocalDate date = dps.getDate().toLocalDate();
+            LocalTime debut = dps.getHeureDebut().toLocalTime();
+            LocalTime fin = dps.getHeureFin().toLocalTime();
+            String label = dps.getLabel();
+            String couleurTexte = dps.getCouleur();
+            Color couleur = Color.valueOf(couleurTexte != null ? couleurTexte : "ORANGE");
+
+            EventData event = new EventData(label, debut, fin, couleur);
+            eventMap.computeIfAbsent(date, d -> new ArrayList<>()).add(event);
+        }
 
         displayDay(today);
     }
