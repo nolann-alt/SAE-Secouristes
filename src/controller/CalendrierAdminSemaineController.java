@@ -25,6 +25,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -100,8 +101,6 @@ public class CalendrierAdminSemaineController {
 
         addEvent(LocalDate.now(), "DPS 1", LocalTime.of(9, 0), LocalTime.of(10, 0), Color.BLUE);
         addEvent(LocalDate.now(), "DPS 2", LocalTime.of(12, 0), LocalTime.of(13, 0), Color.GREEN);
-
-        addEvent(LocalDate.of(2025, 6, 16), "DPS 3", LocalTime.of(8, 0), LocalTime.of(13, 0), Color.RED);
 
         displayDay(today);
     }
@@ -201,6 +200,17 @@ public class CalendrierAdminSemaineController {
             // h + "h00" : Formatage du texte de l'heure
             Text hourText = new Text(10, (h - startHour) * hourHeight + 15, h + "h00");
             calendarPane.getChildren().add(hourText);
+
+            // Ligne horizontale pour chaque heure
+            Line hourLine = new Line();
+            hourLine.setStartX(60); // Position de début sur l'axe X (après le texte de l'heure)
+            hourLine.setEndX(363); // Largeur du planning
+            hourLine.setStartY((h - startHour) * hourHeight);
+            hourLine.setEndY((h - startHour) * hourHeight);
+            hourLine.setStroke(Color.LIGHTGRAY); // Couleur des lignes
+            hourLine.setStrokeWidth(1); // Épaisseur fine
+
+            calendarPane.getChildren().add(hourLine);
         }
 
         // Ajustement de la hauteur minimale pour le ScrollPane
@@ -306,7 +316,6 @@ public class CalendrierAdminSemaineController {
      * It loads the TableauDeBordAdmin.fxml and sets it as the new scene with rounded corners and transparency.
      *
      * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
      */
     private void handleAccueil(MouseEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
@@ -318,13 +327,13 @@ public class CalendrierAdminSemaineController {
             System.out.println("Erreur lors du chargement de la vue TableauDeBordAdmin : " + e.getMessage());
         }
     }
+
     @FXML
     /**
      * This method is called when the back button is clicked.
      * It loads the ListeDesSecouristesAdmin.fxml and sets it as the new scene with rounded corners and transparency.
      *
      * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
      */
     private void handleEffectif(MouseEvent mouseEvent) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
@@ -343,7 +352,6 @@ public class CalendrierAdminSemaineController {
      * It loads the AlertesAdmin.fxml and sets it as the new scene with rounded corners and transparency.
      *
      * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
      */
     private void handleAlertesAdmin(MouseEvent event) {
         // On récupère la scène actuelle à partir de l'élément source de l'événement
@@ -353,6 +361,22 @@ public class CalendrierAdminSemaineController {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue AlertesAdmin : " + e.getMessage());
+        }
+    }
+
+    @FXML
+    /**
+     * This method is called when the back button is clicked.
+     * It loads the CalendrierMoisAdmin.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     */
+    private void handleRetourMois(MouseEvent event) {
+        try {
+            GlobalController.switchView("../ressources/fxml/CalendrierAdminMois.fxml", (Node) event.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du retour au calendrier mois : " + e.getMessage());
         }
     }
 }

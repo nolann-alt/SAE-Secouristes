@@ -192,21 +192,56 @@ public class CalendrierSecouristeMoisController implements Initializable {
         boutonSelectionne = boutonClique;
     }
 
-    // Gère le clic sur l’icône d’accueil : redirige vers le tableau de bord
     @FXML
-    private void handleAccueil(MouseEvent event) throws IOException {
-        GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
+    /**
+     * This method is called when the "Accueil" button is clicked.
+     * It loads the TableauDeBord.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The MouseEvent triggered by the button click.
+     */
+    private void handleAccueil(MouseEvent event) {
+        try {
+            // On récupère la scène actuelle à partir de l'élément source de l'événement
+            // event.getSource() est le bouton qui a été cliqué (la source)
+            GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue TableauDeBord : " + e.getMessage());
+        }
     }
 
-    // Gère le clic sur l’icône d’alertes : redirige vers les notifications
     @FXML
+    /**
+     * This method is called when the "Alertes" button is clicked.
+     * It loads the NotificationSecouriste.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The MouseEvent triggered by the button click.
+     */
     private void handleAlertes(MouseEvent event) throws IOException {
-        GlobalController.switchView("../ressources/fxml/NotificationSecouriste.fxml", (Node) event.getSource());
+        try {
+            GlobalController.switchView("../ressources/fxml/NotificationSecouriste.fxml", (Node) event.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue NotificationSecouriste : " + e.getMessage());
+        }
+
     }
 
     @FXML
-    private void handleRetourSemaine(MouseEvent event) throws IOException {
-        GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaine.fxml", (Node) event.getSource());
+    /**
+     * This method is called when the "Retour" button is clicked.
+     * It loads the CalendrierSecouristeSemaine.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     */
+    private void handleRetourSemaine(MouseEvent event) {
+        try {
+            // Redirige vers la vue CalendrierSecouristeSemaine.fxml
+            GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaine.fxml", (Node) event.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeSemaine : " + e.getMessage());
+        }
     }
 
 }

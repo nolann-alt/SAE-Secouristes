@@ -55,13 +55,6 @@ public class TableauDeBordController {
 
     @FXML
     /**
-     * This HBox is used to hold the buttons for selecting days of the week.
-     * It is defined in the FXML file and is used to display the buttons for each day.
-     */
-    private HBox daySelector;
-
-    @FXML
-    /**
      * This AnchorPane is used to display the calendar for the selected week.
      * It is defined in the FXML file and is used to show the schedule for each day.
      */

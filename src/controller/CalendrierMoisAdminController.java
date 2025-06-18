@@ -253,4 +253,22 @@ public class CalendrierMoisAdminController implements Initializable {
             System.out.println("Erreur lors du chargement de la vue AlertesAdmin : " + e.getMessage());
         }
     }
+
+    @FXML
+    /**
+     * This method is called when the back button is clicked.
+     * It loads the CalendrierAdminSemaine.fxml and sets it as the new scene with rounded corners and transparency.
+     *
+     * @param event The ActionEvent triggered by the button click.
+     */
+    private void handleRetourSemaine(MouseEvent event) {
+        try {
+            // On récupère la scène actuelle à partir de l'élément source de l'événement
+            // event.getSource() est le bouton qui a été cliqué (la source)
+            GlobalController.switchView("../ressources/fxml/CalendrierAdminSemaine.fxml", (Node) event.getSource());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du chargement de la vue CalendrierAdminSemaine : " + e.getMessage());
+        }
+    }
 }
