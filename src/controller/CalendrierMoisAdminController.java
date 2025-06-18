@@ -21,15 +21,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import metier.graphe.model.dao.DPSDAO;
 import metier.persistence.Competences;
-import metier.persistence.DPS;
 import metier.persistence.Secouriste;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.Time;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -472,65 +468,20 @@ public class CalendrierMoisAdminController implements Initializable {
         overlay.setVisible(false);
     }
 
+    public void handleValiderCompetences(ActionEvent actionEvent) {
+    }
+
     public LocalDateTime getSelectedDateTimeStart() {
         LocalDate date = datePickerStart.getValue();
         String hourStr = hourComboBoxStart.getValue().replace("h", "");
-        return LocalDateTime.of(date, LocalTime.parse(hourStr));
+        LocalTime time = LocalTime.parse(hourStr);
+        return LocalDateTime.of(date, time);
     }
 
     public LocalDateTime getSelectedDateTimeEnd() {
         LocalDate date = datePickerEnd.getValue();
         String hourStr = hourComboBoxEnd.getValue().replace("h", "");
-        return LocalDateTime.of(date, LocalTime.parse(hourStr));
+        LocalTime time = LocalTime.parse(hourStr);
+        return LocalDateTime.of(date, time);
     }
-
-    @FXML
-    public void handleValiderCompetences(ActionEvent actionEvent) {
-        try {
-            LocalDateTime start = getSelectedDateTimeStart();
-            LocalDateTime end = getSelectedDateTimeEnd();
-
-            if (start.isAfter(end)) {
-                System.out.println("Erreur : La date de début est après la date de fin.");
-                return;
-            }
-
-            // Créer un DPS
-            DPS dps = new DPS(
-                    0, // id (sera ignoré ou auto-incrémenté en base)
-                    "DPS automatique",                            // label
-                    Date.valueOf(start.toLocalDate()),           // date
-                    Time.valueOf(start.toLocalTime()),           // heureDebut
-                    Time.valueOf(end.toLocalTime()),             // heureFin
-                    null,                                         // sportAssocie
-                    0,                                            // codeSite
-                    null,                                         // lieu
-                    null                                          // description
-            );
-            dps.setCouleur("#E60023");
-
-            dps.setDate(java.sql.Date.valueOf(start.toLocalDate()));
-            dps.setHeureDebut(java.sql.Time.valueOf(start.toLocalTime()));
-            dps.setHeureFin(java.sql.Time.valueOf(end.toLocalTime()));
-            dps.setLabel("DPS automatique"); // Ou depuis un TextField
-            dps.setCouleur("ORANGE"); // Couleur par défaut ou selon logique
-
-            // Insérer en base
-            DPSDAO dao = new DPSDAO();
-            dao.create(dps);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText(null);
-            alert.setContentText("Le DPS a été créé avec succès !");
-            alert.showAndWait();
-
-            System.out.println("DPS créé avec succès !");
-            hidePopup();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de la création du DPS : " + e.getMessage());
-        }
-    }
-
 }
