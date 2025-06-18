@@ -177,7 +177,6 @@ public class CalendrierAdminSemaineController {
             btn.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
             btn.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         }
-
         return btn;
     }
 
@@ -379,4 +378,6 @@ public class CalendrierAdminSemaineController {
             System.out.println("Erreur lors du retour au calendrier mois : " + e.getMessage());
         }
     }
+
+
 }

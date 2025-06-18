@@ -35,3 +35,4 @@ public class PlanningMngtSec {
         this.listEvntSec.clear();
     }
 }
+
