@@ -349,4 +349,23 @@
     -fx-text-alignment: center;
 }
 
+.combo-box-popup .scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+}
 
+.combo-box .list-cell:filled:selected,
+.combo-box .list-cell:filled:selected:hover {
+    -fx-background-color: lightgray;
+    -fx-text-fill: black;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: lightgray;
+    -fx-text-fill: black;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #d3d3d3; /* gris un peu plus foncé au survol */
+}
