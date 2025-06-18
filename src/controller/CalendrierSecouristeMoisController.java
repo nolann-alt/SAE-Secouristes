@@ -243,5 +243,4 @@ public class CalendrierSecouristeMoisController implements Initializable {
             System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeSemaine : " + e.getMessage());
         }
     }
-
 }

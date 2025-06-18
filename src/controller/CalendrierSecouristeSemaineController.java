@@ -25,6 +25,8 @@ import metier.service.PlanningMngtSec;
 import java.io.IOException;
 import java.util.*;
 
+import metier.graphe.model.dao.DPSDAO;
+
 /**
  * This class allows to manage the calendar view for rescuers.
  * It provides a method to switch to the calendar view when the button is clicked.
@@ -417,5 +419,4 @@ public class CalendrierSecouristeSemaineController {
             System.out.println("Erreur lors du retour au calendrier mois : " + e.getMessage());
         }
     }
-
 }
