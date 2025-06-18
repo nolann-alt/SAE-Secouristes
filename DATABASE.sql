@@ -72,6 +72,7 @@ VALUES (1, 1);
 INSERT INTO DPS (label, date, heure_debut, heure_fin, couleur)
 VALUES ('DPS test du 18 juin', '2025-06-18', '16:00:00', '22:00:00', 'RED');
 
+
 -- Table Sport :
 
 CREATE TABLE Sport (

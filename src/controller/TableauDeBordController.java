@@ -44,6 +44,9 @@ public class TableauDeBordController {
     private Label prenomLabel;
 
     @FXML
+    private ScrollPane scrollPaneCalendar;
+
+    @FXML
     /**
      * This label is used to display the current time in the application.
      * It is updated every second to show the current time in the format "HH:mm:ss".
@@ -118,6 +121,8 @@ public class TableauDeBordController {
             scrollPane.setVvalue(this.scrollPane.getVvalue() - deltaY / this.scrollPane.getContent().getBoundsInLocal().getHeight());
             event.consume(); // empêche le scroll par défaut
         });
+
+        this.scrollPaneCalendar.setPannable(true);
     }
 
     /**
@@ -143,7 +148,7 @@ public class TableauDeBordController {
             // Ligne horizontale pour chaque heure
             Line hourLine = new Line();
             hourLine.setStartX(60); // Position de début sur l'axe X (après le texte de l'heure)
-            hourLine.setEndX(1000); // Largeur du planning
+            hourLine.setEndX(363); // Largeur du planning
             hourLine.setStartY((h - startHour) * hourHeight);
             hourLine.setEndY((h - startHour) * hourHeight);
             hourLine.setStroke(Color.LIGHTGRAY); // Couleur des lignes
