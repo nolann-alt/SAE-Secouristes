@@ -2,12 +2,16 @@
 package controller;
 
 // Importations nécessaires à JavaFX et au traitement des dates
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -17,17 +21,32 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import metier.persistence.Competences;
+import metier.persistence.Secouriste;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.YearMonth;
+import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class CalendrierMoisAdminController implements Initializable {
+
+    /** This DatePicker is used to select a date in the calendar view. */
+    @FXML private DatePicker datePickerStart;
+
+    /** This DatePicker is used to select a date in the calendar view. */
+    @FXML private DatePicker datePickerEnd;
+
+    /** This AnchorPane is used to hold the calendar view and its components. */
+    @FXML private ComboBox<String> hourComboBoxStart;
+
+    /** This AnchorPane is used to hold the calendar view and its components. */
+    @FXML private ComboBox<String> hourComboBoxEnd;
+
+
 
     // Label affichant l'heure dans la barre supérieure
     @FXML private Label timeLabel;
@@ -43,6 +62,65 @@ public class CalendrierMoisAdminController implements Initializable {
 
     // Référence au bouton actuellement sélectionné pour gérer le style
     private Button boutonSelectionne = null;
+
+    @FXML
+    /** This checkbox is used to select the custom option in the creation view. */
+    private CheckBox customCheckbox;  // checkbox du fxml
+    @FXML private CheckBox customCheckbox1;
+    @FXML private CheckBox customCheckbox2;
+    @FXML private CheckBox customCheckbox3;
+    @FXML private CheckBox customCheckbox4;
+    @FXML private CheckBox customCheckbox5;
+    @FXML private CheckBox customCheckbox6;
+    @FXML private CheckBox customCheckbox7;
+    @FXML private CheckBox customCheckbox8;
+
+    @FXML
+    /** This image view is used to display the checkbox image in the creation view. */
+    private ImageView checkboxImage;
+    // image de la checkbox dans le fxml
+    @FXML private ImageView checkboxImage1, checkboxImage2, checkboxImage3, checkboxImage4, checkboxImage5, checkboxImage6, checkboxImage7, checkboxImage8;
+
+
+    /** This attribute is used to checked if the checkbox is ticked */
+    private Image checkedImage; // Si la checkbox est coché
+
+    /** This attribute is used to checked if the checkbox is unticked */
+    private Image uncheckedImage; // Si la checkbox n'est pas coché
+
+    @FXML
+    /**
+     * This VBox is used to hold the popup pane that can be shown or hidden.
+     * It is defined in the FXML file and is used to display additional information or options.
+     */
+    private VBox popupPane;
+
+    @FXML
+    /**
+     * This Rectangle is used as an overlay to darken the background when the popup is visible.
+     * It is defined in the FXML file and is used to create a modal effect.
+     */
+    private Rectangle overlay;
+
+    @FXML
+    /** This ScrollPane is used to display the content of the dashboard. */
+    private ScrollPane scrollPane;
+
+    @FXML
+    /* This button is used to go back to the previous view. */
+    public Button backButton;
+
+    //Pour les modifications d'informations personnelles
+    @FXML private Label nomField;
+    @FXML private Label prenomField;
+    @FXML private Label adresseField;
+    @FXML private Label telephoneField;
+
+    private Secouriste secouriste;
+
+    @FXML private HBox competenceContainer;
+
+    @FXML private Label titrePopupLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -79,6 +157,104 @@ public class CalendrierMoisAdminController implements Initializable {
 
         // Affiche les jours du mois courant au chargement
         afficherMois(currentMonth);
+
+        // Charger les images
+        checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
+        uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());
+
+
+        // Setup toutes les checkboxes
+        setupCheckbox(customCheckbox, checkboxImage);
+        setupCheckbox(customCheckbox1, checkboxImage1);
+        setupCheckbox(customCheckbox2, checkboxImage2);
+        setupCheckbox(customCheckbox3, checkboxImage3);
+        setupCheckbox(customCheckbox4, checkboxImage4);
+        setupCheckbox(customCheckbox5, checkboxImage5);
+        setupCheckbox(customCheckbox6, checkboxImage6);
+        setupCheckbox(customCheckbox7, checkboxImage7);
+        setupCheckbox(customCheckbox8, checkboxImage8);
+
+        // Initialiser les heures (7h-22h)
+        ObservableList<String> hours = FXCollections.observableArrayList();
+        for (int i = 7; i <= 22; i++) {
+            hours.add(String.format("%02d:00h", i));
+        }
+        hourComboBoxStart.setItems(hours);
+        hourComboBoxEnd.setItems(hours);
+        hourComboBoxStart.getSelectionModel().selectFirst(); // Sélection par défaut
+        hourComboBoxEnd.getSelectionModel().selectFirst(); // Sélection par défaut
+
+        hourComboBoxStart.setVisibleRowCount(5); // 5 éléments visibles dans la liste déroulante
+        hourComboBoxEnd.setVisibleRowCount(5);
+    }
+
+    /**
+     * Définir l’image de départ et mettre à jour dynamiquement l’image associée à la checkbox.
+     *
+     * @param checkBox La case à cocher à configurer.
+     * @param imageView L’image qui représente graphiquement l’état de la case.
+     */
+    private void setupCheckbox(CheckBox checkBox, ImageView imageView) {
+        // Définir image de départ
+        imageView.setImage(uncheckedImage);
+
+        // Mettre à jour l’image dynamiquement selon l’état
+        // obs c'est ce qui permet de surveiller les changements de la propriété
+        // wasSelected c'est l'état précédent de la checkbox
+        // isNowSelected c'est l'état actuel de la checkbox
+        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            // Changement de l'image en fonction de isNowSelected
+            if (isNowSelected == true) {
+                imageView.setImage(checkedImage);
+            } else {
+                imageView.setImage(uncheckedImage);
+            }
+        });
+    }
+
+    private void initialiserCheckboxesDepuisCompetences(List<Competences> competences) {
+        List<String> competencesPossedees = new ArrayList<>();
+        for (Competences c : competences) {
+            competencesPossedees.add(c.getIntitule());
+        }
+
+        //Vérifier si la compétences n'est pas déjà acquise -> coché
+        if (competencesPossedees.contains("CO")) {
+            customCheckbox.setSelected(true);
+            checkboxImage.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("CP")) {
+            customCheckbox1.setSelected(true);
+            checkboxImage1.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("CE")) {
+            customCheckbox2.setSelected(true);
+            checkboxImage2.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("PBC")) {
+            customCheckbox3.setSelected(true);
+            checkboxImage3.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("PBF")) {
+            customCheckbox4.setSelected(true);
+            checkboxImage4.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("PSE1")) {
+            customCheckbox5.setSelected(true);
+            checkboxImage5.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("PSE2")) {
+            customCheckbox6.setSelected(true);
+            checkboxImage6.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("SSA")) {
+            customCheckbox7.setSelected(true);
+            checkboxImage7.setImage(checkedImage);
+        }
+        if (competencesPossedees.contains("VPSP")) {
+            customCheckbox8.setSelected(true);
+            checkboxImage8.setImage(checkedImage);
+        }
     }
 
     // Crée un bouton de mois avec son apparence selon qu'il est sélectionné ou non
@@ -270,5 +446,42 @@ public class CalendrierMoisAdminController implements Initializable {
             e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue CalendrierAdminSemaine : " + e.getMessage());
         }
+    }
+
+    @FXML
+    /**
+     * This method is called when the "Show Popup" button is clicked.
+     * It makes the popup pane visible.
+     */
+    private void showPopup() {
+        popupPane.setVisible(true);
+        overlay.setVisible(true);
+    }
+
+    @FXML
+    /**
+     * This method is called when the "Hide Popup" button is clicked.
+     * It hides the popup pane.
+     */
+    private void hidePopup() {
+        popupPane.setVisible(false);
+        overlay.setVisible(false);
+    }
+
+    public void handleValiderCompetences(ActionEvent actionEvent) {
+    }
+
+    public LocalDateTime getSelectedDateTimeStart() {
+        LocalDate date = datePickerStart.getValue();
+        String hourStr = hourComboBoxStart.getValue().replace("h", "");
+        LocalTime time = LocalTime.parse(hourStr);
+        return LocalDateTime.of(date, time);
+    }
+
+    public LocalDateTime getSelectedDateTimeEnd() {
+        LocalDate date = datePickerEnd.getValue();
+        String hourStr = hourComboBoxEnd.getValue().replace("h", "");
+        LocalTime time = LocalTime.parse(hourStr);
+        return LocalDateTime.of(date, time);
     }
 }

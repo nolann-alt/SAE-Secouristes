@@ -311,7 +311,7 @@ public class ProfilSecouristeAdminController implements Initializable{
      */
     private void onBackRelease() {
         backButton.setTranslateY(0);
-        backButton.setOpacity(0.7); // ou 1.0 selon ton besoin
+        backButton.setOpacity(0.7);
     }
 
     //pour les compétences sur le profil du secouriste
