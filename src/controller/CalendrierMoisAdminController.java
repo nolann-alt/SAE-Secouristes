@@ -14,11 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -112,6 +108,8 @@ public class CalendrierMoisAdminController implements Initializable {
     @FXML
     /* This button is used to go back to the previous view. */
     public Button backButton;
+
+    private final List<CheckBox> selectedSecouristeCheckBoxes = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -478,30 +476,18 @@ public class CalendrierMoisAdminController implements Initializable {
         return LocalDateTime.of(date, time);
     }
 
-    //Pour ajouter une carte
-    private void loadSecouristes() {
-        SecouristeDAO secouristeDAO = new SecouristeDAO();
-        List<Secouriste> secouristes = secouristeDAO.findAll();
-
-        for (Secouriste s : secouristes) {
-            eventList.getChildren().add(createSecouristeCard(s));
-        }
-    }
-
     private Node createSecouristeCard(Secouriste s) {
         HBox card = new HBox(15);
         card.setStyle("-fx-background-color: #f2f2f2; -fx-background-radius: 25;");
         card.setPadding(new Insets(10, 20, 10, 10));
         card.setPrefWidth(360);
-        card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        card.setAlignment(Pos.CENTER_LEFT);
 
-        // Avatar
         ImageView avatar = new ImageView(new Image(getClass().getResourceAsStream("/ressources/img/avatar.png")));
         avatar.setFitWidth(60);
         avatar.setFitHeight(60);
-        avatar.setClip(new javafx.scene.shape.Circle(30, 30, 30)); // rond
+        avatar.setClip(new javafx.scene.shape.Circle(30, 30, 30));
 
-        // Infos : Nom + Rôle
         Label nomPrenom = new Label(s.getPrenom() + "  " + s.getNom());
         nomPrenom.setStyle("-fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill: black;");
 
@@ -509,24 +495,27 @@ public class CalendrierMoisAdminController implements Initializable {
         role.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
 
         VBox infoBox = new VBox(5, nomPrenom, role);
-
-        // Bouton flèche (image)
-        ImageView arrow = new ImageView(new Image(getClass().getResourceAsStream("/ressources/img/bouton_liste_admin.png")));
-        arrow.setFitWidth(28);
-        arrow.setFitHeight(28);
-        arrow.setOnMouseClicked(event -> {
-            try {
-                GlobalController.setSelectedSecouriste(s);
-                GlobalController.switchView("../ressources/fxml/ProfilSecouristeAdmin.fxml", (Node) event.getSource());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
         Region spacer = new Region();
-        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        card.getChildren().addAll(avatar, infoBox, spacer, arrow);
+        CheckBox checkBox = new CheckBox();
+        checkBox.setUserData(s);
+        selectedSecouristeCheckBoxes.add(checkBox); // Stocke pour la validation
+
+        card.getChildren().addAll(avatar, infoBox, spacer, checkBox);
         return card;
+    }
+
+
+    private void loadSecouristes() {
+        SecouristeDAO dao = new SecouristeDAO();
+        List<Secouriste> secouristes = dao.findAll();
+
+        selectedSecouristeCheckBoxes.clear();
+        eventList.getChildren().clear();
+
+        for (Secouriste s : secouristes) {
+            eventList.getChildren().add(createSecouristeCard(s));
+        }
     }
 }

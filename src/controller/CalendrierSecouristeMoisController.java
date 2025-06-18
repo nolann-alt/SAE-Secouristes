@@ -2,22 +2,25 @@
 package controller;
 
 // Importations nécessaires à JavaFX et au traitement des dates
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+
 import java.io.IOException;
 import java.net.URL;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.YearMonth;
+import java.time.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -37,6 +40,17 @@ public class CalendrierSecouristeMoisController implements Initializable {
 
     // Référence au bouton actuellement sélectionné pour gérer le style
     private Button boutonSelectionne = null;
+
+    @FXML private VBox popupPane;
+    @FXML private Rectangle overlay;
+
+    @FXML private DatePicker datePickerStart;
+    @FXML private DatePicker datePickerEnd;
+
+    @FXML private ComboBox<String> hourComboBoxStart;
+    @FXML private ComboBox<String> hourComboBoxEnd;
+
+    @FXML private Button validerButton; // si besoin
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -243,4 +257,47 @@ public class CalendrierSecouristeMoisController implements Initializable {
             System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeSemaine : " + e.getMessage());
         }
     }
+
+    @FXML
+    private void showPopup() {
+        popupPane.setVisible(true);
+        overlay.setVisible(true);
+    }
+
+    @FXML
+    private void hidePopup() {
+        popupPane.setVisible(false);
+        overlay.setVisible(false);
+    }
+
+    @FXML
+    private void handleValiderIndisponibilite(ActionEvent event) {
+        try {
+            LocalDate dateDebut = datePickerStart.getValue();
+            LocalDate dateFin = datePickerEnd.getValue();
+
+            String heureDebutStr = hourComboBoxStart.getValue().replace("h", "");
+            String heureFinStr = hourComboBoxEnd.getValue().replace("h", "");
+
+            LocalTime heureDebut = LocalTime.parse(heureDebutStr);
+            LocalTime heureFin = LocalTime.parse(heureFinStr);
+
+            LocalDateTime debut = LocalDateTime.of(dateDebut, heureDebut);
+            LocalDateTime fin = LocalDateTime.of(dateFin, heureFin);
+
+            if (debut.isAfter(fin)) {
+                System.out.println("Erreur : L'heure de début est après l'heure de fin.");
+                return;
+            }
+
+            // TODO : enregistrer l’indisponibilité dans la base de données
+            System.out.println("Indisponibilité signalée de " + debut + " à " + fin);
+
+            hidePopup(); // Fermer la popup après validation
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
