@@ -25,7 +25,7 @@ public class Affectation {
      */
     public Affectation(int idSecouriste, String intituleComp, int idDPS) {
         this.idSecouriste = idSecouriste;
-        this.intituleComp = intituleComp;
+        this.intituleComp = "";
         this.idDPS = idDPS;
     }
 

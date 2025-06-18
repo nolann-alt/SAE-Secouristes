@@ -14,16 +14,26 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import metier.graphe.model.dao.AffectationDAO;
+import metier.graphe.model.dao.DPSDAO;
 import metier.graphe.model.dao.SecouristeDAO;
+import metier.persistence.Affectation;
 import metier.persistence.Competences;
+import metier.persistence.DPS;
 import metier.persistence.Secouriste;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.sql.Time;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +119,7 @@ public class CalendrierMoisAdminController implements Initializable {
     /* This button is used to go back to the previous view. */
     public Button backButton;
 
-    private final List<CheckBox> selectedSecouristeCheckBoxes = new ArrayList<>();
+    @FXML private ComboBox<String> hourComboBoxEnd1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -459,8 +469,74 @@ public class CalendrierMoisAdminController implements Initializable {
         overlay.setVisible(false);
     }
 
-    public void handleValiderCompetences(ActionEvent actionEvent) {
+    @FXML
+    public void handleValiderCompetences(ActionEvent event) {
+        // 1. Récupérer les infos du formulaire
+        LocalDate date = datePickerStart.getValue();
+        String heureDebutStr = hourComboBoxStart.getValue().replace("h", "");
+        String heureFinStr = hourComboBoxEnd.getValue().replace("h", "");
+        String couleur = hourComboBoxEnd1.getValue();
+
+        // 2. Vérifier que les champs sont remplis
+        if (date == null || heureDebutStr == null || heureFinStr == null || couleur == null) {
+            System.out.println("Veuillez remplir tous les champs.");
+            return;
+        }
+
+        try {
+            // 3. Convertir les heures
+            LocalTime timeDebut = LocalTime.parse(heureDebutStr);
+            LocalTime timeFin = LocalTime.parse(heureFinStr);
+            Time debutSQL = Time.valueOf(timeDebut);
+            Time finSQL = Time.valueOf(timeFin);
+
+            // 4. Créer le DPS
+            DPS dps = new DPS(
+                    0,
+                    "Nouveau DPS",
+                    Date.valueOf(date),
+                    debutSQL,
+                    finSQL,
+                    "Marathon",
+                    1,
+                    "Lieu générique",
+                    "Créé depuis l'IHM"
+            );
+            dps.setCouleur(couleur);
+
+            DPSDAO dpsDAO = new DPSDAO();
+            dpsDAO.create(dps);
+
+            // 5. Récupérer le dernier DPS inséré
+            List<DPS> tous = dpsDAO.findAll();
+            DPS dernier = tous.get(tous.size() - 1);
+
+            // 6. Ajouter les affectations des secouristes cochés
+            AffectationDAO affectationDAO = new AffectationDAO();
+            for (Node node : eventList.getChildren()) {
+                if (node instanceof HBox box) {
+                    for (Node child : box.getChildren()) {
+                        if (child instanceof CheckBox check && check.isSelected()) {
+                            Secouriste s = (Secouriste) box.getUserData();
+                            if (s != null) {
+                                Affectation aff = new Affectation((int) s.getId(), "", (int) dernier.getId());
+                                affectationDAO.create(aff);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 7. Fermer la pop-up
+            hidePopup();
+            System.out.println("DPS et affectations enregistrés.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de la création du DPS : " + e.getMessage());
+        }
     }
+
 
     public LocalDateTime getSelectedDateTimeStart() {
         LocalDate date = datePickerStart.getValue();
@@ -476,18 +552,31 @@ public class CalendrierMoisAdminController implements Initializable {
         return LocalDateTime.of(date, time);
     }
 
+    //Pour ajouter une carte
+    private void loadSecouristes() {
+        SecouristeDAO secouristeDAO = new SecouristeDAO();
+        List<Secouriste> secouristes = secouristeDAO.findAll();
+
+        for (Secouriste s : secouristes) {
+            eventList.getChildren().add(createSecouristeCard(s));
+        }
+    }
+
     private Node createSecouristeCard(Secouriste s) {
         HBox card = new HBox(15);
         card.setStyle("-fx-background-color: #f2f2f2; -fx-background-radius: 25;");
         card.setPadding(new Insets(10, 20, 10, 10));
         card.setPrefWidth(360);
         card.setAlignment(Pos.CENTER_LEFT);
+        card.setUserData(s); // Important pour récupérer le secouriste sélectionné plus tard
 
+        // Avatar
         ImageView avatar = new ImageView(new Image(getClass().getResourceAsStream("/ressources/img/avatar.png")));
         avatar.setFitWidth(60);
         avatar.setFitHeight(60);
-        avatar.setClip(new javafx.scene.shape.Circle(30, 30, 30));
+        avatar.setClip(new javafx.scene.shape.Circle(30, 30, 30)); // rond
 
+        // Infos : Nom + Rôle
         Label nomPrenom = new Label(s.getPrenom() + "  " + s.getNom());
         nomPrenom.setStyle("-fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill: black;");
 
@@ -495,27 +584,15 @@ public class CalendrierMoisAdminController implements Initializable {
         role.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
 
         VBox infoBox = new VBox(5, nomPrenom, role);
+
         Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
+        // Nouvelle CheckBox pour sélection
         CheckBox checkBox = new CheckBox();
-        checkBox.setUserData(s);
-        selectedSecouristeCheckBoxes.add(checkBox); // Stocke pour la validation
 
+        // Ajout des éléments à la carte
         card.getChildren().addAll(avatar, infoBox, spacer, checkBox);
         return card;
-    }
-
-
-    private void loadSecouristes() {
-        SecouristeDAO dao = new SecouristeDAO();
-        List<Secouriste> secouristes = dao.findAll();
-
-        selectedSecouristeCheckBoxes.clear();
-        eventList.getChildren().clear();
-
-        for (Secouriste s : secouristes) {
-            eventList.getChildren().add(createSecouristeCard(s));
-        }
     }
 }

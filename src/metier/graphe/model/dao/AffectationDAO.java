@@ -2,73 +2,59 @@ package metier.graphe.model.dao;
 
 import metier.persistence.Affectation;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class AffectationDAO extends DAO<Affectation> {
 
     @Override
     public int create(Affectation affectation) {
-        String sql = "INSERT INTO Affectation (idSecouriste, idDPS) VALUES (?, ?)";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, affectation.getIdSecouriste());
-            ps.setLong(2, affectation.getIdDPS());
-            return ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
+        String query = "INSERT INTO Affectation (idSecouriste, idDPS) VALUES (?, ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
-    public int delete(Affectation affectation) {
-        String sql = "DELETE FROM Affectation WHERE idSecouriste = ? AND idDPS = ?";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, affectation.getIdSecouriste());
-            ps.setLong(2, affectation.getIdDPS());
-            return ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
+            ps.setInt(1, affectation.getIdSecouriste());
+            ps.setInt(2, affectation.getIdDPS());
 
-    public int deleteAllByDPS(long idDPS) {
-        String sql = "DELETE FROM Affectation WHERE idDPS = ?";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, idDPS);
-            return ps.executeUpdate();
+            return ps.executeUpdate(); // 1 si insertion réussie
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return -1; // erreur
         }
     }
 
     @Override
     public int update(Affectation affectation) {
-        return 0; // Non applicable
+        // Pas pertinent si la table ne contient que deux clés primaires (pas de mise à jour)
+        throw new UnsupportedOperationException("Update non supporté pour Affectation.");
+    }
+
+    @Override
+    public int delete(Affectation affectation) {
+        String query = "DELETE FROM Affectation WHERE idSecouriste = ? AND idDPS = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, affectation.getIdSecouriste());
+            ps.setInt(2, affectation.getIdDPS());
+
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override
     public Affectation findByID(Long id) {
-        return null; // Non applicable (clé composite)
+        // Pas applicable : pas de clé primaire simple
+        throw new UnsupportedOperationException("findByID non supporté pour Affectation.");
     }
 
     @Override
     public List<Affectation> findAll() {
-        List<Affectation> list = new ArrayList<>();
-        String sql = "SELECT * FROM Affectation";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                list.add(new Affectation(
-                        rs.getInt("idSecouriste"),
-                        "", // ou null si tu préfères, car intituleComp n’est pas en base
-                        rs.getInt("idDPS")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
+        throw new UnsupportedOperationException("findAll non implémenté pour Affectation.");
     }
 }

@@ -486,7 +486,11 @@
                             <Label fx:id="titrePopupLabel21" layoutX="10.0" layoutY="10.0" style="-fx-text-fill: black; -fx-font-size: 16;" text="Note : les secouristes non disponibles sur cet interval de date ne sont pas affichés" textAlignment="CENTER" wrapText="true" />
                         </children>
                     </VBox>
-                    <VBox fx:id="eventList" alignment="TOP_CENTER" prefHeight="196.0" prefWidth="393.0" spacing="5" styleClass="event-list" GridPane.rowIndex="5" />
+                    <ScrollPane fitToWidth="true" prefHeight="196.0" prefWidth="393.0" style="-fx-background: transparent;" GridPane.rowIndex="5">
+                        <content>
+                            <VBox fx:id="eventList" alignment="TOP_CENTER" spacing="5" styleClass="event-list" />
+                        </content>
+                    </ScrollPane>
                 </children>
             </GridPane>
         </children>

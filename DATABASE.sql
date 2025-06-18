@@ -97,3 +97,6 @@ CREATE TABLE Affectation (
                              FOREIGN KEY (idSecouriste) REFERENCES Secouriste(id),
                              FOREIGN KEY (idDPS) REFERENCES DPS(id)
 );
+
+-- Insérer :
+INSERT INTO Sport (nom) VALUES ("Marathon");
