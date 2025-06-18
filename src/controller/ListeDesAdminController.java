@@ -10,51 +10,57 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-
-
-
+/**
+ * Controller for the view listing all admins.
+ * Displays the current time, manages popup behavior, and handles navigation between views.
+ *
+ * Authors: M. Weis, N. Lescop, M. Gouelo, A. Jan
+ * Version: 1.0
+ */
 public class ListeDesAdminController implements Initializable {
 
-    @FXML private Label timeLabel;
+    @FXML private Label timeLabel; // Affiche l'heure en haut de l'écran
 
+    @FXML
+    private VBox popupPane; // Panneau de la popup (masqué par défaut)
+
+    @FXML
+    private Rectangle overlay; // Fond sombre derrière la popup
+
+    /**
+     * Initializes the view by displaying the current time.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Affiche l'heure dans la barre supérieure
         HeureController.afficherHeure(timeLabel);
     }
 
-    @FXML
     /**
-     * This VBox is used to hold the popup pane that can be shown or hidden.
-     * It is defined in the FXML file and is used to display additional information or options.
+     * Shows the popup and overlay when a button is clicked.
      */
-    private VBox popupPane;
+    @FXML
+    private void showPopup() {
+        popupPane.setVisible(true);   // Affiche le contenu de la popup
+        overlay.setVisible(true);     // Affiche le fond sombre derrière
+    }
 
-    @FXML
     /**
-     * This Rectangle is used as an overlay to darken the background when the popup is visible.
-     * It is defined in the FXML file and is used to create a modal effect.
+     * Hides the popup and overlay when closing.
      */
-    private Rectangle overlay;
+    @FXML
+    private void hidePopup() {
+        popupPane.setVisible(false);  // Cache le contenu
+        overlay.setVisible(false);    // Cache le fond sombre
+    }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the TableauDeBord.fxml and sets it as the new scene with rounded corners and transparency.
-     *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * Navigates back to the main dashboard view for the rescuer.
      */
+    @FXML
     private void handleTableauDeBord(MouseEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
         } catch (IOException e) {
@@ -63,16 +69,11 @@ public class ListeDesAdminController implements Initializable {
         }
     }
 
-    @FXML
     /**
-     * This method is called when the "Calendrier Secouriste" button is clicked.
-     * It loads the CalendrierSecouristeSemaine.fxml and sets it as the new scene with rounded corners and transparency.
-     *
-     * @param mouseEvent The MouseEvent triggered by the button click.
+     * Navigates to the weekly calendar view for the rescuer.
      */
+    @FXML
     private void handleCalendrierSecouriste(MouseEvent mouseEvent) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaine.fxml", (Node) mouseEvent.getSource());
         } catch (IOException e) {
@@ -81,37 +82,11 @@ public class ListeDesAdminController implements Initializable {
         }
     }
 
-    @FXML
     /**
-     * This method is called when the "Show Popup" button is clicked.
-     * It makes the popup pane visible.
+     * Navigates to the rescuer's profile view.
      */
-    private void showPopup() {
-        popupPane.setVisible(true);
-        overlay.setVisible(true);
-    }
-
     @FXML
-    /**
-     * This method is called when the "Hide Popup" button is clicked.
-     * It hides the popup pane.
-     */
-    private void hidePopup() {
-        popupPane.setVisible(false);
-        overlay.setVisible(false);
-    }
-
-    @FXML
-    /**
-     * This method is called when the back button is clicked.
-     * It loads the ProfilSecouriste.fxml and sets it as the new scene with rounded corners and transparency.
-     *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
-     */
     private void handleProfilClick(MouseEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/ProfilSecouriste.fxml", (Node) event.getSource());
         } catch (IOException e) {

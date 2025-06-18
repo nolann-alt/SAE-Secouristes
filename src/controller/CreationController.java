@@ -1,8 +1,15 @@
+/**
+ * Controller for the account creation view.
+ * Manages password visibility, checkbox visuals, and form validation before account creation.
+ * Handles navigation back to the welcome view after successful registration.
+ *
+ * @author M. Weis, N. Lescop, M. Gouelo, A. Jan
+ * @version 1.0
+ */
 package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -11,238 +18,146 @@ import metier.persistence.Secouriste;
 import metier.graphe.model.dao.SecouristeDAO;
 
 import java.io.IOException;
-import java.net.URL;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-
-
-/**
- * This class allows to manage different elements of the creation view.
- */
 public class CreationController {
 
+    // Label d'affichage de l'heure
     @FXML private Label timeLabel;
 
-    @FXML
-    /** This boolean is used to check if the password is visible or not. */
-    private PasswordField passwordField;
+    // Champ masqué pour entrer le mot de passe
+    @FXML private PasswordField passwordField;
 
-    @FXML
-    /** This boolean is used to check if the password is visible or not. */
-    private TextField visiblePasswordField;
+    // Champ visible pour afficher le mot de passe en clair
+    @FXML private TextField visiblePasswordField;
 
-    @FXML
-    /** This boolean is used to check if the password is visible or not. */
-    private ImageView toggleEye;
+    // Icône "œil" pour basculer entre mot de passe masqué/visible
+    @FXML private ImageView toggleEye;
 
-    /** This boolean is used to check if the password is visible or not. */
+    // Booléen pour suivre l’état de visibilité du mot de passe
     private boolean passwordVisible = false;
 
-    @FXML
-    /* This button is used to go back to the previous view. */
-    private Button backButton;
+    // Bouton pour revenir à la vue précédente (Accueil)
+    @FXML private Button backButton;
 
-    @FXML
-    /** This checkbox is used to select the custom option in the creation view. */
-    private CheckBox customCheckbox;  // checkbox du fxml
+    // Checkbox personnalisée (ex. : se souvenir, condition, etc.)
+    @FXML private CheckBox customCheckbox;
 
-    @FXML
-    /** This image view is used to display the checkbox image in the creation view. */
-    private ImageView checkboxImage; // image de la checkbox dans le fxml
+    // Image associée à l'état de la checkbox
+    @FXML private ImageView checkboxImage;
 
-    /** This qttrribut is used to checked if the checkbox is ticked */
-    private Image checkedImage; // Si la checkbox est coché
-    /** This qttrribut is used to checked if the checkbox is unticked */
-    private Image uncheckedImage; // Si la checkbox n'est pas coché
+    // Images pour les états cochée et non cochée
+    private Image checkedImage;
+    private Image uncheckedImage;
 
-    // pour Marin
+    // Champs de saisie pour nom, prénom et email
     @FXML private TextField nomField;
     @FXML private TextField prenomField;
     @FXML private TextField emailField;
 
-    //label erreur
+    // Label pour afficher des messages d’erreur
     @FXML private Label errorLabel;
 
-    @FXML
     /**
-     * This method is called to initialize the controller after its root element has been
-     * processed. It is used to set up the initial state of the controller and
-     * to bind the checkbox state to the image displayed.
+     * Initializes the controller by setting up clock, checkbox visuals, and default states.
      */
+    @FXML
     public void initialize() {
-        HeureController.afficherHeure(timeLabel);
-        // Charger les images
+        HeureController.afficherHeure(timeLabel); // Affichage dynamique de l'heure
+
+        // Chargement des images d'état de la checkbox
         checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
         uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());
 
+        checkboxImage.setImage(uncheckedImage); // Par défaut, décoché
 
-        // Définir image de départ
-        checkboxImage.setImage(uncheckedImage);
-
-        // Mettre à jour l’image dynamiquement selon l’état
-        // obs c'est ce qui permet de surveiller les changements de la propriété
-        // wasSelected c'est l'état précédent de la checkbox
-        // isNowSelected c'est l'état actuel de la checkbox
+        // Mise à jour dynamique de l'image selon la sélection de la checkbox
         customCheckbox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            // Changement de l'image en fonction de isNowSelected
-            if (isNowSelected == true) {
-                checkboxImage.setImage(checkedImage);
-            } else {
-                checkboxImage.setImage(uncheckedImage);
-            }
+            checkboxImage.setImage(isNowSelected ? checkedImage : uncheckedImage);
         });
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the Accueil.fxml and sets it as the new scene with rounded corners and transparency.
-     *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * Navigates back to the welcome view (Accueil).
      */
+    @FXML
     private void handleBack(ActionEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
+            System.out.println("Erreur de retour vers Accueil : " + e.getMessage());
         }
     }
 
-    @FXML
-    /**
-     * This method is called when the back button is hovered over.
-     * It changes the opacity of the back button to indicate hover state.
-     */
-    private void onBackHover() {
-        backButton.setOpacity(0.7);
-    }
+    // === Gestion visuelle du bouton retour ===
 
-    @FXML
-    /**
-     * This method is called when the mouse exits the back button area.
-     * It resets the opacity of the back button to its normal state.
-     */
-    private void onBackExit() {
-        backButton.setOpacity(1.0);
-    }
+    @FXML private void onBackHover()   { backButton.setOpacity(0.7); }
+    @FXML private void onBackExit()    { backButton.setOpacity(1.0); }
+    @FXML private void onBackPress()   { backButton.setTranslateY(2); backButton.setOpacity(0.5); }
+    @FXML private void onBackRelease() { backButton.setTranslateY(0); backButton.setOpacity(0.7); }
 
-    @FXML
     /**
-     * This method is called when the back button is pressed.
-     * It changes the position and opacity of the back button to indicate press state.
+     * Toggles password visibility between masked and plain text.
      */
-    private void onBackPress() {
-        backButton.setTranslateY(2);
-        backButton.setOpacity(0.5);
-    }
-
-    @FXML
-    /**
-     * This method is called when the back button is released.
-     * It resets the position and opacity of the back button to its normal state.
-     */
-    private void onBackRelease() {
-        backButton.setTranslateY(0);
-        backButton.setOpacity(0.7); // ou 1.0 selon ton besoin
-    }
-
     @FXML
     private void togglePasswordVisibility() {
         if (passwordVisible) {
-            // CAS 1 : mot de passe visible → on repasse en mode masqué
-
-            // Copier le texte du champ visible vers le champ masqué
+            // Masquer à nouveau le mot de passe
             passwordField.setText(visiblePasswordField.getText());
-
-            // Afficher le champ masqué (PasswordField)
-            passwordField.setVisible(true);
-            passwordField.setManaged(true);
-
-            // Masquer le champ visible (TextField)
-            visiblePasswordField.setVisible(false);
-            visiblePasswordField.setManaged(false);
-
-            // Changer l’image de l’icône en "œil fermé"
+            passwordField.setVisible(true); passwordField.setManaged(true);
+            visiblePasswordField.setVisible(false); visiblePasswordField.setManaged(false);
             toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/oeil_ferme.png")));
-
-            // Mettre à jour l’état
             passwordVisible = false;
-
         } else {
-            // CAS 2 : mot de passe masqué → on le rend visible
-
-            // Copier le texte du champ masqué vers le champ visible
+            // Afficher le mot de passe
             visiblePasswordField.setText(passwordField.getText());
-
-            // Afficher le champ visible (TextField)
-            visiblePasswordField.setVisible(true); // On le rend visible
-            visiblePasswordField.setManaged(true); // Et on lui laisse sa place dans le layout
-
-            // Masquer le champ masqué (PasswordField)
-            passwordField.setVisible(false); // On le cache
-            passwordField.setManaged(false); // Et on lui enlève sa place dans le layout
-
-            // Changer l’image de l’icône en "œil ouvert"
+            visiblePasswordField.setVisible(true); visiblePasswordField.setManaged(true);
+            passwordField.setVisible(false); passwordField.setManaged(false);
             toggleEye.setImage(new Image(getClass().getResourceAsStream("../ressources/img/oeil_ouvert.png")));
-
-            // Mettre à jour l’état
             passwordVisible = true;
         }
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the Accueil.fxml and sets it as the new scene with rounded corners and transparency.
-     *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * Handles account creation after validating the form fields.
      */
+    @FXML
     private void handleCreationCompte(ActionEvent event) {
         String nom = nomField.getText().trim();
         String prenom = prenomField.getText().trim();
         String email = emailField.getText().trim();
         String password = visiblePasswordField.isVisible() ? visiblePasswordField.getText() : passwordField.getText();
 
-        // Vérifier les champs vides
+        // Vérification des champs obligatoires
         if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || password.isEmpty()) {
             showAlert("Tous les champs sont requis.");
             return;
         }
 
-        // Vérifier nom et prénom
+        // Vérification de la validité du nom/prénom
         if (!estNomValide(nom) || !estNomValide(prenom)) {
-            showAlert("❌ Le nom et le prénom ne doivent contenir que des lettres, des tirets ou des espaces.");
+            showAlert("Le nom et le prénom ne doivent contenir que des lettres, des tirets ou des espaces.");
             return;
         }
 
-        // Vérifier email
+        // Vérification de l'adresse email
         if (!email.contains("@")) {
             showAlert("L'email doit contenir un '@'.");
             return;
         }
 
+        // Vérifie que l'email n'existe pas déjà
         SecouristeDAO dao = new SecouristeDAO();
-
         if (dao.findByEmail(email) != null) {
             showAlert("Un compte avec cet email existe déjà !");
             return;
         }
 
-        // Créer le secouriste sans numéro de téléphone
+        // Création d’un nouveau secouriste sans téléphone
         Secouriste secouriste = new Secouriste(0, nom, prenom, email, password, null);
         int result = dao.create(secouriste);
 
+        // Si création réussie, retour à l’accueil
         if (result > 0) {
             try {
                 GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
@@ -255,11 +170,16 @@ public class CreationController {
         }
     }
 
+    /**
+     * Checks if a name or first name is valid (only letters, hyphens and spaces).
+     */
     private boolean estNomValide(String nom) {
         return nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ\\-\\s]+$");
     }
 
-    //pour les pop up
+    /**
+     * Displays an error alert with the provided message.
+     */
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur d'inscription");

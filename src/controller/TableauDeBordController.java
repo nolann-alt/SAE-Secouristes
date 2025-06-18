@@ -2,90 +2,51 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-
-import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.*;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.util.Duration;
 import metier.graphe.model.EventData;
 import metier.graphe.model.dao.DPSDAO;
 import metier.persistence.DPS;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
 
 public class TableauDeBordController {
 
-    @FXML
-    /** This ScrollPane is used to display the content of the dashboard. */
-    private ScrollPane scrollPane;
+    @FXML private ScrollPane scrollPane;
+    @FXML private ScrollPane scrollPaneCalendar;
+    @FXML private Label prenomLabel;
+    @FXML private Label timeLabel;
+    @FXML private AnchorPane calendarPane;
 
-    @FXML
-    private Label prenomLabel;
-
-    @FXML
-    private ScrollPane scrollPaneCalendar;
-
-    @FXML
-    /**
-     * This label is used to display the current time in the application.
-     * It is updated every second to show the current time in the format "HH:mm:ss".
-     */
-    private Label timeLabel;
-
-    @FXML
-    /**
-     * This AnchorPane is used to display the calendar for the selected week.
-     * It is defined in the FXML file and is used to show the schedule for each day.
-     */
-    private AnchorPane calendarPane;
-
-    /** This attributes define the start hours of the calendar display */
     private final int startHour = 7;
-
-    /** This attributes define the end hours of the calendar display */
     private final int endHour = 22;
+    private final int hourHeight = 60;
 
-    /** This attributes define the height of each hour slot in pixels */
-    private final int hourHeight = 60; // 60 pixels par heure
-
-    /**
-     * This list holds the events for the current day.
-     * Each event is represented by a LocalTime array containing the start and end times.
-     */
     private final Map<LocalDate, List<EventData>> eventMap = new HashMap<>();
 
     /**
-     * This method is called to initialize the controller after its root element has been
-     * processed. It is used to set up the initial state of the controller and
-     * to handle the scroll event for the ScrollPane.
+     * Initializes the dashboard for the connected secouriste.
+     * Displays today's events and sets up scroll behavior.
      */
     public void initialize() {
-        // Afficher les jours (par ex : Lun 24, Mar 25...)
-        LocalDate today = LocalDate.now(); // Charge la date du jour
+        LocalDate today = LocalDate.now();
 
+        // Récupère les événements (DPS) liés à l'utilisateur connecté
         long curentUser = GlobalController.getCurrentUser().getId();
-
         DPSDAO dao = new DPSDAO();
         List<DPS> affectes = dao.findBySecouriste(curentUser);
 
@@ -102,59 +63,44 @@ public class TableauDeBordController {
         }
 
         displayDay(today);
-
         HeureController.afficherHeure(this.timeLabel);
-
         prenomLabel.setText(GlobalController.currentUser.getPrenom());
 
-        // Multiplie la vitesse de scroll
-        this.scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
-            double deltaY = event.getDeltaY() * 3; // Multiplier la vitesse de scroll par 3
-            // Ajuste la position de défilement du ScrollPane en fonction de la vitesse de scroll
-            scrollPane.setVvalue(this.scrollPane.getVvalue() - deltaY / this.scrollPane.getContent().getBoundsInLocal().getHeight());
-            event.consume(); // empêche le scroll par défaut
+        // Accélère le scroll vertical
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            double deltaY = event.getDeltaY() * 3;
+            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY / scrollPane.getContent().getBoundsInLocal().getHeight());
+            event.consume();
         });
 
-        this.scrollPaneCalendar.setPannable(true);
+        scrollPaneCalendar.setPannable(true);
     }
 
     /**
-     * This method displays the calendar for the specified day.
-     * It clears the current calendar pane and populates it with the schedule for the given day.
+     * Displays the events and hour lines for the selected day.
      *
-     * @param day The day to display in the calendar.
+     * @param day The date to display.
      */
     private void displayDay(LocalDate day) {
         calendarPane.getChildren().clear();
 
-        // Affiche les lignes horaires
+        // Affiche les lignes d'heures
         for (int h = startHour; h <= endHour; h++) {
-
-            // 10 : 10 pixels depuis la gauche
-            // (h - startHour) : Calcul du numéro d'heure relatif
-            // * hourHeight : Conversion en pixels (hauteur d'un créneau horaire)
-            // + 15 : Décalage vertical supplémentaire
-            // h + "h00" : Formatage du texte de l'heure
             Text hourText = new Text(10, (h - startHour) * hourHeight + 15, h + "h00");
             calendarPane.getChildren().add(hourText);
 
-            // Ligne horizontale pour chaque heure
-            Line hourLine = new Line();
-            hourLine.setStartX(60); // Position de début sur l'axe X (après le texte de l'heure)
-            hourLine.setEndX(363); // Largeur du planning
-            hourLine.setStartY((h - startHour) * hourHeight);
-            hourLine.setEndY((h - startHour) * hourHeight);
-            hourLine.setStroke(Color.LIGHTGRAY); // Couleur des lignes
-            hourLine.setStrokeWidth(1); // Épaisseur fine
-
+            Line hourLine = new Line(60, (h - startHour) * hourHeight, 363, (h - startHour) * hourHeight);
+            hourLine.setStroke(Color.LIGHTGRAY);
+            hourLine.setStrokeWidth(1);
             calendarPane.getChildren().add(hourLine);
         }
 
-        // Ajustement de la hauteur minimale pour le ScrollPane
-        double totalHeight = (endHour - startHour) * hourHeight + 200; // Heures + espace
+        // Ajuste la taille verticale du calendrier
+        double totalHeight = (endHour - startHour) * hourHeight + 200;
         calendarPane.setMinHeight(totalHeight);
         calendarPane.setPrefHeight(totalHeight);
 
+        // Ajoute les événements de la journée
         List<EventData> events = eventMap.get(day);
         if (events != null) {
             for (EventData event : events) {
@@ -164,44 +110,22 @@ public class TableauDeBordController {
     }
 
     /**
-     * This method creates an event rectangle on the calendar pane.
-     * It calculates the position and height based on the start and end times of the event.
+     * Creates a visual event block on the calendar for the given time slot.
      *
-     * @param label The label for the event.
-     * @param start The start time of the event.
-     * @param end The end time of the event.
-     * @param color The color of the event rectangle border.
+     * @param label Label of the event.
+     * @param start Start time.
+     * @param end End time.
+     * @param color Color of the event border and background.
      */
     private void createEvent(String label, LocalTime start, LocalTime end, Color color) {
-        // Calcul de la position verticale (Y) du début de l'événement
-        double startY = (start.getHour() + (start.getMinute() / 60.0) - startHour) * hourHeight;
-        // Explication :
-        // 1. start.getHour() : heure de début (ex: 14 pour 14h25)
-        // 2. start.getMinute() / 60.0 : conversion des minutes en fraction d'heure (ex: 25/60 = 0.416)
-        // 3. - startHour : soustrait l'heure de début de l'affichage (ex: -8 si le planning commence à 8h)
-        // 4. * hourHeight : convertit en pixels (ex: si hourHeight=60px/h, (14.416-8)*60 = 385px)
-
-        // Calcul de la hauteur de l'événement en pixels
+        double startY = (start.getHour() + start.getMinute() / 60.0 - startHour) * hourHeight;
         double height = ((end.toSecondOfDay() - start.toSecondOfDay()) / 3600.0) * hourHeight;
-        // Explication :
-        // 1. end.toSecondOfDay() - start.toSecondOfDay() : durée totale en secondes
-        // 2. / 3600.0 : conversion secondes → heures (3600s = 1h)
-        // 3. * hourHeight : conversion en pixels selon l'échelle d'affichage
-        // Exemple pour 14h30-15h45 :
-        // (56700 - 52200) = 4500 secondes (1h15)
-        // 4500/3600 = 1.25 heures
-        // 1.25 * 60px/h = 75px de hauteur
 
-        // 100 : Position X (100px depuis la gauche)
-        // startY : Position Y calculée dynamiquement
-        // 200 : Largeur fixe (200px)
-        // height : Hauteur calculée en fonction de la durée
         Rectangle rect = new Rectangle(100, startY, 200, height);
         rect.setFill(new Color(color.getRed(), color.getGreen(), color.getBlue(), 0.2));
         rect.setStroke(color);
 
         VBox textContainer = new VBox();
-        // Même dimension que rect
         textContainer.setLayoutX(100);
         textContainer.setLayoutY(startY);
         textContainer.setPrefSize(200, height);
@@ -209,90 +133,69 @@ public class TableauDeBordController {
 
         Label labelText = new Label(start + " - " + end + "\n" + label);
         labelText.setStyle("-fx-text-fill: black;");
-        labelText.setWrapText(true); // Permet de revenir à la ligne
-        labelText.setTextAlignment(TextAlignment.CENTER); // Centre le texte à l'intérieur du Label
-        labelText.setAlignment(Pos.CENTER); // Centre dans la VBox
-        labelText.setMaxWidth(195); // Limite la largeur pour forcer les retours à la ligne
+        labelText.setWrapText(true);
+        labelText.setTextAlignment(TextAlignment.CENTER);
+        labelText.setAlignment(Pos.CENTER);
+        labelText.setMaxWidth(195);
 
         textContainer.getChildren().add(labelText);
         calendarPane.getChildren().addAll(rect, textContainer);
-
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the CalendrierSecouristeSemaine.fxml and sets it as the new scene with rounded corners and transparency.
+     * Navigates to the weekly calendar view.
      *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * @param event Click event from the calendar icon.
      */
+    @FXML
     private void handleCalendrierSecouriste(MouseEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaine.fxml", (Node) event.getSource());
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue CalendrierSecouriste : " + e.getMessage());
         }
     }
 
-
-    @FXML
     /**
-     * This method is called when the "Logout" button is clicked.
-     * It sets the current user to null and switches the view to Accueil.fxml.
+     * Logs out the user and returns to the welcome view.
      *
-     * @param event The ActionEvent triggered by the button click.
+     * @param event Click event from the logout button.
      */
+    @FXML
     private void handleLogout(ActionEvent event) {
         try {
             GlobalController.currentUser = null;
             GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Erreur lors du chargement de la vue Accueil : " + e.getMessage());
         }
-
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the NotificationSecouriste.fxml and sets it as the new scene with rounded corners and transparency.
+     * Opens the notification view for secouristes.
      *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * @param event Click event from the bell icon.
      */
+    @FXML
     private void handleAlertes(MouseEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/NotificationSecouriste.fxml", (Node) event.getSource());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             System.out.println("Erreur lors du chargement de la vue NotificationSecouriste : " + e.getMessage());
         }
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the ProfilSecouriste.fxml and sets it as the new scene with rounded corners and transparency.
+     * Opens the profile view for the connected secouriste.
      *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * @param event Click event from the profile icon.
      */
+    @FXML
     private void handleProfilClick(MouseEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/ProfilSecouriste.fxml", (Node) event.getSource());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
             System.out.println("Erreur lors du chargement de la vue ProfilSecouriste : " + e.getMessage());
         }
     }
 }
-

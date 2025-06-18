@@ -11,87 +11,82 @@ import javafx.scene.control.*;
 import javafx.scene.input.ScrollEvent;
 import javafx.util.Duration;
 import metier.persistence.Admin;
-import metier.persistence.Secouriste;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
 
-
+/**
+ * Contrôleur de la vue de profil pour un administrateur.
+ * Affiche les informations personnelles de l'administrateur connecté.
+ * Gère la déconnexion et le retour à la vue précédente via une animation.
+ *
+ * @author M. Weis, N. Lescop, M. Gouelo, A. Jan
+ * @version 1.0
+ */
 public class ProfilAdminController implements Initializable {
 
     @FXML private Label timeLabel;
 
     @FXML
-    /** This ScrollPane is used to display the content of the dashboard. */
+    /** Composant permettant le défilement de l'écran */
     private ScrollPane scrollPane;
 
     @FXML
-    /* This button is used to go back to the previous view. */
+    /** Bouton de retour à la vue précédente */
     public Button backButton;
 
-    //Pour les modifications d'informations personnelles
-    @FXML private javafx.scene.control.Label nomField;
-    @FXML private javafx.scene.control.Label prenomField;
-    @FXML private javafx.scene.control.Label adresseField;
-    @FXML private javafx.scene.control.Label telephoneField;
+    // Champs pour afficher les données personnelles de l'admin
+    @FXML private Label nomField;
+    @FXML private Label prenomField;
+    @FXML private Label adresseField;
+    @FXML private Label telephoneField;
 
-    @Override
     /**
-     * This method is called to initialize the controller after its root element has been
-     * processed. It is used to set up the initial state of the controller and
-     * to handle the scroll event for the ScrollPane.
+     * Méthode appelée à l'initialisation de la vue.
+     * Elle affiche l'heure actuelle et les informations de l'admin.
+     * Elle personnalise aussi la vitesse de défilement du ScrollPane.
+     *
+     * @param location L'emplacement utilisé pour résoudre les chemins relatifs (non utilisé ici).
+     * @param resources Les ressources utilisées pour l'internationalisation (non utilisé ici).
      */
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        // Affiche l'heure en continu
         HeureController.afficherHeure(timeLabel);
 
-        // Multiplie la vitesse de scroll
+        // Accélère la vitesse de défilement vertical
         this.scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
-            double deltaY = event.getDeltaY() * 3; // Multiplier la vitesse de scroll par 3
-            // Ajuste la position de défilement du ScrollPane en fonction de la vitesse de scroll
-            scrollPane.setVvalue(this.scrollPane.getVvalue() - deltaY / this.scrollPane.getContent().getBoundsInLocal().getHeight());
-            event.consume(); // empêche le scroll par défaut
+            double deltaY = event.getDeltaY() * 3;
+            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY / scrollPane.getContent().getBoundsInLocal().getHeight());
+            event.consume();
         });
 
+        // Récupère l'utilisateur admin actuellement connecté
         Admin admin = GlobalController.getCurrentAdmin();
         if (admin != null) {
             nomField.setText(admin.getNom());
             prenomField.setText(admin.getPrenom());
             adresseField.setText(admin.getEmail());
-            telephoneField.setText("Non disponible");
+            telephoneField.setText("Non disponible"); // Le téléphone n'est pas stocké pour l'admin
         }
-
-//        Secouriste user = GlobalController.currentUser;
-//        nomField.setText(user.getNom());
-//        prenomField.setText(user.getPrenom());
-//        adresseField.setText(user.getEmail());
-//        telephoneField.setText(user.getTelephone() != null ? user.getTelephone() : "");
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It retrieves the previous view from the GlobalController's view history
-     * and sets it as the new root of the current scene.
+     * Méthode appelée lors du clic sur le bouton "Retour".
+     * Remplace la scène courante par la vue précédente enregistrée.
      *
-     * @param event The ActionEvent triggered by the button click.
+     * @param event L'événement de clic déclenché par le bouton.
      */
+    @FXML
     private void handleBack(ActionEvent event) {
         if (!GlobalController.getViewHistory().isEmpty()) {
-            // Permet de revenir à la vue précédente, viewHistory est une Stack qui contient les vues précédentes
+            // On récupère la vue précédente
             Parent previousView = GlobalController.getViewHistory().pop();
-            // On récupère la scène actuelle à partir de l'élément source de l'événement
             Scene scene = ((Node) event.getSource()).getScene();
             scene.setRoot(previousView);
 
-            // Crée une transition de gauche vers la position normale (0)
+            // Animation de transition depuis la gauche
             TranslateTransition transition = new TranslateTransition(Duration.millis(300), previousView);
             transition.setFromX(-scene.getWidth());
             transition.setToX(0);
@@ -99,17 +94,14 @@ public class ProfilAdminController implements Initializable {
         }
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the Accueil.fxml and sets it as the new scene with rounded corners and transparency.
+     * Méthode appelée lors du clic sur le bouton "Déconnexion".
+     * Redirige vers l'écran d'accueil de l'application.
      *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * @param event L'événement déclenché par le clic.
      */
+    @FXML
     private void handleDeconnexion(ActionEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
         } catch (IOException e) {

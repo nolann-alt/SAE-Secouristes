@@ -2,7 +2,6 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -11,49 +10,46 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-
-
+/**
+ * Controller for the notification view accessible by rescuers.
+ * Allows access to contact admins, show calendar, and toggle a popup panel.
+ * Also manages redirection to other key views.
+ *
+ * Authors: M. Weis, N. Lescop, M. Gouelo, A. Jan
+ * Version: 1.0
+ */
 public class NotificationSecouristeController {
 
-    @FXML private Label timeLabel;
-
-    public void initialize(URL location, ResourceBundle resources) {
-        HeureController.afficherHeure(timeLabel);
-    }
+    @FXML private Label timeLabel; // Label pour afficher l'heure en haut de la page
 
     @FXML
     /**
-     * This VBox is used to hold the popup pane that can be shown or hidden.
-     * It is defined in the FXML file and is used to display additional information or options.
+     * VBox contenant le panneau contextuel (popup) affiché sur demande.
      */
     private VBox popupPane;
 
     @FXML
     /**
-     * This Rectangle is used as an overlay to darken the background when the popup is visible.
-     * It is defined in the FXML file and is used to create a modal effect.
+     * Rectangle semi-transparent utilisé comme overlay quand le popup est visible.
      */
     private Rectangle overlay;
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the ListeDesAdmin.fxml and sets it as the new scene with rounded corners and transparency.
-     *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * Initialisation de la vue : affichage de l'heure en continu.
      */
+    public void initialize(URL location, ResourceBundle resources) {
+        HeureController.afficherHeure(timeLabel);
+    }
+
+    /**
+     * Redirige vers la vue ListeDesAdmin.fxml lorsque l'utilisateur souhaite contacter un administrateur.
+     *
+     * @param event L'événement déclenché par le clic sur le bouton.
+     */
+    @FXML
     private void handleContacterAdmin(ActionEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/ListeDesAdmin.fxml", (Node) event.getSource());
         } catch (IOException e) {
@@ -62,17 +58,13 @@ public class NotificationSecouristeController {
         }
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the TableauDeBord.fxml and sets it as the new scene with rounded corners and transparency.
+     * Redirige vers la vue TableauDeBord.fxml (page d'accueil du secouriste).
      *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * @param event L'événement déclenché par le clic.
      */
+    @FXML
     private void handleTableauDeBord(MouseEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/TableauDeBord.fxml", (Node) event.getSource());
         } catch (IOException e) {
@@ -81,16 +73,13 @@ public class NotificationSecouristeController {
         }
     }
 
-    @FXML
     /**
-     * This method is called when the "Calendrier Secouriste" button is clicked.
-     * It loads the CalendrierSecouristeSemaine.fxml and sets it as the new scene with rounded corners and transparency.
+     * Redirige vers la vue CalendrierSecouristeSemaine.fxml.
      *
-     * @param mouseEvent The MouseEvent triggered by the button click.
+     * @param mouseEvent L'événement déclenché par le clic.
      */
+    @FXML
     private void handleCalendrierSecouriste(MouseEvent mouseEvent) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaine.fxml", (Node) mouseEvent.getSource());
         } catch (IOException e) {
@@ -99,37 +88,31 @@ public class NotificationSecouristeController {
         }
     }
 
-    @FXML
     /**
-     * This method is called when the "Show Popup" button is clicked.
-     * It makes the popup pane visible.
+     * Affiche le panneau contextuel (popup) avec un overlay sombre.
      */
+    @FXML
     private void showPopup() {
         popupPane.setVisible(true);
         overlay.setVisible(true);
     }
 
-    @FXML
     /**
-     * This method is called when the "Hide Popup" button is clicked.
-     * It hides the popup pane.
+     * Masque le panneau contextuel (popup) et l’overlay.
      */
+    @FXML
     private void hidePopup() {
         popupPane.setVisible(false);
         overlay.setVisible(false);
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the ProfilSecouriste.fxml and sets it as the new scene with rounded corners and transparency.
+     * Redirige vers la vue ProfilSecouriste.fxml (profil du secouriste).
      *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * @param event L'événement déclenché par le clic.
      */
+    @FXML
     private void handleProfilClick(MouseEvent event) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/ProfilSecouriste.fxml", (Node) event.getSource());
         } catch (IOException e) {
@@ -137,6 +120,4 @@ public class NotificationSecouristeController {
             System.out.println("Erreur lors du chargement de la vue ProfilSecouriste : " + e.getMessage());
         }
     }
-
-
 }

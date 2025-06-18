@@ -20,65 +20,36 @@ import metier.graphe.model.dao.PossedeDAO;
 import metier.persistence.Competences;
 import metier.persistence.Possede;
 import metier.persistence.Secouriste;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-
-public class ProfilSecouristeAdminController implements Initializable{
+/**
+ * Contrôleur pour la vue de profil d’un secouriste (côté admin).
+ * Permet d'afficher les informations personnelles, gérer les compétences,
+ * et naviguer vers le planning.
+ *
+ * @author M. Weis, N. Lescop, M. Gouelo, A. Jan
+ * @version 1.0
+ */
+public class ProfilSecouristeAdminController implements Initializable {
 
     @FXML private Label timeLabel;
+    @FXML private CheckBox customCheckbox, customCheckbox1, customCheckbox2, customCheckbox3,
+            customCheckbox4, customCheckbox5, customCheckbox6, customCheckbox7, customCheckbox8;
+    @FXML private ImageView checkboxImage, checkboxImage1, checkboxImage2, checkboxImage3,
+            checkboxImage4, checkboxImage5, checkboxImage6, checkboxImage7, checkboxImage8;
+    private Image checkedImage;
+    private Image uncheckedImage;
 
-    @FXML
-    /** This checkbox is used to select the custom option in the creation view. */
-    private CheckBox customCheckbox;  // checkbox du fxml
-    @FXML private CheckBox customCheckbox1;
-    @FXML private CheckBox customCheckbox2;
-    @FXML private CheckBox customCheckbox3;
-    @FXML private CheckBox customCheckbox4;
-    @FXML private CheckBox customCheckbox5;
-    @FXML private CheckBox customCheckbox6;
-    @FXML private CheckBox customCheckbox7;
-    @FXML private CheckBox customCheckbox8;
+    @FXML private VBox popupPane;
+    @FXML private Rectangle overlay;
+    @FXML private ScrollPane scrollPane;
+    @FXML public Button backButton;
 
-    @FXML
-    /** This image view is used to display the checkbox image in the creation view. */
-    private ImageView checkboxImage;
-    // image de la checkbox dans le fxml
-    @FXML private ImageView checkboxImage1, checkboxImage2, checkboxImage3, checkboxImage4, checkboxImage5, checkboxImage6, checkboxImage7, checkboxImage8;
-
-
-    /** This attribute is used to checked if the checkbox is ticked */
-    private Image checkedImage; // Si la checkbox est coché
-
-    /** This attribute is used to checked if the checkbox is unticked */
-    private Image uncheckedImage; // Si la checkbox n'est pas coché
-
-    @FXML
-    /**
-     * This VBox is used to hold the popup pane that can be shown or hidden.
-     * It is defined in the FXML file and is used to display additional information or options.
-     */
-    private VBox popupPane;
-
-    @FXML
-    /**
-     * This Rectangle is used as an overlay to darken the background when the popup is visible.
-     * It is defined in the FXML file and is used to create a modal effect.
-     */
-    private Rectangle overlay;
-
-    @FXML
-    /** This ScrollPane is used to display the content of the dashboard. */
-    private ScrollPane scrollPane;
-
-    @FXML
-    /* This button is used to go back to the previous view. */
-    public Button backButton;
-
-    //Pour les modifications d'informations personnelles
     @FXML private Label nomField;
     @FXML private Label prenomField;
     @FXML private Label adresseField;
@@ -87,41 +58,32 @@ public class ProfilSecouristeAdminController implements Initializable{
     private Secouriste secouriste;
 
     @FXML private HBox competenceContainer;
-
     @FXML private Label titrePopupLabel;
 
-
-    @Override
     /**
-     * This method is called to initialize the controller after its root element has been
-     * processed. It is used to set up the initial state of the controller and
-     * to handle the scroll event for the ScrollPane.
+     * Initialise les champs, les compétences, et les composants visuels.
      */
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         HeureController.afficherHeure(timeLabel);
-
         secouriste = GlobalController.getSelectedSecouriste();
 
-        // Recharger les compétences depuis la BDD
         PossedeDAO possedeDAO = new PossedeDAO();
         List<Competences> competences = possedeDAO.findCompetencesBySecouriste(secouriste.getId());
         secouriste.setCompetences(competences);
         afficherPastillesCompetences(competences);
 
-        // Multiplie la vitesse de scroll
-        this.scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
-            double deltaY = event.getDeltaY() * 3; // Multiplier la vitesse de scroll par 3
-            // Ajuste la position de défilement du ScrollPane en fonction de la vitesse de scroll
-            scrollPane.setVvalue(this.scrollPane.getVvalue() - deltaY / this.scrollPane.getContent().getBoundsInLocal().getHeight());
-            event.consume(); // empêche le scroll par défaut
+        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
+            double deltaY = event.getDeltaY() * 3;
+            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY / scrollPane.getContent().getBoundsInLocal().getHeight());
+            event.consume();
         });
 
-        // Charger les images
+        // Chargement des images des cases cochées et décochées
         checkedImage = new Image(getClass().getResource("/ressources/img/case_coche.png").toExternalForm());
         uncheckedImage = new Image(getClass().getResource("/ressources/img/case_non_coche.png").toExternalForm());
 
-
-        // Setup toutes les checkboxes
+        // Lier chaque checkbox à son image
         setupCheckbox(customCheckbox, checkboxImage);
         setupCheckbox(customCheckbox1, checkboxImage1);
         setupCheckbox(customCheckbox2, checkboxImage2);
@@ -132,6 +94,7 @@ public class ProfilSecouristeAdminController implements Initializable{
         setupCheckbox(customCheckbox7, checkboxImage7);
         setupCheckbox(customCheckbox8, checkboxImage8);
 
+        // Affichage des infos utilisateur
         nomField.setText(secouriste.getNom());
         prenomField.setText(secouriste.getPrenom());
         adresseField.setText(secouriste.getEmail());
@@ -139,92 +102,44 @@ public class ProfilSecouristeAdminController implements Initializable{
     }
 
     /**
-     * Définir l’image de départ et mettre à jour dynamiquement l’image associée à la checkbox.
-     *
-     * @param checkBox La case à cocher à configurer.
-     * @param imageView L’image qui représente graphiquement l’état de la case.
+     * Lien dynamique entre une CheckBox et son image.
      */
     private void setupCheckbox(CheckBox checkBox, ImageView imageView) {
-        // Définir image de départ
         imageView.setImage(uncheckedImage);
-
-        // Mettre à jour l’image dynamiquement selon l’état
-        // obs c'est ce qui permet de surveiller les changements de la propriété
-        // wasSelected c'est l'état précédent de la checkbox
-        // isNowSelected c'est l'état actuel de la checkbox
-        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            // Changement de l'image en fonction de isNowSelected
-            if (isNowSelected == true) {
-                imageView.setImage(checkedImage);
-            } else {
-                imageView.setImage(uncheckedImage);
-            }
+        checkBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            imageView.setImage(newVal ? checkedImage : uncheckedImage);
         });
     }
 
-    //Pour les changements avec des compétences déjà acquises
+    /**
+     * Initialise les cases cochées selon les compétences déjà acquises.
+     */
     private void initialiserCheckboxesDepuisCompetences(List<Competences> competences) {
         List<String> competencesPossedees = new ArrayList<>();
         for (Competences c : competences) {
             competencesPossedees.add(c.getIntitule());
         }
 
-        //Vérifier si la compétences n'est pas déjà acquise -> coché
-        if (competencesPossedees.contains("CO")) {
-            customCheckbox.setSelected(true);
-            checkboxImage.setImage(checkedImage);
-        }
-        if (competencesPossedees.contains("CP")) {
-            customCheckbox1.setSelected(true);
-            checkboxImage1.setImage(checkedImage);
-        }
-        if (competencesPossedees.contains("CE")) {
-            customCheckbox2.setSelected(true);
-            checkboxImage2.setImage(checkedImage);
-        }
-        if (competencesPossedees.contains("PBC")) {
-            customCheckbox3.setSelected(true);
-            checkboxImage3.setImage(checkedImage);
-        }
-        if (competencesPossedees.contains("PBF")) {
-            customCheckbox4.setSelected(true);
-            checkboxImage4.setImage(checkedImage);
-        }
-        if (competencesPossedees.contains("PSE1")) {
-            customCheckbox5.setSelected(true);
-            checkboxImage5.setImage(checkedImage);
-        }
-        if (competencesPossedees.contains("PSE2")) {
-            customCheckbox6.setSelected(true);
-            checkboxImage6.setImage(checkedImage);
-        }
-        if (competencesPossedees.contains("SSA")) {
-            customCheckbox7.setSelected(true);
-            checkboxImage7.setImage(checkedImage);
-        }
-        if (competencesPossedees.contains("VPSP")) {
-            customCheckbox8.setSelected(true);
-            checkboxImage8.setImage(checkedImage);
-        }
+        if (competencesPossedees.contains("CO")) { customCheckbox.setSelected(true); }
+        if (competencesPossedees.contains("CP")) { customCheckbox1.setSelected(true); }
+        if (competencesPossedees.contains("CE")) { customCheckbox2.setSelected(true); }
+        if (competencesPossedees.contains("PBC")) { customCheckbox3.setSelected(true); }
+        if (competencesPossedees.contains("PBF")) { customCheckbox4.setSelected(true); }
+        if (competencesPossedees.contains("PSE1")) { customCheckbox5.setSelected(true); }
+        if (competencesPossedees.contains("PSE2")) { customCheckbox6.setSelected(true); }
+        if (competencesPossedees.contains("SSA")) { customCheckbox7.setSelected(true); }
+        if (competencesPossedees.contains("VPSP")) { customCheckbox8.setSelected(true); }
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It retrieves the previous view from the GlobalController's view history
-     * and sets it as the new root of the current scene.
-     *
-     * @param event The ActionEvent triggered by the button click.
+     * Revient à la vue précédente.
      */
+    @FXML
     private void handleBack(ActionEvent event) {
         if (!GlobalController.getViewHistory().isEmpty()) {
-            // Permet de revenir à la vue précédente, viewHistory est une Stack qui contient les vues précédentes
             Parent previousView = GlobalController.getViewHistory().pop();
-            // On récupère la scène actuelle à partir de l'élément source de l'événement
             Scene scene = ((Node) event.getSource()).getScene();
             scene.setRoot(previousView);
-
-            // Crée une transition de gauche vers la position normale (0)
             TranslateTransition transition = new TranslateTransition(Duration.millis(300), previousView);
             transition.setFromX(-scene.getWidth());
             transition.setToX(0);
@@ -232,92 +147,48 @@ public class ProfilSecouristeAdminController implements Initializable{
         }
     }
 
-    @FXML
     /**
-     * This method is called when the back button is clicked.
-     * It loads the CalendrierSecouristeSemaineAdmin.fxml and sets it as the new scene with rounded corners and transparency.
-     *
-     * @param event The ActionEvent triggered by the button click.
-     * @throws IOException If there is an error loading the FXML file.
+     * Redirige vers le calendrier du secouriste (vue semaine).
      */
+    @FXML
     private void handleConsulterCalendrier(ActionEvent actionEvent) {
-        // On récupère la scène actuelle à partir de l'élément source de l'événement
-        // event.getSource() est le bouton qui a été cliqué (la source)
         try {
             GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaineAdmin.fxml", (Node) actionEvent.getSource());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Erreur lors du chargement de la vue CalendrierSecouristeSemaineAdmin : " + e.getMessage());
         }
     }
 
-    @FXML
     /**
-     * This method is called when the "Show Popup" button is clicked.
-     * It makes the popup pane visible.
+     * Affiche le popup de sélection des compétences.
      */
+    @FXML
     private void showPopup() {
         titrePopupLabel.setText("Sélectionner les compétences pour " + secouriste.getPrenom());
-
         popupPane.setVisible(true);
         overlay.setVisible(true);
-
-        // Initialiser les cases cochées selon les compétences déjà enregistrées
         initialiserCheckboxesDepuisCompetences(secouriste.getCompetences());
     }
 
-    @FXML
     /**
-     * This method is called when the "Hide Popup" button is clicked.
-     * It hides the popup pane.
+     * Ferme le popup de sélection des compétences.
      */
+    @FXML
     private void hidePopup() {
         popupPane.setVisible(false);
         overlay.setVisible(false);
     }
 
-    @FXML
-    /**
-     * This method is called when the back button is hovered over.
-     * It changes the opacity of the back button to indicate hover state.
-     */
-    private void onBackHover() {
-        backButton.setOpacity(0.7);
-    }
+    @FXML private void onBackHover() { backButton.setOpacity(0.7); }
+    @FXML private void onBackExit() { backButton.setOpacity(1.0); }
+    @FXML private void onBackPress() { backButton.setTranslateY(2); backButton.setOpacity(0.5); }
+    @FXML private void onBackRelease() { backButton.setTranslateY(0); backButton.setOpacity(0.7); }
 
-    @FXML
     /**
-     * This method is called when the mouse exits the back button area.
-     * It resets the opacity of the back button to its normal state.
+     * Récupère les compétences sélectionnées dans les checkboxes.
      */
-    private void onBackExit() {
-        backButton.setOpacity(1.0);
-    }
-
-    @FXML
-    /**
-     * This method is called when the back button is pressed.
-     * It changes the position and opacity of the back button to indicate press state.
-     */
-    private void onBackPress() {
-        backButton.setTranslateY(2);
-        backButton.setOpacity(0.5);
-    }
-
-    @FXML
-    /**
-     * This method is called when the back button is released.
-     * It resets the position and opacity of the back button to its normal state.
-     */
-    private void onBackRelease() {
-        backButton.setTranslateY(0);
-        backButton.setOpacity(0.7);
-    }
-
-    //pour les compétences sur le profil du secouriste
     private List<String> getCompetencesSelectionnees() {
         List<String> competences = new ArrayList<>();
-
         if (customCheckbox.isSelected()) competences.add("CO");
         if (customCheckbox1.isSelected()) competences.add("CP");
         if (customCheckbox2.isSelected()) competences.add("CE");
@@ -327,59 +198,44 @@ public class ProfilSecouristeAdminController implements Initializable{
         if (customCheckbox6.isSelected()) competences.add("PSE2");
         if (customCheckbox7.isSelected()) competences.add("SSA");
         if (customCheckbox8.isSelected()) competences.add("VPSP");
-
         return competences;
     }
 
+    /**
+     * Enregistre les compétences sélectionnées et les affiche.
+     */
     @FXML
     private void handleValiderCompetences() {
         List<String> nouvellesCompetences = getCompetencesSelectionnees();
 
-        // Nettoyage : supprimer toutes les anciennes compétences du secouriste
         PossedeDAO possedeDAO = new PossedeDAO();
         possedeDAO.deleteAllBySecouriste(secouriste.getId());
 
-        // Ajout des nouvelles compétences sélectionnées
         for (String intitule : nouvellesCompetences) {
-            Possede possede = new Possede(intitule, secouriste);
-            possedeDAO.create(possede);
+            possedeDAO.create(new Possede(intitule, secouriste));
         }
 
-        // Mise à jour compétences
         List<Competences> competences = new ArrayList<>();
         for (String c : nouvellesCompetences) {
             competences.add(new Competences(c));
         }
         secouriste.setCompetences(competences);
 
-        //Affiche les compétences choisi
         afficherPastillesCompetences(competences);
-
-        hidePopup(); // refermer le popup
+        hidePopup();
     }
 
-    //Pour afficher les compétences sur le profil sur secouriste
+    /**
+     * Affiche les compétences sous forme de pastilles dans le profil.
+     */
     private void afficherPastillesCompetences(List<Competences> competences) {
-        // Vide le conteneur de pastilles existantes pour repartir proprement
         competenceContainer.getChildren().clear();
 
-        // Pour chaque compétence du secouriste
         for (Competences comp : competences) {
-            // Crée une pastille (Label) avec le nom de la compétence
             Label pastille = new Label(comp.getIntitule());
-
-            // Applique un style visuel de pastille : texte rouge, bord rouge, fond blanc, arrondi
-            pastille.setStyle("-fx-background-color: white; " +
-                    "-fx-text-fill: #E60023; " +
-                    "-fx-font-size: 20; " +
-                    "-fx-border-color: #E60023; " +
-                    "-fx-border-radius: 30; " +
-                    "-fx-background-radius: 30;");
-
-            // Ajoute un padding intérieur pour arrondir et espacer le texte
+            pastille.setStyle("-fx-background-color: white; -fx-text-fill: #E60023; -fx-font-size: 20;" +
+                    "-fx-border-color: #E60023; -fx-border-radius: 30; -fx-background-radius: 30;");
             pastille.setPadding(new Insets(10, 20, 10, 20));
-
-            // Ajoute la pastille dans le HBox affiché dans le ScrollPane horizontal
             competenceContainer.getChildren().add(pastille);
         }
     }
