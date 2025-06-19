@@ -27,6 +27,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 
+/**
+ * Controller class for the weekly calendar view in the admin interface.
+ * Displays a weekly schedule for the selected rescuer with events plotted
+ * on a time grid from 7:00 to 22:00. Allows switching between views.
+ */
 public class CalendrierSecouristeSemaineAdminController {
 
     @FXML private Label timeLabel;
@@ -43,6 +48,11 @@ public class CalendrierSecouristeSemaineAdminController {
 
     private final Map<LocalDate, List<EventData>> eventMap = new HashMap<>();
 
+    /**
+     * Initializes the weekly calendar interface by setting the current time,
+     * creating day selector buttons for the week, loading and displaying
+     * events for the selected rescuer.
+     */
     public void initialize() {
         HeureController.afficherHeure(timeLabel);
 
@@ -103,6 +113,13 @@ public class CalendrierSecouristeSemaineAdminController {
         displayDay(today);
     }
 
+    /**
+     * Creates a button for a specific day with styling indicating whether
+     * it's the current day or not.
+     * @param date - the date the button represents
+     * @param today - the current system date
+     * @return a styled Button for the day
+     */
     private Button createDayButton(LocalDate date, LocalDate today) {
         VBox vbox = new VBox();
         Button btn = new Button();
@@ -138,6 +155,11 @@ public class CalendrierSecouristeSemaineAdminController {
         return btn;
     }
 
+    /**
+     * Displays the schedule for a specific day by drawing the time grid
+     * and placing all associated events on the calendar pane.
+     * @param day - the date to display
+     */
     private void displayDay(LocalDate day) {
         calendarPane.getChildren().clear();
 
@@ -162,6 +184,15 @@ public class CalendrierSecouristeSemaineAdminController {
         }
     }
 
+    /**
+     * Creates a visual event block on the calendar grid with the given label,
+     * start/end times, color, and associated day.
+     * @param label - event description
+     * @param start - start time of the event
+     * @param end - end time of the event
+     * @param color - color used to represent the event
+     * @param day - the date of the event
+     */
     private void createEvent(String label, LocalTime start, LocalTime end, Color color, LocalDate day) {
         double startY = (start.getHour() + (start.getMinute() / 60.0) - startHour) * hourHeight;
         double height = ((end.toSecondOfDay() - start.toSecondOfDay()) / 3600.0) * hourHeight;
@@ -187,6 +218,10 @@ public class CalendrierSecouristeSemaineAdminController {
         calendarPane.getChildren().addAll(rect, textContainer);
     }
 
+    /**
+     * Handles returning to the monthly calendar view from the weekly view.
+     * @param event - the MouseEvent triggered by the user
+     */
     @FXML
     private void handleRetourMois(MouseEvent event) {
         try {
@@ -196,6 +231,10 @@ public class CalendrierSecouristeSemaineAdminController {
         }
     }
 
+    /**
+     * Handles navigation to the admin dashboard.
+     * @param event - the MouseEvent triggered by the user
+     */
     @FXML
     private void handleAccueil(MouseEvent event) {
         try {
@@ -205,6 +244,10 @@ public class CalendrierSecouristeSemaineAdminController {
         }
     }
 
+    /**
+     * Handles navigation to the list of rescuers in the admin view.
+     * @param event - the MouseEvent triggered by the user
+     */
     @FXML
     private void handleEffectif(MouseEvent event) {
         try {
@@ -214,6 +257,10 @@ public class CalendrierSecouristeSemaineAdminController {
         }
     }
 
+    /**
+     * Handles navigation to the admin alerts view.
+     * @param event - the MouseEvent triggered by the user
+     */
     @FXML
     private void handleAlertesAdmin(MouseEvent event) {
         try {

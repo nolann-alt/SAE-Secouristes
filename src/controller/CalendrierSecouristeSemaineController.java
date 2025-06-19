@@ -410,6 +410,11 @@ public class CalendrierSecouristeSemaineController {
 //        return calendar;
 //    }
 
+    /**
+     * Handles returning to the monthly calendar view for the rescuer interface.
+     * Switches the scene to the 'CalendrierSecouristeMois' view.
+     * @param event - the MouseEvent triggered by the user's click
+     */
     @FXML
     private void handleRetourMois(MouseEvent event) {
         try {

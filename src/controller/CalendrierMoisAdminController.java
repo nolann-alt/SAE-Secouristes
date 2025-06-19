@@ -52,34 +52,54 @@ public class CalendrierMoisAdminController implements Initializable {
     /** This AnchorPane is used to hold the calendar view and its components. */
     @FXML private ComboBox<String> hourComboBoxEnd;
 
-    @FXML
-    private VBox eventList; // VBox pour afficher les événements du calendrier
+    /**
+     * VBox for displaying the list of events in the calendar.
+     */
+    @FXML private VBox eventList;
 
-    // Label affichant l'heure dans la barre supérieure
+    /**
+     * Label displaying the current time in the top bar.
+     */
     @FXML private Label timeLabel;
 
-    // HBox contenant les boutons représentant les mois
+    /**
+     * HBox containing buttons for selecting months.
+     */
     @FXML private HBox moisSelector;
 
-    // Label du nom du mois affiché sous forme complète (ex: Juin)
+    /**
+     * Label showing the full name of the currently displayed month (e.g., June).
+     */
     @FXML private Label labelMoisActuel;
 
-    // Grille affichant les jours du mois sélectionné
+    /**
+     * GridPane displaying the days of the selected month.
+     */
     @FXML private GridPane gridMois;
 
-    // Référence au bouton actuellement sélectionné pour gérer le style
+    /**
+     * Reference to the currently selected month button, used for updating its style.
+     */
     private Button boutonSelectionne = null;
 
     @FXML
     /** This checkbox is used to select the custom option in the creation view. */
     private CheckBox customCheckbox;  // checkbox du fxml
+
     @FXML private CheckBox customCheckbox1;
+
     @FXML private CheckBox customCheckbox2;
+
     @FXML private CheckBox customCheckbox3;
+
     @FXML private CheckBox customCheckbox4;
+
     @FXML private CheckBox customCheckbox5;
+
     @FXML private CheckBox customCheckbox6;
+
     @FXML private CheckBox customCheckbox7;
+
     @FXML private CheckBox customCheckbox8;
 
     @FXML
@@ -114,7 +134,7 @@ public class CalendrierMoisAdminController implements Initializable {
     private ScrollPane scrollPane;
 
     @FXML
-    /* This button is used to go back to the previous view. */
+    /** This button is used to go back to the previous view. */
     public Button backButton;
 
     @FXML private ComboBox<String> hourComboBoxEnd1;
@@ -262,7 +282,13 @@ public class CalendrierMoisAdminController implements Initializable {
         }
     }
 
-    // Crée un bouton de mois avec son apparence selon qu'il est sélectionné ou non
+    /**
+     * Creates a button of the month
+     * @param month The number of the month selected
+     * @param currentMonth The number of the current month
+     * @param currentDay The number of the current day
+     * @return The button of the month
+     */
     private Button createMonthButton(int month, int currentMonth, int currentDay) {
         VBox vbox = new VBox(); // Conteneur vertical pour afficher le mois + chiffre
         Button btn = new Button();
@@ -313,14 +339,21 @@ public class CalendrierMoisAdminController implements Initializable {
         return btn;
     }
 
-    // Renvoie l'abréviation du mois (ex: janv., févr.) en français
+    /**
+     * Gets the short for the month's name
+     * @param month The month we want the short for
+     * @return The short for "month"
+     */
     private String getMonthAbbr(int month) {
         return LocalDate.of(2000, month, 1)
                 .getMonth()
                 .getDisplayName(java.time.format.TextStyle.SHORT, Locale.FRENCH);
     }
 
-    // Remplit la grille avec les jours du mois sélectionné
+    /**
+     * Fills the grid of the selected month
+     * @param month
+     */
     private void afficherMois(int month) {
         gridMois.getChildren().clear();
 
@@ -354,7 +387,10 @@ public class CalendrierMoisAdminController implements Initializable {
         }
     }
 
-    // Met à jour le style du bouton sélectionné en rouge, et désélectionne l'ancien
+    /**
+     * Updates the style of the button
+     * @param boutonClique
+     */
     private void mettreAJourSelection(Button boutonClique) {
         if (boutonSelectionne != null) {
             // Réinitialise l'ancien bouton (remet en gris)
@@ -473,6 +509,15 @@ public class CalendrierMoisAdminController implements Initializable {
         overlay.setVisible(false);
     }
 
+    /**
+     * Handles the validation of skills to be assigned for an event.
+     * Retrieves form data, creates a DPS object with the provided information,
+     * collects available rescuers and their skills, generates the needs based on
+     * selected skills, constructs an assignment graph, performs the assignment
+     * of rescuers to needs, and saves the assignments and corresponding unavailabilities.
+     * Displays debug messages to trace the process.
+     * @param event - the ActionEvent triggered by the user
+     */
     @FXML
     public void handleValiderCompetences(ActionEvent event) {
         // 1. Récupérer les infos du formulaire
@@ -646,7 +691,11 @@ public class CalendrierMoisAdminController implements Initializable {
         }
     }
 
-    //Pour ajouter une carte
+    /**
+     * Loads all available rescuers for the selected date and adds a visual card
+     * for each one to the event list. A rescuer is considered available if they
+     * do not have a recorded unavailability on that date.
+     */
     private void loadSecouristes() {
         SecouristeDAO secouristeDAO = new SecouristeDAO();
         List<Secouriste> secouristes = secouristeDAO.findAll();
@@ -673,7 +722,13 @@ public class CalendrierMoisAdminController implements Initializable {
         }
     }
 
-
+    /**
+     * Creates and returns a graphical card (Node) representing a rescuer,
+     * displaying their avatar, name, and availability status.
+     * Associates the rescuer with the card via userData.
+     * @param s - the rescuer to display on the card
+     * @return a Node representing the visual card of the rescuer
+     */
 
     private Node createSecouristeCard(Secouriste s) {
         HBox card = new HBox(15);
@@ -706,7 +761,11 @@ public class CalendrierMoisAdminController implements Initializable {
         return card;
     }
 
-
+    /**
+     * Retrieves the list of all skills possessed by a given list of available rescuers.
+     * @param secouristesDisponibles - the list of available rescuers
+     * @return an ArrayList of Possede objects linking rescuers to their skills
+     */
     public ArrayList<Possede> getPossedesOfAvailableSecouristes(List<Secouriste> secouristesDisponibles) {
         PossedeDAO possedeDAO = new PossedeDAO();
         ArrayList<Possede> listePossedes = new ArrayList<>();
@@ -723,7 +782,14 @@ public class CalendrierMoisAdminController implements Initializable {
         return listePossedes;
     }
 
-    // Méthode utilitaire pour vérifier chevauchement de plages horaires
+    /**
+     * Utility method to check if two time intervals overlap.
+     * @param debut1 - start time of the first interval
+     * @param fin1 - end time of the first interval
+     * @param debut2 - start time of the second interval
+     * @param fin2 - end time of the second interval
+     * @return true if the intervals overlap, false otherwise
+     */
     private boolean plagesSeChevauchent(LocalTime debut1, LocalTime fin1, LocalTime debut2, LocalTime fin2) {
         return !fin1.isBefore(debut2) && !debut1.isAfter(fin2);
     }

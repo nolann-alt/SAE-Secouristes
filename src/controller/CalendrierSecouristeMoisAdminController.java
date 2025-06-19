@@ -28,7 +28,11 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import metier.persistence.Secouriste;
 
-
+/**
+ * Controller class for displaying and interacting with the monthly calendar view
+ * of a selected rescuer in the admin interface. It shows the current month, allows
+ * navigation between months, and displays the days in a grid format.
+ */
 public class CalendrierSecouristeMoisAdminController implements Initializable{
 
     // Label affichant l'heure dans la barre supérieure
@@ -48,6 +52,12 @@ public class CalendrierSecouristeMoisAdminController implements Initializable{
 
     @FXML private Label labelNomSecouriste;
 
+    /**
+     * Initializes the calendar interface by displaying the current month,
+     * the rescuer's name, the current time, and sets up month selection buttons.
+     * @param url - not used
+     * @param resourceBundle - not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Affichage dynamique de l'heure dans la barre supérieure
@@ -95,7 +105,14 @@ public class CalendrierSecouristeMoisAdminController implements Initializable{
         afficherMois(currentMonth);
     }
 
-    // Crée un bouton de mois avec son apparence selon qu'il est sélectionné ou non
+    /**
+     * Creates a month selection button with its visual appearance depending
+     * on whether it corresponds to the current month.
+     * @param month - the month number (1 to 12)
+     * @param currentMonth - the currently displayed month
+     * @param currentDay - the current day of the month
+     * @return a styled Button representing the month
+     */
     private Button createMonthButton(int month, int currentMonth, int currentDay) {
         VBox vbox = new VBox(); // Conteneur vertical pour afficher le mois + chiffre
         Button btn = new Button();
@@ -146,14 +163,22 @@ public class CalendrierSecouristeMoisAdminController implements Initializable{
         return btn;
     }
 
-    // Renvoie l'abréviation du mois (ex: janv., févr.) en français
+    /**
+     * Returns the abbreviated name of a given month in French.
+     * @param month - the month number (1 to 12)
+     * @return the abbreviated month name in French (e.g., janv., févr.)
+     */
     private String getMonthAbbr(int month) {
         return LocalDate.of(2000, month, 1)
                 .getMonth()
                 .getDisplayName(java.time.format.TextStyle.SHORT, Locale.FRENCH);
     }
 
-    // Remplit la grille avec les jours du mois sélectionné
+    /**
+     * Fills the calendar grid with the days of the selected month and updates
+     * the month label to reflect the current selection.
+     * @param month - the month number (1 to 12) to display
+     */
     private void afficherMois(int month) {
         gridMois.getChildren().clear();
 
@@ -187,7 +212,11 @@ public class CalendrierSecouristeMoisAdminController implements Initializable{
         }
     }
 
-    // Met à jour le style du bouton sélectionné en rouge, et désélectionne l'ancien
+    /**
+     * Updates the visual style of the selected month button, applying a red background
+     * to the newly selected button and resetting the previous one to grey.
+     * @param boutonClique - the Button that was clicked
+     */
     private void mettreAJourSelection(Button boutonClique) {
         if (boutonSelectionne != null) {
             // Réinitialise l'ancien bouton (remet en gris)
@@ -269,6 +298,12 @@ public class CalendrierSecouristeMoisAdminController implements Initializable{
     }
 
     @FXML
+    /**
+     * Handles the action of returning to the weekly calendar view when the user
+     * clicks on the corresponding interface element.
+     * Switches the scene to the 'CalendrierSecouristeSemaineAdmin' view.
+     * @param event - the MouseEvent triggered by the user's click
+     */
     private void handleRetourSemaine(MouseEvent event) {
         try {
             GlobalController.switchView("../ressources/fxml/CalendrierSecouristeSemaineAdmin.fxml", (Node) event.getSource());

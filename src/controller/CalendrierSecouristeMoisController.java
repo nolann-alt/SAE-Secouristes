@@ -29,6 +29,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for the monthly calendar view used by rescuers.
+ * Displays the current month, allows month navigation, and shows a grid of days.
+ * Includes date pickers for availability management and supports a popup pane.
+ */
 public class CalendrierSecouristeMoisController implements Initializable {
 
     // Label affichant l'heure dans la barre supérieure
@@ -57,6 +62,12 @@ public class CalendrierSecouristeMoisController implements Initializable {
 
     @FXML private Button validerButton; // si besoin
 
+    /**
+     * Initializes the calendar interface, displays the current time and month,
+     * sets up the month selector buttons, and fills the grid with the current month's days.
+     * @param url - not used
+     * @param resourceBundle - not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Affichage dynamique de l'heure dans la barre supérieure
@@ -94,7 +105,14 @@ public class CalendrierSecouristeMoisController implements Initializable {
         afficherMois(currentMonth);
     }
 
-    // Crée un bouton de mois avec son apparence selon qu'il est sélectionné ou non
+    /**
+     * Creates a month button with appropriate styling depending on whether it is
+     * the currently selected month or not. Displays the abbreviated name and number of the month.
+     * @param month - the month number (1 to 12)
+     * @param currentMonth - the current system month
+     * @param currentDay - the current system day
+     * @return a styled Button representing the month
+     */
     public Button createMonthButton(int month, int currentMonth, int currentDay) {
         VBox vbox = new VBox(); // Conteneur vertical pour afficher le mois + chiffre
         Button btn = new Button();
@@ -145,14 +163,22 @@ public class CalendrierSecouristeMoisController implements Initializable {
         return btn;
     }
 
-    // Renvoie l'abréviation du mois (ex: janv., févr.) en français
+    /**
+     * Returns the abbreviated French name of a given month.
+     * @param month - the month number (1 to 12)
+     * @return the abbreviated French month name (e.g., janv., févr.)
+     */
     private String getMonthAbbr(int month) {
         return LocalDate.of(2000, month, 1)
                 .getMonth()
                 .getDisplayName(java.time.format.TextStyle.SHORT, Locale.FRENCH);
     }
 
-    // Remplit la grille avec les jours du mois sélectionné
+    /**
+     * Updates the calendar grid with the days of the selected month.
+     * Also updates the label to show the full name of the selected month.
+     * @param month - the month to display (1 to 12)
+     */
     private void afficherMois(int month) {
         gridMois.getChildren().clear();
 
@@ -186,7 +212,11 @@ public class CalendrierSecouristeMoisController implements Initializable {
         }
     }
 
-    // Met à jour le style du bouton sélectionné en rouge, et désélectionne l'ancien
+    /**
+     * Updates the visual style of the selected month button by highlighting
+     * the newly selected one in red and resetting the previous selection to gray.
+     * @param boutonClique - the Button that was clicked
+     */
     private void mettreAJourSelection(Button boutonClique) {
         if (boutonSelectionne != null) {
             // Réinitialise l'ancien bouton (remet en gris)
@@ -263,18 +293,32 @@ public class CalendrierSecouristeMoisController implements Initializable {
         }
     }
 
+    /**
+     * Displays the popup window for setting an unavailability period,
+     * and shows the background overlay.
+     */
     @FXML
     private void showPopup() {
         popupPane.setVisible(true);
         overlay.setVisible(true);
     }
 
+    /**
+     * Hides the popup window and removes the background overlay.
+     */
     @FXML
     private void hidePopup() {
         popupPane.setVisible(false);
         overlay.setVisible(false);
     }
 
+    /**
+     * Handles the validation and saving of an unavailability period for the current rescuer.
+     * Collects start and end dates and times, verifies validity, and stores one unavailability
+     * entry per day in the database. Displays an error message if the time interval is invalid
+     * or if the database operation fails.
+     * @param event - the ActionEvent triggered by the user's validation action
+     */
     @FXML
     private void handleValiderIndisponibilite(ActionEvent event) {
         try {
