@@ -1,10 +1,3 @@
-/**
- * Controller for the weekly calendar view for a specific first-aid worker (admin view).
- * Displays each day's schedule and supports navigation back to other admin views.
- *
- * @author M. Weis, N. Lescop, M. Gouelo, A. Jan
- * @version 1.0
- */
 package controller;
 
 import javafx.fxml.FXML;
@@ -31,50 +24,45 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.*;
 
 public class CalendrierSecouristeSemaineAdminController {
 
-    @FXML private Label timeLabel;               // Affiche l'heure actuelle
-    @FXML private HBox daySelector;              // Contient les boutons de jour (lun-dim)
-    @FXML private AnchorPane calendarPane;       // Zone d'affichage du calendrier horaire
+    @FXML private Label timeLabel;
+    @FXML private HBox daySelector;
+    @FXML private AnchorPane calendarPane;
 
-    @FXML private Label labelNomSecouriste;      // Affiche le prénom du secouriste sélectionné
-    @FXML private Label labelMoisActuel;         // (optionnel, utilisé si on veut le mois affiché en haut)
+    private final int startHour = 7;
+    private final int endHour = 22;
+    private final int hourHeight = 60;
 
-    private final int startHour = 7;             // Heure de début du planning
-    private final int endHour = 22;              // Heure de fin du planning
-    private final int hourHeight = 60;           // Hauteur en pixels d'une heure
+    @FXML private Label labelNomSecouriste;
+    @FXML private Label labelMoisActuel;
+
 
     private final Map<LocalDate, List<EventData>> eventMap = new HashMap<>();
 
-    /**
-     * Initializes the view with current date, hour labels and secouriste events.
-     */
     public void initialize() {
-        HeureController.afficherHeure(timeLabel); // Affichage dynamique de l'heure
+        HeureController.afficherHeure(timeLabel);
 
         LocalDate today = LocalDate.now();
-
-        // Calcule le lundi de la semaine en cours
         LocalDate startOfWeek = today.minusDays(today.getDayOfWeek().getValue() - 1);
 
-        // Crée les boutons de chaque jour de la semaine
         for (int i = 0; i < 7; i++) {
             LocalDate day = startOfWeek.plusDays(i);
             Button bouton = createDayButton(day, today);
-            bouton.setOnAction(e -> displayDay(day)); // Affiche les événements du jour
+            bouton.setOnAction(e -> {
+                displayDay(day);
+            });
             daySelector.getChildren().add(bouton);
         }
 
-        // Récupère le secouriste actuellement sélectionné
         Secouriste s = GlobalController.getSelectedSecouriste();
         if (s != null) {
             labelNomSecouriste.setText("Calendrier de " + s.getPrenom());
-
             long currentUser = s.getId();
 
-            // Récupère les DPS (événements) affectés à ce secouriste
             DPSDAO dao = new DPSDAO();
             List<DPS> affectes = dao.findBySecouriste(currentUser);
 
@@ -91,13 +79,10 @@ public class CalendrierSecouristeSemaineAdminController {
             }
         }
 
-        // Affiche le jour actuel par défaut
+
         displayDay(today);
     }
 
-    /**
-     * Crée un bouton représentant un jour de la semaine.
-     */
     private Button createDayButton(LocalDate date, LocalDate today) {
         VBox vbox = new VBox();
         Button btn = new Button();
@@ -111,7 +96,6 @@ public class CalendrierSecouristeSemaineAdminController {
         Label dayLabel = new Label(jour);
         Label numLabel = new Label(String.valueOf(date.getDayOfMonth()));
 
-        // Style du bouton selon qu'il représente aujourd'hui ou non
         if (today.equals(date)) {
             vbox.setStyle("-fx-background-color: #E60023; -fx-background-radius: 10;");
             dayLabel.setStyle("-fx-text-fill: white; -fx-font-size: 10.49;");
@@ -129,13 +113,9 @@ public class CalendrierSecouristeSemaineAdminController {
         return btn;
     }
 
-    /**
-     * Affiche les événements programmés pour un jour donné.
-     */
     private void displayDay(LocalDate day) {
         calendarPane.getChildren().clear();
 
-        // Crée l'échelle horaire
         for (int h = startHour; h <= endHour; h++) {
             Text hourText = new Text(10, (h - startHour) * hourHeight + 15, h + "h00");
             calendarPane.getChildren().add(hourText);
@@ -146,7 +126,6 @@ public class CalendrierSecouristeSemaineAdminController {
             calendarPane.getChildren().add(hourLine);
         }
 
-        // Ajuste la hauteur totale du calendrier pour l'affichage
         double totalHeight = (endHour - startHour) * hourHeight + 200;
         calendarPane.setMinHeight(totalHeight);
 
@@ -158,9 +137,6 @@ public class CalendrierSecouristeSemaineAdminController {
         }
     }
 
-    /**
-     * Crée un événement graphique (rectangle + texte) dans le calendrier.
-     */
     private void createEvent(String label, LocalTime start, LocalTime end, Color color, LocalDate day) {
         double startY = (start.getHour() + (start.getMinute() / 60.0) - startHour) * hourHeight;
         double height = ((end.toSecondOfDay() - start.toSecondOfDay()) / 3600.0) * hourHeight;
@@ -186,11 +162,6 @@ public class CalendrierSecouristeSemaineAdminController {
         calendarPane.getChildren().addAll(rect, textContainer);
     }
 
-    // === MÉTHODES DE NAVIGATION ===
-
-    /**
-     * Retour à la vue Calendrier mensuel.
-     */
     @FXML
     private void handleRetourMois(MouseEvent event) {
         try {
@@ -200,9 +171,6 @@ public class CalendrierSecouristeSemaineAdminController {
         }
     }
 
-    /**
-     * Retour au tableau de bord administrateur.
-     */
     @FXML
     private void handleAccueil(MouseEvent event) {
         try {
@@ -212,9 +180,6 @@ public class CalendrierSecouristeSemaineAdminController {
         }
     }
 
-    /**
-     * Navigation vers la liste des secouristes.
-     */
     @FXML
     private void handleEffectif(MouseEvent event) {
         try {
@@ -224,9 +189,6 @@ public class CalendrierSecouristeSemaineAdminController {
         }
     }
 
-    /**
-     * Navigation vers la page des alertes.
-     */
     @FXML
     private void handleAlertesAdmin(MouseEvent event) {
         try {

@@ -1,11 +1,4 @@
-/**
- * Controller for the monthly calendar admin view.
- * Handles month selection, DPS creation, checkbox-based competence assignments,
- * and dynamic layout updates in the IHM.
- *
- * @author M. Weis, N. Lescop, M. Gouelo, A. Jan
- * @version 1.0
- */
+// CalendrierSecouristeMoisController.java
 package controller;
 
 // Importations nécessaires à JavaFX et au traitement des dates
