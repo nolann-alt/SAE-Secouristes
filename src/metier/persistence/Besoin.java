@@ -3,7 +3,7 @@ package metier.persistence;
 /**
  * This class represents a need for a certain number of rescuers with specific competencies
  * for a given DPS (Dispositif Prévisionnel de Secours).
-    * It contains the number of rescuers required, the title of the competence needed, and the ID of the DPS.
+ * It contains the number of rescuers required, the title of the competence needed, and the ID of the DPS.
  *
  * @author Nolann L
  * @author Marin W
@@ -16,16 +16,15 @@ public class Besoin {
     /** The title of the competence needed for the DPS */
     private String intituleComp;
     /** The ID of the DPS for which the rescuers are needed */
-    private int idDPS;
+    private long idDPS;
 
     /**
      * Constructs a Besoin object with the specified number of rescuers, competence title, and DPS ID.
-     *
      * @param nombreSecouriste the number of rescuers required
      * @param intituleComp     the title of the competence needed
      * @param idDPS            the ID of the DPS
      */
-    public Besoin(int nombreSecouriste, String intituleComp, int idDPS) {
+    public Besoin(int nombreSecouriste, String intituleComp, long idDPS) {
         this.nombreSecouriste = nombreSecouriste;
         this.intituleComp = intituleComp;
         this.idDPS = idDPS;
@@ -67,7 +66,7 @@ public class Besoin {
      * Returns the ID of the DPS.
      * @return the DPS ID
      */
-    public int getIdDPS() {
+    public long getIdDPS() {
         return this.idDPS;
     }
 
