@@ -181,7 +181,7 @@
 
     <Rectangle fx:id="overlay" fill="rgba(0,0,0,0.4)" height="852" visible="false" width="394.0" />
 
-    <VBox fx:id="popupPane" alignment="CENTER" maxHeight="760.0" maxWidth="394.0" prefHeight="760.0" prefWidth="394.0" spacing="10" style="-fx-background-color: white;              -fx-background-radius: 10;              -fx-border-color: #333333;              -fx-border-radius: 10;              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 5);" visible="true" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
+    <VBox fx:id="popupPane" alignment="CENTER" maxHeight="760.0" maxWidth="394.0" prefHeight="760.0" prefWidth="394.0" spacing="10" style="-fx-background-color: white;              -fx-background-radius: 10;              -fx-border-color: #333333;              -fx-border-radius: 10;              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 5);" visible="false" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="NEVER">
         <children>
             <GridPane prefHeight="760.0" prefWidth="393.0">
                 <columnConstraints>

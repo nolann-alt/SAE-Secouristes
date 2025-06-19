@@ -5,8 +5,18 @@ import metier.persistence.DPS;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Data Access Object (DAO) for the {@link DPS} entity.
+ * This class handles database operations such as create, update, delete, find by ID, and find all.
+ */
 public class DPSDAO extends DAO<DPS> {
 
+    /**
+     * Inserts a new DPS record into the database.
+     *
+     * @param dps The DPS to insert.
+     * @return 1 if successful, -1 otherwise.
+     */
     @Override
     public int create(DPS dps) {
         String query = "INSERT INTO DPS (label, date, heure_debut, heure_fin, sportAssocie, codeSite, lieu, description, couleur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -28,6 +38,12 @@ public class DPSDAO extends DAO<DPS> {
         }
     }
 
+    /**
+     * Updates an existing DPS record.
+     *
+     * @param dps The DPS to update.
+     * @return 1 if successful, -1 otherwise.
+     */
     @Override
     public int update(DPS dps) {
         String query = "UPDATE DPS SET label = ?, date = ?, heure_debut = ?, heure_fin = ?, sportAssocie = ?, codeSite = ?, lieu = ?, description = ?, couleur = ? WHERE id = ?";
@@ -50,6 +66,12 @@ public class DPSDAO extends DAO<DPS> {
         }
     }
 
+    /**
+     * Deletes a DPS from the database.
+     *
+     * @param dps The DPS to delete.
+     * @return 1 if successful, -1 otherwise.
+     */
     @Override
     public int delete(DPS dps) {
         String query = "DELETE FROM DPS WHERE id = ?";
@@ -63,6 +85,12 @@ public class DPSDAO extends DAO<DPS> {
         }
     }
 
+    /**
+     * Finds a DPS by its ID.
+     *
+     * @param id The ID of the DPS.
+     * @return The corresponding DPS or null if not found.
+     */
     @Override
     public DPS findByID(Long id) {
         String query = "SELECT * FROM DPS WHERE id = ?";
@@ -91,6 +119,11 @@ public class DPSDAO extends DAO<DPS> {
         return null;
     }
 
+    /**
+     * Retrieves all DPS records from the database.
+     *
+     * @return A list of all DPS.
+     */
     @Override
     public List<DPS> findAll() {
         List<DPS> list = new ArrayList<>();
@@ -119,6 +152,12 @@ public class DPSDAO extends DAO<DPS> {
         return list;
     }
 
+    /**
+     * Finds all DPS entries assigned to a specific secouriste.
+     *
+     * @param idSecouriste The ID of the secouriste.
+     * @return A list of DPS associated with the secouriste.
+     */
     public List<DPS> findBySecouriste(long idSecouriste) {
         List<DPS> list = new ArrayList<>();
         String query = "SELECT DPS.* FROM DPS " +
