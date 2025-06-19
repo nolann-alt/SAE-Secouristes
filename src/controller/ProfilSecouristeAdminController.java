@@ -212,7 +212,7 @@ public class ProfilSecouristeAdminController implements Initializable {
         possedeDAO.deleteAllBySecouriste(secouriste.getId());
 
         for (String intitule : nouvellesCompetences) {
-            possedeDAO.create(new Possede(intitule, secouriste));
+            possedeDAO.create(new Possede(intitule, secouriste.getId()));
         }
 
         List<Competences> competences = new ArrayList<>();
