@@ -307,7 +307,7 @@ public class CalendrierSecouristeSemaineController {
      * @param end The end time of the event.
      * @param color The color of the event.
      */
-    private void addEvent(LocalDate day, String label, LocalTime start, LocalTime end, Color color) {
+    public void addEvent(LocalDate day, String label, LocalTime start, LocalTime end, Color color) {
         // Création d'une liste d'événements pour le jour spécifié
         List<EventData> events = eventMap.computeIfAbsent(day, d -> new ArrayList<>());
 

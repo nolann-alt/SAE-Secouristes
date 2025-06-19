@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import metier.graphe.algorithme.Graphe;
 import metier.graphe.model.dao.*;
 import metier.persistence.*;
 
@@ -30,6 +31,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,9 +45,6 @@ public class CalendrierMoisAdminController implements Initializable {
 
     /** This DatePicker is used to select a date in the calendar view. */
     @FXML private DatePicker datePickerStart;
-
-    /** This DatePicker is used to select a date in the calendar view. */
-    @FXML private DatePicker datePickerEnd;
 
     /** This AnchorPane is used to hold the calendar view and its components. */
     @FXML private ComboBox<String> hourComboBoxStart;
@@ -186,6 +185,12 @@ public class CalendrierMoisAdminController implements Initializable {
         hourComboBoxEnd.setVisibleRowCount(5);
 
         loadSecouristes();
+
+        datePickerStart.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null) {
+                loadSecouristes();
+            }
+        });
     }
 
     /**
@@ -484,8 +489,9 @@ public class CalendrierMoisAdminController implements Initializable {
 
         try {
             // 3. Convertir les heures
-            LocalTime timeDebut = LocalTime.parse(heureDebutStr);
-            LocalTime timeFin = LocalTime.parse(heureFinStr);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+            LocalTime timeDebut = LocalTime.parse(heureDebutStr, formatter);
+            LocalTime timeFin = LocalTime.parse(heureFinStr, formatter);
             Time debutSQL = Time.valueOf(timeDebut);
             Time finSQL = Time.valueOf(timeFin);
 
@@ -496,10 +502,10 @@ public class CalendrierMoisAdminController implements Initializable {
                     Date.valueOf(date),
                     debutSQL,
                     finSQL,
-                    "Marathon",
+                    null,
                     1,
-                    "Lieu générique",
-                    "Description du DPS"
+                    null,
+                    null
             );
             dps.setCouleur(couleur);
 
@@ -514,9 +520,9 @@ public class CalendrierMoisAdminController implements Initializable {
             int idDPS = (int) dernier.getId();
 
             // 7. Création d'un liste de besoins et de possede
-            List<Besoin> besoins = new ArrayList<>();
+            ArrayList<Besoin> besoins = new ArrayList<>();
 
-            List<Possede> listePossedes = new ArrayList<>();
+            ArrayList<Possede> listePossedes = new ArrayList<>();
             PossedeDAO possedeDAO = new PossedeDAO();
 
             // 8. Récupération des compétences cochées pour la création d'un objet Possede
@@ -531,88 +537,113 @@ public class CalendrierMoisAdminController implements Initializable {
             if (customCheckbox7.isSelected()) competencesCochees.add("SSA");
             if (customCheckbox8.isSelected()) competencesCochees.add("VPSP");
 
-            // 9. Vérification que des compétences ont été cochées et affectation des secouristes
 
-            int nbSecouristeCochee = 0;
-            AffectationDAO affectationDAO = new AffectationDAO();
+            List<Secouriste> secouristesDisponibles = new ArrayList<>();
+
             for (Node node : eventList.getChildren()) {
                 if (node instanceof HBox box) {
-                    for (Node child : box.getChildren()) {
-                        if (child instanceof CheckBox check && check.isSelected()) {
-                            Secouriste s = (Secouriste) box.getUserData();
-                            if (s != null) {
-                                nbSecouristeCochee ++;
-
-                                for (String competence : competencesCochees) {
-                                    Affectation aff = new Affectation((int) s.getId(), competence, (int) dernier.getId());
-                                    affectationDAO.create(aff);
-
-                                    Possede possede = new Possede(competence, s.getId());
-                                    listePossedes.add(possede);
-                                    possedeDAO.create(possede);
-                                }
-                            }
-                        }
+                    Object userData = box.getUserData();
+                    System.out.println("UserData dans eventList : " + userData);
+                    if (userData instanceof Secouriste secouriste) {
+                        secouristesDisponibles.add(secouriste);
                     }
                 }
             }
+            System.out.println("Secouristes récupérés : " + secouristesDisponibles.size());
+
+            listePossedes = getPossedesOfAvailableSecouristes(secouristesDisponibles);
+            System.out.println("Possedes récupérés : " + listePossedes.size());
+            for (Possede p : listePossedes) {
+                System.out.printf("Possede : Secouriste %d, Comp %s%n", p.getIdSecouriste(), p.getIntitule());
+            }
 
             if (customCheckbox.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "CO", idDPS));
+                besoins.add(new Besoin(1, "CO", idDPS));
             }
             if (customCheckbox1.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "CP", idDPS));
+                besoins.add(new Besoin(1, "CP", idDPS));
             }
             if (customCheckbox2.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "CE", idDPS));
+                besoins.add(new Besoin(1, "CE", idDPS));
             }
             if (customCheckbox3.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "PBC", idDPS));
+                besoins.add(new Besoin(1, "PBC", idDPS));
             }
             if (customCheckbox4.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "PBF", idDPS));
+                besoins.add(new Besoin(1, "PBF", idDPS));
             }
             if (customCheckbox5.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "PSE1", idDPS));
+                besoins.add(new Besoin(1, "PSE1", idDPS));
             }
             if (customCheckbox6.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "PSE2", idDPS));
+                besoins.add(new Besoin(1, "PSE2", idDPS));
             }
             if (customCheckbox7.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "SSA", idDPS));
+                besoins.add(new Besoin(1, "SSA", idDPS));
             }
             if (customCheckbox8.isSelected()) {
-                besoins.add(new Besoin(nbSecouristeCochee, "VPSP", idDPS));
+                besoins.add(new Besoin(1, "VPSP", idDPS));
             }
 
             BesoinDAO besoinDAO = new BesoinDAO();
-
             for (Besoin besoin : besoins) {
                 besoinDAO.create(besoin);
             }
 
+            // Après création du graphe
+            Graphe graphe = new Graphe(listePossedes, besoins);
+
+            // Debug index secouristes et besoins
+            System.out.println("=== DEBUG GRAPHE ===");
+            System.out.println("Nombre de secouristes uniques : " + graphe.getIndexSecouriste().size());
+            System.out.println("Nombre de besoins : " + graphe.getIndexBesoin().size());
+
+            // Debug matrice d'adjacence (affiche toutes les connexions possibles)
+            int[][] mat = graphe.getMatriceAdj();
+            for (int i = 0; i < graphe.getIndexSecouriste().size(); i++) {
+                for (int j = 0; j < graphe.getIndexBesoin().size(); j++) {
+                    if (mat[i][j] == 1) {
+                        System.out.println("Lien secouriste index " + i + " (id=" + graphe.getIndexSecouriste().get(i) + ") <-> besoin index " + j + " (comp=" + graphe.getIndexBesoin().get(j).getIntituleComp() + ")");
+                    }
+                }
+            }
+
+            System.out.println("====================");
+
+            ArrayList<Affectation> affectations;
+            if (besoins.size() > 7) { // un seuil de complexité
+                affectations = graphe.affectationGloutonne();
+            } else {
+                affectations = graphe.affectationExhaustive();
+            }
+            AffectationDAO affectationDAO = new AffectationDAO();
+            for (Affectation aff : affectations) {
+                System.out.printf("Affectation : Secouriste %d, Besoin %s%n", aff.getIdSecouriste(), aff.getIntituleComp());
+                affectationDAO.create(aff);
+            }
+
+            // Création des indisponibilités pour chaque secouriste affecté au DPS
+            DispoDAO dispoDAO = new DispoDAO();
+            Journee jourDPS = new Journee(date.getDayOfMonth(), date.getMonthValue(), date.getYear());
+
+            System.out.println("Nombre d'affectations trouvées : " + affectations.size());
+            for (Affectation aff : affectations) {
+                System.out.printf("Affectation : Secouriste %d, Besoin %s%n", aff.getIdSecouriste(), aff.getIntituleComp());
+            }
+
+
+            for (Affectation aff : affectations) {
+                Disponibilite indispo = new Disponibilite(aff.getIdSecouriste(), jourDPS);
+                dispoDAO.create(indispo);
+            }
+
             hidePopup();
-            System.out.println("DPS et affectations enregistrés.");
+            System.out.println("DPS et affectations enregistrés pour le " + date + " de " + heureDebutStr + " à " + heureFinStr + " avec la couleur " + couleur);
 
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur lors de la création du DPS : " + e.getMessage());
         }
-    }
-
-
-    public LocalDateTime getSelectedDateTimeStart() {
-        LocalDate date = datePickerStart.getValue();
-        String hourStr = hourComboBoxStart.getValue().replace("h", "");
-        LocalTime time = LocalTime.parse(hourStr);
-        return LocalDateTime.of(date, time);
-    }
-
-    public LocalDateTime getSelectedDateTimeEnd() {
-        LocalDate date = datePickerEnd.getValue();
-        String hourStr = hourComboBoxEnd.getValue().replace("h", "");
-        LocalTime time = LocalTime.parse(hourStr);
-        return LocalDateTime.of(date, time);
     }
 
     //Pour ajouter une carte
@@ -621,26 +652,28 @@ public class CalendrierMoisAdminController implements Initializable {
         List<Secouriste> secouristes = secouristeDAO.findAll();
 
         LocalDate date = datePickerStart.getValue();
-
-        DispoDAO dispoDAO = new DispoDAO();
         Journee jourDPS = new Journee(date.getDayOfMonth(), date.getMonthValue(), date.getYear());
 
-        for (Secouriste s : secouristes) {
-            List<Disponibilite> dispos = dispoDAO.findAllBySecouriste((int)s.getId());
+        DispoDAO dispoDAO = new DispoDAO();
 
-            boolean estDisponible = false;
-            for (Disponibilite d : dispos) {
+        for (Secouriste s : secouristes) {
+            List<Disponibilite> indispos = dispoDAO.findAllBySecouriste((int) s.getId());
+
+            boolean estIndisponible = false;
+            for (Disponibilite d : indispos) {
                 if (d.getDateDispo().equals(jourDPS)) {
-                    estDisponible = true;
+                    estIndisponible = true;
                     break;
                 }
             }
 
-            if (estDisponible) {
+            if (!estIndisponible) {
                 eventList.getChildren().add(createSecouristeCard(s));
             }
         }
     }
+
+
 
     private Node createSecouristeCard(Secouriste s) {
         HBox card = new HBox(15);
@@ -648,31 +681,51 @@ public class CalendrierMoisAdminController implements Initializable {
         card.setPadding(new Insets(10, 20, 10, 10));
         card.setPrefWidth(360);
         card.setAlignment(Pos.CENTER_LEFT);
-        card.setUserData(s); // Important pour récupérer le secouriste sélectionné plus tard
 
         // Avatar
         ImageView avatar = new ImageView(new Image(getClass().getResourceAsStream("/ressources/img/avatar.png")));
         avatar.setFitWidth(60);
         avatar.setFitHeight(60);
-        avatar.setClip(new javafx.scene.shape.Circle(30, 30, 30)); // rond
+        avatar.setClip(new javafx.scene.shape.Circle(30, 30, 30));
 
-        // Infos : Nom + Rôle
+        // Infos
         Label nomPrenom = new Label(s.getPrenom() + "  " + s.getNom());
         nomPrenom.setStyle("-fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill: black;");
-
-        Label role = new Label("Secouriste professionnel");
-        role.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+        Label role = new Label("Disponible");
+        role.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
 
         VBox infoBox = new VBox(5, nomPrenom, role);
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
 
-        // Nouvelle CheckBox pour sélection
-        CheckBox checkBox = new CheckBox();
+        card.getChildren().addAll(avatar, infoBox, spacer);
 
-        // Ajout des éléments à la carte
-        card.getChildren().addAll(avatar, infoBox, spacer, checkBox);
+        card.setUserData(s); // <-- IMPORTANT : ici on lie le secouriste au HBox
+
         return card;
     }
+
+
+    public ArrayList<Possede> getPossedesOfAvailableSecouristes(List<Secouriste> secouristesDisponibles) {
+        PossedeDAO possedeDAO = new PossedeDAO();
+        ArrayList<Possede> listePossedes = new ArrayList<>();
+
+        for (Secouriste secouriste : secouristesDisponibles) {
+            List<Competences> competences = possedeDAO.findCompetencesBySecouriste(secouriste.getId());
+            for (Competences competence : competences) {
+                // Créer un objet Possede avec idSecouriste et intitule
+                Possede possede = new Possede(competence.getIntitule(), secouriste.getId());
+                listePossedes.add(possede);
+            }
+        }
+
+        return listePossedes;
+    }
+
+    // Méthode utilitaire pour vérifier chevauchement de plages horaires
+    private boolean plagesSeChevauchent(LocalTime debut1, LocalTime fin1, LocalTime debut2, LocalTime fin2) {
+        return !fin1.isBefore(debut2) && !debut1.isAfter(fin2);
+    }
+
 }

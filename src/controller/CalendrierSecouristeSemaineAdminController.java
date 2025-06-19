@@ -72,7 +72,27 @@ public class CalendrierSecouristeSemaineAdminController {
                 LocalTime fin = dps.getHeureFin().toLocalTime();
                 String label = dps.getLabel();
                 String couleurTexte = dps.getCouleur();
-                Color couleur = Color.valueOf(couleurTexte != null ? couleurTexte : "ORANGE");
+
+                Color couleur;
+                try {
+                    if (couleurTexte == null || couleurTexte.isBlank()) {
+                        couleur = Color.ORANGE; // valeur par défaut
+                    } else {
+                        // On ajoute un trim pour supprimer espaces
+                        String c = couleurTexte.trim();
+
+                        // Si c'est un code hex sans #, on le rajoute
+                        if (c.matches("[0-9a-fA-F]{6}")) {
+                            c = "#" + c;
+                        }
+
+                        couleur = Color.web(c);
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Couleur invalide : " + couleurTexte + ", utilisation de ORANGE par défaut");
+                    couleur = Color.ORANGE;
+                }
+
 
                 EventData event = new EventData(label, debut, fin, couleur);
                 eventMap.computeIfAbsent(date, d -> new ArrayList<>()).add(event);

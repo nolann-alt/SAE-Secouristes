@@ -4,6 +4,9 @@ import metier.persistence.Affectation;
 import metier.persistence.Besoin;
 import metier.persistence.Possede;
 
+import metier.persistence.*;
+import metier.persistence.Affectation;
+
 import java.util.*;
 
 public class Graphe {

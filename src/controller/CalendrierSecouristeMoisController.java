@@ -17,6 +17,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import metier.graphe.model.dao.DispoDAO;
+import metier.persistence.Disponibilite;
+import metier.persistence.Journee;
+import metier.persistence.Secouriste;
 
 import java.io.IOException;
 import java.net.URL;
@@ -281,6 +285,7 @@ public class CalendrierSecouristeMoisController implements Initializable {
             String heureFinStr = hourComboBoxEnd.getValue().replace("h", "");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+
             LocalTime heureDebut = LocalTime.parse(heureDebutStr, formatter);
             LocalTime heureFin = LocalTime.parse(heureFinStr, formatter);
 
@@ -292,12 +297,32 @@ public class CalendrierSecouristeMoisController implements Initializable {
                 return;
             }
 
-            // TODO : enregistrer l’indisponibilité dans la base de données
+            Secouriste secouriste = GlobalController.getCurrentUser();
+            long idSecouristeConnecte = secouriste.getId();
+
+            DispoDAO dispoDAO = new DispoDAO();
+
+            LocalDate current = dateDebut;
+            while (!current.isAfter(dateFin)) {
+                Journee jour = new Journee(current.getDayOfMonth(), current.getMonthValue(), current.getYear());
+                Disponibilite indispo = new Disponibilite(idSecouristeConnecte, jour);
+
+                int result = dispoDAO.create(indispo);
+                if (result <= 0) {
+                    System.err.println("Erreur lors de l'enregistrement de l'indisponibilité pour le " + jour);
+                }
+
+                current = current.plusDays(1);
+            }
+
             System.out.println("Indisponibilité signalée de " + debut + " à " + fin);
 
-            hidePopup(); // Fermer la popup après validation
+            hidePopup();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+
 }

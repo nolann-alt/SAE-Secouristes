@@ -82,10 +82,4 @@ public class Affectation {
         return hasCycle;
     }
 
-    private ArrayList<HashMap<Secouriste, DPS>> glouton (Graphe g){
-        ArrayList<Possede> secouristes = g.getListeSecouriste();
-        HashMap<DPS, Competences> dispositifs = g.getListeDPS();
-        return null;
-    }
-
 }

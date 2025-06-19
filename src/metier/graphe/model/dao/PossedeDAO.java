@@ -80,4 +80,6 @@ public class PossedeDAO extends DAO<Possede> {
     public List<Possede> findAll() {
         return null;
     }
+
+
 }

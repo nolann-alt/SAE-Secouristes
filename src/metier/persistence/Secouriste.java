@@ -31,7 +31,6 @@ public class Secouriste {
         this.motDePasse = motDePasse;
     }
 
-
     public long getId() {
         return this.id;
     }
@@ -79,7 +78,6 @@ public class Secouriste {
     public void setCompetences(List<Competences> competences) {
         this.competences = competences;
     }
-
 
     public void ajouterDispo(Disponibilite laDispo) {
         if (laDispo == null) {

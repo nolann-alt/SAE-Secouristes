@@ -1,5 +1,7 @@
 package metier.persistence;
 
+import java.time.LocalTime;
+
 /**
  * This class represents the availability of a rescuer on a specific date.
  * It contains the rescuer's ID and the date (day, month, year) of availability.
