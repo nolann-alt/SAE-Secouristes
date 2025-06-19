@@ -532,6 +532,7 @@ public class CalendrierMoisAdminController implements Initializable {
             if (customCheckbox8.isSelected()) competencesCochees.add("VPSP");
 
             // 9. Vérification que des compétences ont été cochées et affectation des secouristes
+
             int nbSecouristeCochee = 0;
             AffectationDAO affectationDAO = new AffectationDAO();
             for (Node node : eventList.getChildren()) {
@@ -619,8 +620,25 @@ public class CalendrierMoisAdminController implements Initializable {
         SecouristeDAO secouristeDAO = new SecouristeDAO();
         List<Secouriste> secouristes = secouristeDAO.findAll();
 
+        LocalDate date = datePickerStart.getValue();
+
+        DispoDAO dispoDAO = new DispoDAO();
+        Journee jourDPS = new Journee(date.getDayOfMonth(), date.getMonthValue(), date.getYear());
+
         for (Secouriste s : secouristes) {
-            eventList.getChildren().add(createSecouristeCard(s));
+            List<Disponibilite> dispos = dispoDAO.findAllBySecouriste((int)s.getId());
+
+            boolean estDisponible = false;
+            for (Disponibilite d : dispos) {
+                if (d.getDateDispo().equals(jourDPS)) {
+                    estDisponible = true;
+                    break;
+                }
+            }
+
+            if (estDisponible) {
+                eventList.getChildren().add(createSecouristeCard(s));
+            }
         }
     }
 
