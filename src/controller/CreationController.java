@@ -19,6 +19,17 @@ import metier.graphe.model.dao.SecouristeDAO;
 
 import java.io.IOException;
 
+/**
+ * Controller for the account creation view.
+ * Handles password visibility toggling, checkbox appearance, and validation of user inputs
+ * before creating a new Secouriste account. Also supports navigation back to the welcome screen.
+ *
+ * @author M. Weis
+ * @author N. Lescop
+ * @author M. Gouelo
+ * @author A. Jan
+ * @version 1.0
+ */
 public class CreationController {
 
     // Label d'affichage de l'heure
@@ -58,7 +69,8 @@ public class CreationController {
     @FXML private Label errorLabel;
 
     /**
-     * Initializes the controller by setting up clock, checkbox visuals, and default states.
+     * Initializes the view with current time, sets up the checkbox images,
+     * and prepares the interface for interaction.
      */
     @FXML
     public void initialize() {
@@ -77,7 +89,9 @@ public class CreationController {
     }
 
     /**
-     * Navigates back to the welcome view (Accueil).
+     * Navigates back to the welcome screen (Accueil.fxml).
+     *
+     * @param event the button click event
      */
     @FXML
     private void handleBack(ActionEvent event) {
@@ -90,14 +104,28 @@ public class CreationController {
     }
 
     // === Gestion visuelle du bouton retour ===
-
+    /**
+     * Applies a hover visual effect to the back button.
+     */
     @FXML private void onBackHover()   { backButton.setOpacity(0.7); }
+
+    /**
+     * Restores the back button's default appearance after hover ends.
+     */
     @FXML private void onBackExit()    { backButton.setOpacity(1.0); }
+
+    /**
+     * Applies a press visual effect (translation + opacity) on the back button.
+     */
     @FXML private void onBackPress()   { backButton.setTranslateY(2); backButton.setOpacity(0.5); }
+
+    /**
+     * Resets the back button appearance after a mouse release.
+     */
     @FXML private void onBackRelease() { backButton.setTranslateY(0); backButton.setOpacity(0.7); }
 
     /**
-     * Toggles password visibility between masked and plain text.
+     * Toggles the visibility of the password field between hidden (PasswordField) and visible (TextField).
      */
     @FXML
     private void togglePasswordVisibility() {
@@ -119,7 +147,10 @@ public class CreationController {
     }
 
     /**
-     * Handles account creation after validating the form fields.
+     * Validates all input fields and attempts to create a new Secouriste account.
+     * If successful, redirects the user to the welcome screen.
+     *
+     * @param event the button click event
      */
     @FXML
     private void handleCreationCompte(ActionEvent event) {
@@ -171,14 +202,19 @@ public class CreationController {
     }
 
     /**
-     * Checks if a name or first name is valid (only letters, hyphens and spaces).
+     * Validates a given name to ensure it only contains letters, hyphens, or spaces.
+     *
+     * @param nom the name or first name to validate
+     * @return true if the name is valid, false otherwise
      */
     private boolean estNomValide(String nom) {
         return nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ\\-\\s]+$");
     }
 
     /**
-     * Displays an error alert with the provided message.
+     * Displays an error alert to the user with a custom message.
+     *
+     * @param message the error message to display
      */
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

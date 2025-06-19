@@ -9,16 +9,20 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Classe utilitaire pour exporter une liste de secouristes dans un fichier CSV.
+ * Utility class to export a list of Secouriste objects to a CSV file.
+ * It retrieves associated competencies using the PossedeDAO and formats the output as comma-separated values.
  */
 public class ExportCSV {
 
     /**
-     * Exporte les données des secouristes dans un fichier CSV.
-     * Les compétences sont récupérées depuis la table d'association Possede.
+     * Exports the given list of Secouriste objects into a CSV file at the specified file path.
+     * Each row contains secouriste information and their associated competencies.
      *
-     * @param secouristes   Liste des secouristes à exporter.
-     * @param cheminFichier Chemin du fichier de sortie.
+     * CSV format:
+     * ID,Nom,Prénom,Email,Téléphone,Compétences
+     *
+     * @param secouristes     The list of secouristes to export.
+     * @param cheminFichier   The file path where the CSV should be written.
      */
     public static void exportSecouristes(List<Secouriste> secouristes, String cheminFichier) {
         try {

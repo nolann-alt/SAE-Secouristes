@@ -23,6 +23,20 @@ import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the login (connexion) view.
+ * Handles the user authentication for both Admin and Secouriste roles,
+ * password visibility toggling, and the "remember me" feature.
+ *
+ * This class also supports UI behavior for interactive feedback
+ * and preserves user login input locally using a text file.
+ *
+ * @author M. Weis
+ * @author N. Lescop
+ * @author M. Gouelo
+ * @author A. Jan
+ * @version 1.0
+ */
 public class ConnexionController {
 
     // Label pour afficher l'heure courante
@@ -54,8 +68,8 @@ public class ConnexionController {
     private final String FILE_PATH = "remember_me.txt";
 
     /**
-     * Initializes the controller by displaying the current time,
-     * setting up the checkbox image, and loading a remembered email if any.
+     * Initializes the controller: shows the current time, loads the saved email
+     * if the "remember me" box was previously checked, and configures checkbox visuals.
      */
     @FXML
     public void initialize() {
@@ -75,7 +89,9 @@ public class ConnexionController {
     }
 
     /**
-     * Navigates back to the welcome view (Accueil).
+     * Handles the back button click and navigates the user to the welcome (Accueil) view.
+     *
+     * @param event the action event triggered by the back button
      */
     @FXML
     private void handleBack(ActionEvent event) {
@@ -89,9 +105,24 @@ public class ConnexionController {
 
     // ==== Gestion des effets visuels du bouton retour ====
 
+    /**
+     * Handles mouse hover effect on the back button (opacity change).
+     */
     @FXML private void onBackHover()    { backButton.setOpacity(0.7); }
+
+    /**
+     * Restores the original appearance of the back button when the mouse exits.
+     */
     @FXML private void onBackExit()     { backButton.setOpacity(1.0); }
+
+    /**
+     * Applies a visual press effect to the back button (translation and opacity).
+     */
     @FXML private void onBackPress()    { backButton.setTranslateY(2); backButton.setOpacity(0.5); }
+
+    /**
+     * Removes the press effect when the back button is released.
+     */
     @FXML private void onBackRelease()  { backButton.setTranslateY(0); backButton.setOpacity(0.7); }
 
     /**
@@ -121,7 +152,12 @@ public class ConnexionController {
     }
 
     /**
-     * Handles user login for both Admin and Secouriste roles.
+     * Attempts to authenticate the user using the provided email and password.
+     * If authentication succeeds, redirects to the appropriate dashboard
+     * based on user role (Admin or Secouriste).
+     *
+     * @param event the action event triggered by the login button
+     * @throws IOException if the FXML view switch fails
      */
     @FXML
     private void handleConnexion(ActionEvent event) throws IOException {
@@ -159,7 +195,9 @@ public class ConnexionController {
     }
 
     /**
-     * Enregistre l’email localement si la case "se souvenir de moi" est cochée.
+     * Saves the email locally if the "remember me" box is checked.
+     *
+     * @param email the email to persist in local storage
      */
     private void saveEmail(String email) {
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
@@ -170,7 +208,8 @@ public class ConnexionController {
     }
 
     /**
-     * Préremplit le champ email si un email a été enregistré précédemment.
+     * Loads the saved email from the local file if it exists,
+     * and updates the checkbox state accordingly.
      */
     private void loadRememberedEmail() {
         File file = new File(FILE_PATH);
@@ -188,7 +227,9 @@ public class ConnexionController {
     }
 
     /**
-     * Affiche une alerte simple à l’utilisateur.
+     * Displays an error alert with the given message.
+     *
+     * @param message the content to show in the alert dialog
      */
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

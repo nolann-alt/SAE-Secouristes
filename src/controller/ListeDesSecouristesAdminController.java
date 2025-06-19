@@ -106,6 +106,10 @@ public class ListeDesSecouristesAdminController {
 
     // ==== MÉTHODES DE NAVIGATION ADMIN ====
 
+    /**
+     * Navigates to the admin dashboard view.
+     * @param event MouseEvent triggered by the user.
+     */
     @FXML
     private void handleAccueil(MouseEvent event) {
         try {
@@ -116,6 +120,10 @@ public class ListeDesSecouristesAdminController {
         }
     }
 
+    /**
+     * Navigates to the admin alerts view.
+     * @param event MouseEvent triggered by the user.
+     */
     @FXML
     private void handleAlertesAdmin(MouseEvent event) {
         try {
@@ -126,6 +134,10 @@ public class ListeDesSecouristesAdminController {
         }
     }
 
+    /**
+     * Navigates to the weekly calendar view for admins.
+     * @param event MouseEvent triggered by the user.
+     */
     @FXML
     private void handleCalendrierAdminSemaine(MouseEvent event) {
         try {
@@ -136,6 +148,11 @@ public class ListeDesSecouristesAdminController {
         }
     }
 
+
+    /**
+     * Navigates to the profile view of the current admin.
+     * @param event MouseEvent triggered by the user.
+     */
     @FXML
     private void handleProfilClick(MouseEvent event) {
         try {
@@ -146,6 +163,10 @@ public class ListeDesSecouristesAdminController {
         }
     }
 
+    /**
+     * Navigates to the profile view of the selected rescuer.
+     * @param event MouseEvent triggered by the user.
+     */
     @FXML
     private void showProfil(MouseEvent event) {
         try {

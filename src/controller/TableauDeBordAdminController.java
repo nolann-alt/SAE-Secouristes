@@ -52,7 +52,15 @@ public class TableauDeBordAdminController implements Initializable {
     private final Map<LocalDate, List<EventData>> eventMap = new HashMap<>();
 
     /**
-     * Initializes the admin dashboard with calendar and events.
+     * Initializes the dashboard view with:
+     * - Clock display
+     * - Admin name display
+     * - Scroll enhancements
+     * - Sample events
+     * - Daily event display
+     *
+     * @param location not used
+     * @param resources not used
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -82,9 +90,9 @@ public class TableauDeBordAdminController implements Initializable {
     }
 
     /**
-     * Displays the events and hour slots for the given day.
+     * Renders the hourly grid and events for a specific day in the calendar pane.
      *
-     * @param day Date to be displayed in the calendar.
+     * @param day the date to display
      */
     private void displayDay(LocalDate day) {
         calendarPane.getChildren().clear();
@@ -173,6 +181,10 @@ public class TableauDeBordAdminController implements Initializable {
 
     // ==== MÉTHODES DE NAVIGATION ENTRE LES VUES ====
 
+    /**
+     * Navigates to the admin profile view.
+     * @param event the triggering mouse event
+     */
     @FXML
     private void handleProfilAdmin(MouseEvent event) {
         try {
@@ -182,6 +194,11 @@ public class TableauDeBordAdminController implements Initializable {
         }
     }
 
+
+    /**
+     * Navigates to the weekly admin calendar.
+     * @param event the triggering mouse event
+     */
     @FXML
     private void handleCalendrierAdmin(MouseEvent event) {
         try {
@@ -191,6 +208,11 @@ public class TableauDeBordAdminController implements Initializable {
         }
     }
 
+
+    /**
+     * Navigates to the admin alerts view.
+     * @param event the triggering mouse event
+     */
     @FXML
     private void handleAlertesAdmin(MouseEvent event) {
         try {
@@ -200,6 +222,11 @@ public class TableauDeBordAdminController implements Initializable {
         }
     }
 
+
+    /**
+     * Navigates to the list of all rescuers.
+     * @param event the triggering mouse event
+     */
     @FXML
     private void handleEffectif(MouseEvent event) {
         try {
@@ -209,6 +236,11 @@ public class TableauDeBordAdminController implements Initializable {
         }
     }
 
+
+    /**
+     * Navigates to the DPS calendar creation view.
+     * @param event the triggering action event
+     */
     @FXML
     private void handleCreateDPS(ActionEvent event) {
         try {
@@ -218,6 +250,13 @@ public class TableauDeBordAdminController implements Initializable {
         }
     }
 
+
+    /**
+     * Handles exporting the rescuers’ data as a CSV file.
+     * Opens a file dialog and writes data using the ExportCSV utility.
+     *
+     * @param event the triggering action event
+     */
     @FXML
     private void handleExportCSV(ActionEvent event) {
         // Création d'une instance du DAO pour accéder aux données des secouristes
