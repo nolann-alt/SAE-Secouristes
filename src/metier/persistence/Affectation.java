@@ -11,11 +11,11 @@ package metier.persistence;
  */
 public class Affectation {
     /** The ID of the rescuer assigned to the DPS */
-    private int idSecouriste;
+    private long idSecouriste;
     /** The title of the competence required for the assignment */
     private String intituleComp;
     /** The ID of the DPS to which the rescuer is assigned */
-    private int idDPS;
+    private long idDPS;
 
     /**
      * Constructs an Affectation object with the specified rescuer ID, competence title, and DPS ID.
@@ -23,9 +23,9 @@ public class Affectation {
      * @param intituleComp the title of the competence required
      * @param idDPS        the ID of the DPS
      */
-    public Affectation(int idSecouriste, String intituleComp, int idDPS) {
+    public Affectation(long idSecouriste, String intituleComp, long idDPS) {
         this.idSecouriste = idSecouriste;
-        this.intituleComp = "";
+        this.intituleComp = intituleComp;
         this.idDPS = idDPS;
     }
 
@@ -33,7 +33,7 @@ public class Affectation {
      * Returns the ID of the rescuer.
      * @return the rescuer's ID
      */
-    public int getIdSecouriste() {
+    public long getIdSecouriste() {
         return this.idSecouriste;
     }
 
@@ -65,7 +65,7 @@ public class Affectation {
      * Returns the ID of the DPS.
      * @return the DPS ID
      */
-    public int getIdDPS() {
+    public long getIdDPS() {
         return this.idDPS;
     }
 
@@ -75,5 +75,10 @@ public class Affectation {
      */
     public void setIdDPS(int idDPS) {
         this.idDPS = idDPS;
+    }
+
+    public void showAffectation() {
+        String message = "Affectation | secouriste : " + this.getIdSecouriste() + " | la compétence : " + this.intituleComp + " | idDPS : " + this.getIdDPS() + "\n";
+        System.out.println(message);
     }
 }
