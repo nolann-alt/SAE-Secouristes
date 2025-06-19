@@ -6,8 +6,19 @@ import metier.persistence.Journee;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * DAO class for handling operations related to the {@link Disponibilite} entity.
+ * This class provides methods to create, delete, and query availability records
+ * for rescuers in the database.
+ */
 public class DispoDAO extends DAO<Disponibilite> {
 
+    /**
+     * Inserts a new availability into the database if it does not already exist.
+     *
+     * @param d The {@link Disponibilite} to create
+     * @return 1 if the insert was successful, 0 if it already existed, -1 if an error occurred
+     */
     @Override
     public int create(Disponibilite d) {
         if (exists((int) d.getIdSecouriste(), d.getDateDispo())) {
@@ -28,6 +39,13 @@ public class DispoDAO extends DAO<Disponibilite> {
         }
     }
 
+    /**
+     * Checks if a specific availability record already exists in the database.
+     *
+     * @param idSecouriste The rescuer's ID
+     * @param journee The date to check
+     * @return true if the availability already exists, false otherwise
+     */
     // Verifie si une disponibilité existe déjà pour un secouriste à une date donnée
     private boolean exists(int idSecouriste, Journee journee) {
         String query = "SELECT 1 FROM Disponibilite WHERE idSecouriste = ? AND jour = ? AND mois = ? AND annee = ?";
@@ -46,12 +64,24 @@ public class DispoDAO extends DAO<Disponibilite> {
         }
     }
 
+    /**
+     * Not applicable for this DAO, as availability has no unique identifier suitable for updating.
+     *
+     * @param d The {@link Disponibilite} to update
+     * @return Always returns -1
+     */
     @Override
     public int update(Disponibilite d) {
-        // Non applicable : pas de clé primaire unique autre que tous les champs
+        //pas de clé primaire unique autre que tous les champs
         return -1;
     }
 
+    /**
+     * Deletes an availability from the database.
+     *
+     * @param d The {@link Disponibilite} to delete
+     * @return Number of affected rows, or -1 if an error occurred
+     */
     @Override
     public int delete(Disponibilite d) {
         String query = "DELETE FROM Disponibilite WHERE idSecouriste = ? AND jour = ? AND mois = ? AND annee = ?";
@@ -68,6 +98,11 @@ public class DispoDAO extends DAO<Disponibilite> {
         }
     }
 
+    /**
+     * Retrieves all availability entries from the database.
+     *
+     * @return A list of {@link Disponibilite}
+     */
     @Override
     public List<Disponibilite> findAll() {
         List<Disponibilite> liste = new LinkedList<>();
@@ -89,6 +124,12 @@ public class DispoDAO extends DAO<Disponibilite> {
         return liste;
     }
 
+    /**
+     * Finds the first availability entry by rescuer ID.
+     *
+     * @param id The ID of the rescuer
+     * @return A {@link Disponibilite} if found, null otherwise
+     */
     @Override
     public Disponibilite findByID(Long id) {
         String query = "SELECT * FROM Disponibilite WHERE idSecouriste = ?";
@@ -111,6 +152,12 @@ public class DispoDAO extends DAO<Disponibilite> {
         return null;
     }
 
+    /**
+     * Finds all availability entries for a given rescuer.
+     *
+     * @param idSec The rescuer's ID
+     * @return A list of {@link Disponibilite}
+     */
     public List<Disponibilite> findAllBySecouriste(int idSec) {
         List<Disponibilite> liste = new LinkedList<>();
         String query = "SELECT * FROM Disponibilite WHERE idSecouriste = ?";
@@ -134,10 +181,11 @@ public class DispoDAO extends DAO<Disponibilite> {
     }
 
     /**
-     * Vérifie si un secouriste est disponible à une date donnée.
-     * @param idSecouriste l'id du secouriste
-     * @param journee la date à vérifier
-     * @return true si le secouriste est disponible (c’est-à-dire qu’il n’a pas d’indisponibilité à cette date)
+     * Checks if a rescuer is available on a given day.
+     *
+     * @param idSecouriste The rescuer's ID
+     * @param journee The day to check
+     * @return true if the rescuer is available (not found in the table), false otherwise
      */
     public boolean isDisponible(int idSecouriste, Journee journee) {
         String query = "SELECT 1 FROM Disponibilite WHERE idSecouriste = ? AND jour = ? AND mois = ? AND annee = ?";
