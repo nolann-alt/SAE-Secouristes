@@ -4,12 +4,10 @@ import metier.persistence.Affectation;
 import metier.persistence.Besoin;
 import metier.persistence.Possede;
 
-import metier.persistence.*;
-import metier.persistence.Affectation;
-
 import java.util.*;
 
 public class Graphe {
+
     private ArrayList<Possede> listeSecouristeComp;
     private ArrayList<Besoin> listeBesoins;
     private int[][] matAdj;
@@ -19,6 +17,11 @@ public class Graphe {
     private HashMap<Integer, Long> indexSecouriste;
     private HashMap<Integer, Besoin> indexBesoin;
 
+    /**
+     * Constructor of the Gaphe class
+     * @param listeSecouristeComp list of skills and rescuer association
+     * @param lalisteBesoins list of all needs
+     */
     public Graphe(ArrayList<Possede> listeSecouristeComp, ArrayList<Besoin> lalisteBesoins) {
         this.listeSecouristeComp = new ArrayList<>(listeSecouristeComp);
         this.listeBesoins = new ArrayList<>(lalisteBesoins);
@@ -63,6 +66,10 @@ public class Graphe {
 
     // ================================================ GLOUTON ================================================
 
+    /**
+     * Glouton assignement algorithm
+     * @return list of assignement object
+     */
     public ArrayList<Affectation> affectationGloutonne() {
         ArrayList<Affectation> affectations = new ArrayList<>();
         boolean[] dpsAffectes = new boolean[this.indexBesoin.size()];
@@ -87,6 +94,10 @@ public class Graphe {
 
     // ================================================ EXHAUSTIF ================================================
 
+    /**
+     * Exhaustive assignement algorithm
+     * @return list of assignement object
+     */
     public ArrayList<Affectation> affectationExhaustive() {
         ArrayList<Affectation> meilleureAffectation = new ArrayList<>();
         this.bestScore = 0;
@@ -109,6 +120,12 @@ public class Graphe {
         return meilleureAffectation;
     }
 
+    /**
+     *
+     * @param secouristeIndex index of the rescuer
+     * @param combinaisonActuelle configuration of the actual assignement
+     * @param besoinsUtilises list of needs used or not
+     */
     private void rechercherMeilleureAffectation(int secouristeIndex, int[] combinaisonActuelle, boolean[] besoinsUtilises) {
         if (secouristeIndex >= this.indexSecouriste.size()) {
 
@@ -144,6 +161,11 @@ public class Graphe {
         rechercherMeilleureAffectation(secouristeIndex + 1, combinaisonActuelle, besoinsUtilises);
     }
 
+    /**
+     * Method which compute of many valid assignement the algorithm return
+     * @param combinaison the assignement configuration
+     * @return the number of assignement
+     */
     private int calculerScoreCombinaison(int[] combinaison) {
         int score = 0;
         for (int i = 0; i < combinaison.length; i++) {
@@ -157,27 +179,51 @@ public class Graphe {
 
     // ================================================ GETTER ET AUTRES ================================================
 
-
+    /**
+     * Getter of the rescuer list
+     * @return list of rescuer
+     */
     public ArrayList<Possede> getListeSecouriste() {
         return this.listeSecouristeComp;
     }
 
+    /**
+     * Getter of the needs list
+     * @return list of needs
+     */
     public ArrayList<Besoin> getListeBesoins() {
         return this.listeBesoins;
     }
 
+    /**
+     * Getter of the matrix
+     * @return the adjency matrix
+     */
     public int[][] getMatriceAdj() {
         return this.matAdj;
     }
 
+    /**
+     * Getter of the rescuer's index
+     * @return rescuer's index
+     */
     public HashMap<Integer, Long> getIndexSecouriste() {
         return this.indexSecouriste;
     }
 
+    /**
+     * Getter of the need's index
+     * @return
+     */
     public HashMap<Integer, Besoin> getIndexBesoin() {
         return this.indexBesoin;
     }
 
+    /**
+     * Calculates the valid assignment score by checking for unique rescuer-DPS pairs with matching competencies.
+     * @param affectations List of assignments to evaluate
+     * @return Number of valid assignments where rescuers have required competencies and aren't duplicated
+     */
     public int calculerScore(ArrayList<Affectation> affectations) {
         Set<Long> secouristesAffectes = new HashSet<>();
         Set<Long> besoinsCouverts = new HashSet<>();
