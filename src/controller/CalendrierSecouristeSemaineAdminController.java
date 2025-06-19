@@ -88,6 +88,8 @@ public class CalendrierSecouristeSemaineAdminController {
         Button btn = new Button();
         vbox.setAlignment(Pos.CENTER);
         vbox.setPrefSize(41, 50);
+        vbox.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        vbox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         vbox.setSpacing(0);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E", Locale.FRENCH);
@@ -110,6 +112,9 @@ public class CalendrierSecouristeSemaineAdminController {
         btn.setGraphic(vbox);
         btn.setStyle("-fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: transparent;");
         btn.setPrefSize(41, 50);
+        btn.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        btn.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+
         return btn;
     }
 
