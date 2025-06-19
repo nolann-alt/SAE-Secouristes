@@ -5,8 +5,18 @@ import metier.persistence.Journee;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * DAO class for managing persistence operations for the {@link Journee} entity.
+ * This class allows interaction with the database for CRUD operations.
+ */
 public class JourneeDAO extends DAO<Journee> {
 
+    /**
+     * Inserts a new {@link Journee} into the database.
+     *
+     * @param j the {@link Journee} to create
+     * @return number of rows affected (1 if success, -1 if failure)
+     */
     @Override
     public int create(Journee j) {
         String query = "INSERT INTO Journee (jour, mois, annee) VALUES (?, ?, ?)";
@@ -22,9 +32,14 @@ public class JourneeDAO extends DAO<Journee> {
         }
     }
 
+    /**
+     * Updates an existing {@link Journee}. Not useful if primary key fields are unchanged.
+     *
+     * @param j the {@link Journee} to update
+     * @return number of rows affected or -1 if an error occurs
+     */
     @Override
     public int update(Journee j) {
-        // ATTENTION : mise à jour sur la même clé → inefficace si pas de modif sur un champ clé
         String query = "UPDATE Journee SET jour = ?, mois = ?, annee = ? WHERE jour = ? AND mois = ? AND annee = ?";
         try (Connection connexion = getConnection();
              PreparedStatement ps = connexion.prepareStatement(query)) {
@@ -41,6 +56,12 @@ public class JourneeDAO extends DAO<Journee> {
         }
     }
 
+    /**
+     * Deletes a {@link Journee} record from the database.
+     *
+     * @param j the {@link Journee} to delete
+     * @return number of rows affected or -1 if an error occurs
+     */
     @Override
     public int delete(Journee j) {
         String query = "DELETE FROM Journee WHERE jour = ? AND mois = ? AND annee = ?";
@@ -56,6 +77,11 @@ public class JourneeDAO extends DAO<Journee> {
         }
     }
 
+    /**
+     * Retrieves all {@link Journee} entries from the database.
+     *
+     * @return a list of all {@link Journee} records
+     */
     @Override
     public List<Journee> findAll() {
         List<Journee> liste = new LinkedList<>();
@@ -76,12 +102,25 @@ public class JourneeDAO extends DAO<Journee> {
         return liste;
     }
 
+    /**
+     * Unsupported operation for {@link Journee} as it lacks a unique identifier.
+     *
+     * @param id not used
+     * @return always returns null
+     */
     @Override
     public Journee findByID(Long id) {
-        // Méthode inapplicable sans identifiant unique, retourne null
         return null;
     }
 
+    /**
+     * Retrieves a {@link Journee} entry based on its day, month, and year.
+     *
+     * @param jour  the day
+     * @param mois  the month
+     * @param annee the year
+     * @return the corresponding {@link Journee} or null if not found
+     */
     public Journee findByDate(int jour, int mois, int annee) {
         String query = "SELECT * FROM Journee WHERE jour = ? AND mois = ? AND annee = ?";
         try (Connection connexion = getConnection();

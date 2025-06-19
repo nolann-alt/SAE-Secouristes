@@ -6,8 +6,16 @@ import metier.persistence.Journee;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * DAO class for managing {@link Disponibilite} records in the database.
+ * Handles CRUD operations and additional utility methods for availability logic.
+ */
 public class DispoDAO extends DAO<Disponibilite> {
 
+    /**
+     * DAO class for managing {@link Disponibilite} records in the database.
+     * Handles CRUD operations and additional utility methods for availability logic.
+     */
     @Override
     public int create(Disponibilite d) {
         String query = "INSERT INTO Disponibilite (idSecouriste, jour, mois, annee) VALUES (?, ?, ?, ?)";
@@ -24,12 +32,24 @@ public class DispoDAO extends DAO<Disponibilite> {
         }
     }
 
+    /**
+     * Updates an availability. Not supported.
+     *
+     * @param d The availability to update.
+     * @return Always returns -1.
+     */
     @Override
     public int update(Disponibilite d) {
         // Non applicable : pas de clé primaire unique autre que tous les champs
         return -1;
     }
 
+    /**
+     * Deletes an availability from the database.
+     *
+     * @param d The availability to delete.
+     * @return 1 if the deletion was successful, -1 otherwise.
+     */
     @Override
     public int delete(Disponibilite d) {
         String query = "DELETE FROM Disponibilite WHERE idSecouriste = ? AND jour = ? AND mois = ? AND annee = ?";
@@ -46,6 +66,11 @@ public class DispoDAO extends DAO<Disponibilite> {
         }
     }
 
+    /**
+     * Retrieves all availability records.
+     *
+     * @return A list of all {@link Disponibilite} entries.
+     */
     @Override
     public List<Disponibilite> findAll() {
         List<Disponibilite> liste = new LinkedList<>();
@@ -67,6 +92,12 @@ public class DispoDAO extends DAO<Disponibilite> {
         return liste;
     }
 
+    /**
+     * Retrieves a single availability by secouriste ID.
+     *
+     * @param id The ID of the secouriste.
+     * @return The first {@link Disponibilite} found, or null if none.
+     */
     @Override
     public Disponibilite findByID(Long id) {
         String query = "SELECT * FROM Disponibilite WHERE idSecouriste = ?";
@@ -89,6 +120,12 @@ public class DispoDAO extends DAO<Disponibilite> {
         return null;
     }
 
+    /**
+     * Retrieves all availability entries for a specific secouriste.
+     *
+     * @param idSec The ID of the secouriste.
+     * @return A list of {@link Disponibilite} objects.
+     */
     public List<Disponibilite> findAllBySecouriste(int idSec) {
         List<Disponibilite> liste = new LinkedList<>();
         String query = "SELECT * FROM Disponibilite WHERE idSecouriste = ?";
@@ -112,10 +149,11 @@ public class DispoDAO extends DAO<Disponibilite> {
     }
 
     /**
-     * Vérifie si un secouriste est disponible à une date donnée.
-     * @param idSecouriste l'id du secouriste
-     * @param journee la date de disponibilité recherchée
-     * @return true si disponible, false sinon
+     * Checks if a secouriste is available on a specific date.
+     *
+     * @param idSecouriste The ID of the secouriste.
+     * @param journee      The date to check.
+     * @return {@code true} if available, {@code false} otherwise.
      */
     public boolean isDisponible(int idSecouriste, Journee journee) {
         String query = "SELECT 1 FROM Disponibilite WHERE idSecouriste = ? AND jour = ? AND mois = ? AND annee = ?";
