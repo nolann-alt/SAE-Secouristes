@@ -1,3 +1,9 @@
+package metier.graphe.algorithme;
+
+import metier.persistence.Affectation;
+import metier.persistence.Besoin;
+import metier.persistence.Possede;
+
 import java.util.*;
 
 public class Graphe {

@@ -1,3 +1,10 @@
+package metier.graphe.algorithme;
+
+import metier.graphe.algorithme.Graphe;
+import metier.persistence.Affectation;
+import metier.persistence.Besoin;
+import metier.persistence.Possede;
+
 import java.util.*;
 
 public class TestAlgo {
