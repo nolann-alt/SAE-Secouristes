@@ -62,6 +62,9 @@ public class ProfilSecouristeAdminController implements Initializable {
     @FXML private HBox competenceContainer;
     @FXML private Label titrePopupLabel;
 
+    @FXML private Button deleteAccountButton;
+
+
     /**
      * Initialise les champs, les compétences, et les composants visuels.
      */

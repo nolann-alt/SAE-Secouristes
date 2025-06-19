@@ -26,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import metier.persistence.Secouriste;
 
 
 public class CalendrierSecouristeMoisAdminController implements Initializable{
@@ -45,10 +46,16 @@ public class CalendrierSecouristeMoisAdminController implements Initializable{
     // Référence au bouton actuellement sélectionné pour gérer le style
     private Button boutonSelectionne = null;
 
+    @FXML private Label labelNomSecouriste;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Affichage dynamique de l'heure dans la barre supérieure
         HeureController.afficherHeure(timeLabel);
+
+        if (GlobalController.getSelectedSecouriste() != null) {
+            labelNomSecouriste.setText("Calendrier de " + GlobalController.getSelectedSecouriste().getPrenom());
+        }
 
         // Récupération de la date du jour
         LocalDate today = LocalDate.now();
@@ -77,6 +84,12 @@ public class CalendrierSecouristeMoisAdminController implements Initializable{
             // Ajoute le bouton à l'interface
             moisSelector.getChildren().add(bouton);
         }
+
+        Secouriste secouriste = GlobalController.getSelectedSecouriste();
+        if (secouriste != null) {
+            labelNomSecouriste.setText("Calendrier de " + secouriste.getPrenom());
+        }
+
 
         // Affiche les jours du mois courant au chargement
         afficherMois(currentMonth);

@@ -39,7 +39,8 @@ public class NotificationSecouristeController {
     /**
      * Initialisation de la vue : affichage de l'heure en continu.
      */
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         HeureController.afficherHeure(timeLabel);
     }
 
