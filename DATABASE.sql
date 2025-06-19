@@ -92,11 +92,22 @@ INSERT INTO Admin (nom, prenom, email, motDePasse) VALUES ('a', 'a', 'a@ambulymp
 
 CREATE TABLE Affectation (
                              idSecouriste INT,
+                             intitule VARCHAR(50),
                              idDPS INT,
-                             PRIMARY KEY (idSecouriste, idDPS),
+                             PRIMARY KEY (idSecouriste, intitule, idDPS),
                              FOREIGN KEY (idSecouriste) REFERENCES Secouriste(id),
                              FOREIGN KEY (idDPS) REFERENCES DPS(id)
 );
 
+
 -- Insérer :
 INSERT INTO Sport (nom) VALUES ("Marathon");
+
+-- Table Besoin : compétences nécessaires pour un DPS
+CREATE TABLE IF NOT EXISTS Besoin (
+    intituleComp VARCHAR(255),
+    idDPS INT,
+    nombreSecouriste INT NOT NULL,
+    PRIMARY KEY (intituleComp, idDPS),
+    FOREIGN KEY (idDPS) REFERENCES DPS(id)
+);

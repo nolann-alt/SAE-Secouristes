@@ -22,13 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import metier.graphe.model.dao.AffectationDAO;
-import metier.graphe.model.dao.DPSDAO;
-import metier.graphe.model.dao.SecouristeDAO;
-import metier.persistence.Affectation;
-import metier.persistence.Competences;
-import metier.persistence.DPS;
-import metier.persistence.Secouriste;
+import metier.graphe.model.dao.*;
+import metier.persistence.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,6 +36,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class CalendrierMoisAdminController implements Initializable {
+
+    @FXML
+    /** This Label is used to display messages to the user */
+    public Label message;
 
     /** This DatePicker is used to select a date in the calendar view. */
     @FXML private DatePicker datePickerStart;
@@ -493,25 +492,47 @@ public class CalendrierMoisAdminController implements Initializable {
             // 4. Créer le DPS
             DPS dps = new DPS(
                     0,
-                    "Nouveau DPS",
+                    message.getText(),
                     Date.valueOf(date),
                     debutSQL,
                     finSQL,
                     "Marathon",
                     1,
                     "Lieu générique",
-                    "Créé depuis l'IHM"
+                    "Description du DPS"
             );
             dps.setCouleur(couleur);
 
+            // 5. Enregistrer le DPS dans la base de données
             DPSDAO dpsDAO = new DPSDAO();
             dpsDAO.create(dps);
 
-            // 5. Récupérer le dernier DPS inséré
+            // 6. Récupérer l'ID du dernier DPS créé
             List<DPS> tous = dpsDAO.findAll();
             DPS dernier = tous.get(tous.size() - 1);
 
-            // 6. Ajouter les affectations des secouristes cochés
+            int idDPS = (int) dernier.getId();
+
+            // 7. Création d'un liste de besoins et de possede
+            List<Besoin> besoins = new ArrayList<>();
+
+            List<Possede> listePossedes = new ArrayList<>();
+            PossedeDAO possedeDAO = new PossedeDAO();
+
+            // 8. Récupération des compétences cochées pour la création d'un objet Possede
+            List<String> competencesCochees = new ArrayList<>();
+            if (customCheckbox.isSelected()) competencesCochees.add("CO");
+            if (customCheckbox1.isSelected()) competencesCochees.add("CP");
+            if (customCheckbox2.isSelected()) competencesCochees.add("CE");
+            if (customCheckbox3.isSelected()) competencesCochees.add("PBC");
+            if (customCheckbox4.isSelected()) competencesCochees.add("PBF");
+            if (customCheckbox5.isSelected()) competencesCochees.add("PSE1");
+            if (customCheckbox6.isSelected()) competencesCochees.add("PSE2");
+            if (customCheckbox7.isSelected()) competencesCochees.add("SSA");
+            if (customCheckbox8.isSelected()) competencesCochees.add("VPSP");
+
+            // 9. Vérification que des compétences ont été cochées et affectation des secouristes
+            int nbSecouristeCochee = 0;
             AffectationDAO affectationDAO = new AffectationDAO();
             for (Node node : eventList.getChildren()) {
                 if (node instanceof HBox box) {
@@ -519,15 +540,56 @@ public class CalendrierMoisAdminController implements Initializable {
                         if (child instanceof CheckBox check && check.isSelected()) {
                             Secouriste s = (Secouriste) box.getUserData();
                             if (s != null) {
-                                Affectation aff = new Affectation((int) s.getId(), "", (int) dernier.getId());
-                                affectationDAO.create(aff);
+                                nbSecouristeCochee ++;
+
+                                for (String competence : competencesCochees) {
+                                    Affectation aff = new Affectation((int) s.getId(), competence, (int) dernier.getId());
+                                    affectationDAO.create(aff);
+
+                                    Possede possede = new Possede(competence, s.getId());
+                                    listePossedes.add(possede);
+                                    possedeDAO.create(possede);
+                                }
                             }
                         }
                     }
                 }
             }
 
-            // 7. Fermer la pop-up
+            if (customCheckbox.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "CO", idDPS));
+            }
+            if (customCheckbox1.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "CP", idDPS));
+            }
+            if (customCheckbox2.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "CE", idDPS));
+            }
+            if (customCheckbox3.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "PBC", idDPS));
+            }
+            if (customCheckbox4.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "PBF", idDPS));
+            }
+            if (customCheckbox5.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "PSE1", idDPS));
+            }
+            if (customCheckbox6.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "PSE2", idDPS));
+            }
+            if (customCheckbox7.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "SSA", idDPS));
+            }
+            if (customCheckbox8.isSelected()) {
+                besoins.add(new Besoin(nbSecouristeCochee, "VPSP", idDPS));
+            }
+
+            BesoinDAO besoinDAO = new BesoinDAO();
+
+            for (Besoin besoin : besoins) {
+                besoinDAO.create(besoin);
+            }
+
             hidePopup();
             System.out.println("DPS et affectations enregistrés.");
 

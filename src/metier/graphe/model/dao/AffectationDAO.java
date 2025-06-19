@@ -11,12 +11,13 @@ public class AffectationDAO extends DAO<Affectation> {
 
     @Override
     public int create(Affectation affectation) {
-        String query = "INSERT INTO Affectation (idSecouriste, idDPS) VALUES (?, ?)";
+        String query = "INSERT INTO Affectation (idSecouriste, intitule, idDPS) VALUES (?, ?, ?)";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setInt(1, affectation.getIdSecouriste());
-            ps.setInt(2, affectation.getIdDPS());
+            ps.setInt(1, (int) affectation.getIdSecouriste());
+            ps.setString(2, affectation.getIntituleComp());
+            ps.setInt(3, (int) affectation.getIdDPS());
 
             return ps.executeUpdate(); // 1 si insertion réussie
         } catch (SQLException e) {
@@ -33,12 +34,13 @@ public class AffectationDAO extends DAO<Affectation> {
 
     @Override
     public int delete(Affectation affectation) {
-        String query = "DELETE FROM Affectation WHERE idSecouriste = ? AND idDPS = ?";
+        String query = "DELETE FROM Affectation WHERE idSecouriste = ? AND intitule = ? AND idDPS = ?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setInt(1, affectation.getIdSecouriste());
-            ps.setInt(2, affectation.getIdDPS());
+            ps.setInt(1, (int) affectation.getIdSecouriste());
+            ps.setString(2, affectation.getIntituleComp());
+            ps.setInt(3, (int) affectation.getIdDPS());
 
             return ps.executeUpdate();
         } catch (SQLException e) {

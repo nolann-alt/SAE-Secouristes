@@ -13,7 +13,7 @@ public class DispoDAO extends DAO<Disponibilite> {
         String query = "INSERT INTO Disponibilite (idSecouriste, jour, mois, annee) VALUES (?, ?, ?, ?)";
         try (Connection connexion = getConnection();
              PreparedStatement ps = connexion.prepareStatement(query)) {
-            ps.setInt(1, d.getIdSecouriste());
+            ps.setInt(1, (int) d.getIdSecouriste());
             ps.setInt(2, d.getDateDispo().getJour());
             ps.setInt(3, d.getDateDispo().getMois());
             ps.setInt(4, d.getDateDispo().getAnnee());
@@ -35,7 +35,7 @@ public class DispoDAO extends DAO<Disponibilite> {
         String query = "DELETE FROM Disponibilite WHERE idSecouriste = ? AND jour = ? AND mois = ? AND annee = ?";
         try (Connection connexion = getConnection();
              PreparedStatement ps = connexion.prepareStatement(query)) {
-            ps.setInt(1, d.getIdSecouriste());
+            ps.setInt(1, (int) d.getIdSecouriste());
             ps.setInt(2, d.getDateDispo().getJour());
             ps.setInt(3, d.getDateDispo().getMois());
             ps.setInt(4, d.getDateDispo().getAnnee());
@@ -110,4 +110,29 @@ public class DispoDAO extends DAO<Disponibilite> {
         }
         return liste;
     }
+
+    /**
+     * Vérifie si un secouriste est disponible à une date donnée.
+     * @param idSecouriste l'id du secouriste
+     * @param journee la date de disponibilité recherchée
+     * @return true si disponible, false sinon
+     */
+    public boolean isDisponible(int idSecouriste, Journee journee) {
+        String query = "SELECT 1 FROM Disponibilite WHERE idSecouriste = ? AND jour = ? AND mois = ? AND annee = ?";
+        try (Connection connexion = getConnection();
+             PreparedStatement ps = connexion.prepareStatement(query)) {
+            ps.setInt(1, idSecouriste);
+            ps.setInt(2, journee.getJour());
+            ps.setInt(3, journee.getMois());
+            ps.setInt(4, journee.getAnnee());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next(); // true s'il y a une ligne => disponible
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
 }

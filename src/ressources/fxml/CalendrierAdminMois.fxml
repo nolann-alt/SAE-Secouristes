@@ -10,6 +10,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -188,9 +189,9 @@
                 </columnConstraints>
                 <rowConstraints>
                     <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="201.0" minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="251.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="377.0" minHeight="10.0" prefHeight="196.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="201.0" minHeight="10.0" prefHeight="158.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="251.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="377.0" minHeight="10.0" prefHeight="145.0" vgrow="SOMETIMES" />
                     <RowConstraints maxHeight="377.0" minHeight="10.0" prefHeight="94.0" vgrow="SOMETIMES" />
                     <RowConstraints maxHeight="418.0" minHeight="10.0" prefHeight="175.0" vgrow="SOMETIMES" />
                     <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="102.0" vgrow="SOMETIMES" />
@@ -223,7 +224,7 @@
                     </GridPane>
                     <HBox prefHeight="61.0" prefWidth="392.0" GridPane.rowIndex="2">
                         <children>
-                            <Label fx:id="titrePopupLabel" style="-fx-text-fill: black; -fx-font-size: 16;" text="Appliquer un filtre" wrapText="true" />
+                            <Label fx:id="titrePopupLabel" style="-fx-text-fill: black; -fx-font-size: 16;" text="Sélectionner des compétences" wrapText="true" />
                         </children>
                         <padding>
                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -374,7 +375,7 @@
                             </HBox>
                         </children>
                     </GridPane>
-                    <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="88.0" style="-fx-border-color: transparent transparent rgba(136, 136, 136, 0.21) transparent; -fx-border-width: 0 0 2 0;" GridPane.rowIndex="1">
+                    <GridPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="140.0" style="-fx-border-color: transparent transparent rgba(136, 136, 136, 0.21) transparent; -fx-border-width: 0 0 2 0;" GridPane.rowIndex="1">
                         <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -384,6 +385,7 @@
                             <RowConstraints maxHeight="85.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
                             <RowConstraints maxHeight="59.0" minHeight="0.0" prefHeight="44.0" vgrow="SOMETIMES" />
                             <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
+                     <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
                         </rowConstraints>
                         <children>
                             <Label fx:id="titrePopupLabel1" style="-fx-text-fill: black; -fx-font-size: 16;" text="Début" wrapText="true">
@@ -478,7 +480,20 @@
                                     </FXCollections>
                                 </items>
                             </ComboBox>
+                     <Label fx:id="message" layoutX="20.0" layoutY="52.0" style="-fx-text-fill: black; -fx-font-size: 16;" text="Message" wrapText="true" GridPane.rowIndex="3">
+                        <GridPane.margin>
+                           <Insets left="10.0" />
+                        </GridPane.margin>
+                     </Label>
+                     <TextField style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-border-color: rgba(171, 171, 171, 0.21);" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <GridPane.margin>
+                           <Insets />
+                        </GridPane.margin>
+                     </TextField>
                         </children>
+                  <padding>
+                     <Insets bottom="10.0" />
+                  </padding>
                     </GridPane>
                     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="4">
                         <children>
@@ -486,7 +501,7 @@
                             <Label fx:id="titrePopupLabel21" layoutX="10.0" layoutY="10.0" style="-fx-text-fill: black; -fx-font-size: 16;" text="Note : les secouristes non disponibles sur cet interval de date ne sont pas affichés" textAlignment="CENTER" wrapText="true" />
                         </children>
                     </VBox>
-                    <ScrollPane fitToWidth="true" prefHeight="196.0" prefWidth="393.0" style="-fx-background: transparent;" GridPane.rowIndex="5">
+                    <ScrollPane fitToWidth="true" prefHeight="196.0" prefWidth="393.0" style="-fx-background: white;" GridPane.rowIndex="5">
                         <content>
                             <VBox fx:id="eventList" alignment="TOP_CENTER" spacing="5" styleClass="event-list" />
                         </content>

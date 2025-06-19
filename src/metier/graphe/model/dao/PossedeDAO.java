@@ -14,7 +14,7 @@ public class PossedeDAO extends DAO<Possede> {
         String query = "INSERT INTO Possede (idSecouriste, intitule) VALUES (?, ?)";
         try (Connection connexion = getConnection();
              PreparedStatement ps = connexion.prepareStatement(query)) {
-            ps.setLong(1, possede.getSecouriste().getId());
+            ps.setLong(1, possede.getIdSecouriste());
             ps.setString(2, possede.getIntitule());
             return ps.executeUpdate();
         } catch (SQLException ex) {
