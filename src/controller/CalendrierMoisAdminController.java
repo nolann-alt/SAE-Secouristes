@@ -625,8 +625,6 @@ public class CalendrierMoisAdminController implements Initializable {
         DispoDAO dispoDAO = new DispoDAO();
         Journee jourDPS = new Journee(date.getDayOfMonth(), date.getMonthValue(), date.getYear());
 
-
-
         for (Secouriste s : secouristes) {
             List<Disponibilite> dispos = dispoDAO.findAllBySecouriste((int)s.getId());
 
@@ -638,8 +636,9 @@ public class CalendrierMoisAdminController implements Initializable {
                 }
             }
 
-
-            eventList.getChildren().add(createSecouristeCard(s));
+            if (estDisponible) {
+                eventList.getChildren().add(createSecouristeCard(s));
+            }
         }
     }
 
