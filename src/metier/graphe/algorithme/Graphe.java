@@ -1,13 +1,8 @@
-package metier.graphe.algorithme;
-
-import metier.persistence.*;
-import metier.persistence.Affectation;
-
 import java.util.*;
 
 public class Graphe {
     private ArrayList<Possede> listeSecouristeComp;
-    private HashMap<DPS, Competences> listeDPSComp;
+    private ArrayList<Besoin> listeBesoins;
     private int[][] matAdj;
     private int[] meilleureCombin;
     private int scoreActuel;
@@ -15,42 +10,41 @@ public class Graphe {
     private HashMap<Integer, Long> indexSecouriste;
     private HashMap<Integer, Besoin> indexBesoin;
 
-    public Graphe(ArrayList<Possede> listeSecouristeComp, HashMap<DPS, Competences> listeDPSComp) {
+    public Graphe(ArrayList<Possede> listeSecouristeComp, ArrayList<Besoin> lalisteBesoins) {
         this.listeSecouristeComp = new ArrayList<>(listeSecouristeComp);
-        this.listeDPSComp = new HashMap<>(listeDPSComp);
+        this.listeBesoins = new ArrayList<>(lalisteBesoins);
 
+        // Indexation des secouristes UNIQUES
         this.indexSecouriste = new HashMap<>();
         int ind = 0;
+        Set<Long> secouristesDejaVus = new HashSet<>();
         for (Possede p : this.listeSecouristeComp) {
-            long idSec = p.getIdSecouriste();
-            if (!this.indexSecouriste.containsValue(idSec)) {
-                this.indexSecouriste.put(ind, idSec);
+            if (!secouristesDejaVus.contains(p.getIdSecouriste())) {
+                this.indexSecouriste.put(ind, p.getIdSecouriste());
+                secouristesDejaVus.add(p.getIdSecouriste());
                 ind++;
             }
         }
-        // Associe un indice dans la matrice à un id de Besoin
+
         this.indexBesoin = new HashMap<>();
-        ind = 0;
-        for (Map.Entry<DPS, Competences> couple : this.listeDPSComp.entrySet()) {
-            DPS unDPS = couple.getKey();
-            Competences uneComp = couple.getValue();
-            Besoin unBesoin = new Besoin(1, uneComp.getIntitule(), (int) unDPS.getId());
-            this.indexBesoin.put(ind, unBesoin);
-            ind++;
+        for (int i = 0; i < this.listeBesoins.size(); i++) {
+            this.indexBesoin.put(i, this.listeBesoins.get(i));
         }
 
+        // construction matrice (carree)
         int taille = Math.max(this.indexSecouriste.size(), this.indexBesoin.size());
         this.matAdj = new int[taille][taille];
 
-        for (int i = 0 ; i < this.indexSecouriste.size() ; i++) {
+        for (int i = 0; i < this.indexSecouriste.size(); i++) {
             long idSecouriste = this.indexSecouriste.get(i);
 
-            for (int j = 0 ; j < this.indexBesoin.size() ; j++) {
+            for (int j = 0; j < this.indexBesoin.size(); j++) {
                 Besoin b = this.indexBesoin.get(j);
-                String compRequise = b.getIntituleComp();
 
-                for (Possede p : listeSecouristeComp) {
-                    if (p.getIdSecouriste() == idSecouriste && p.getIntitule().equals(compRequise)) {
+                // Vérifie si le secouriste a la compétence requise
+                for (Possede p : this.listeSecouristeComp) {
+                    if (p.getIdSecouriste() == idSecouriste &&
+                            p.getIntitule().equals(b.getIntituleComp())) {
                         this.matAdj[i][j] = 1;
                     }
                 }
@@ -58,80 +52,146 @@ public class Graphe {
         }
     }
 
+    // ================================================ GLOUTON ================================================
 
-    /**
-     * Exhaustiv affectation algorithm
-     * @return
-     */
-    public ArrayList<Affectation> affectationExhaustive() {
-        ArrayList<Affectation> lesAffectations = new ArrayList<>();
-        int[] combinaison = new int[this.matAdj.length]; // indice = indice secouriste ; valeur = indice du DPS
-        boolean[] colUtilisee = new boolean[this.matAdj.length]; // indice = numero de colonne dans la matrice = DPS
-        this.scoreActuel = 0;
-        this.bestScore = 0;
+    public ArrayList<Affectation> affectationGloutonne() {
+        ArrayList<Affectation> affectations = new ArrayList<>();
+        boolean[] dpsAffectes = new boolean[this.indexBesoin.size()];
 
-        backTracking(combinaison, colUtilisee, 0);
+        for (int i = 0; i < this.indexSecouriste.size(); i++) { // parcours les secouristes
+            for (int j = 0; j < this.indexBesoin.size(); j++) { // parcours chaque besoins
+                if (matAdj[i][j] == 1 && !dpsAffectes[j]) {
 
-        for (int i = 0 ; i < this.meilleureCombin.length ; i++) {
-            if (this.indexSecouriste.containsKey(i)) {
-                long idSecouriste = this.indexSecouriste.get(i);
-                Besoin leBesoin = this.indexBesoin.get(this.meilleureCombin[i]);
-                long idDPS = leBesoin.getIdDPS();
-                String laCompetence = leBesoin.getIntituleComp();
+                    // construit une affectation
+                    long idSecouriste = this.indexSecouriste.get(i);
+                    Besoin besoin = this.indexBesoin.get(j);
 
-                Affectation uneAffectation = new Affectation((int) idSecouriste, laCompetence, (int) idDPS);
-                lesAffectations.add(uneAffectation);
+                    if (besoin != null) {
+                        affectations.add(new Affectation(idSecouriste, besoin.getIntituleComp(), besoin.getIdDPS()));
+                        dpsAffectes[j] = true; // on marque le dps comme affecté
+                    }
+                }
             }
         }
-        return lesAffectations;
+        return affectations;
     }
 
-    /**
-     * dps : indice DPS
-     * sec : indice secouriste
-     * @return Return a list of couples of index (secouristeIndex, DPSIndex)
-     */
-    private void backTracking(int[] combinaison, boolean[] colUtilisee, int ligne) {
-        if (ligne == this.matAdj.length - 1) {
-            if (this.scoreActuel > this.bestScore) {
-                this.bestScore = this.scoreActuel;
-                this.meilleureCombin = combinaison.clone();
+    // ================================================ EXHAUSTIF ================================================
+
+    public ArrayList<Affectation> affectationExhaustive() {
+        ArrayList<Affectation> meilleureAffectation = new ArrayList<>();
+        this.bestScore = 0;
+        this.scoreActuel = 0;
+
+        // init tab de combinaison
+        this.meilleureCombin = new int[this.indexSecouriste.size()];
+        Arrays.fill(this.meilleureCombin, -1);
+
+        rechercherMeilleureAffectation(0, new int[this.indexSecouriste.size()], new boolean[this.indexBesoin.size()]);
+
+        // construction la liste d'affectations à partir de la meilleure combinaison
+        for (int i = 0; i < this.meilleureCombin.length; i++) {
+            if (this.meilleureCombin[i] != -1 && matAdj[i][this.meilleureCombin[i]] == 1) {
+                long idSecouriste = this.indexSecouriste.get(i);
+                Besoin besoin = this.indexBesoin.get(this.meilleureCombin[i]);
+                meilleureAffectation.add(new Affectation(idSecouriste, besoin.getIntituleComp(), besoin.getIdDPS()));
+            }
+        }
+        return meilleureAffectation;
+    }
+
+    private void rechercherMeilleureAffectation(int secouristeIndex, int[] combinaisonActuelle, boolean[] besoinsUtilises) {
+        if (secouristeIndex >= this.indexSecouriste.size()) {
+
+            // calcul le score de cette combinaison d'affectations
+            int score = calculerScoreCombinaison(combinaisonActuelle);
+
+            // maj de la meilleur affectation
+            if (score > this.bestScore) {
+                this.bestScore = score;
+                System.arraycopy(combinaisonActuelle, 0, this.meilleureCombin, 0, combinaisonActuelle.length);
             }
             return;
         }
-        for (int col = 0 ; col < this.matAdj.length ; col++) {
-            if ( ! colUtilisee[col] ) {
-                colUtilisee[col] = true;
-                combinaison[ligne] = col;
-                this.scoreActuel = this.scoreActuel + this.matAdj[ligne][col];
 
-                /*
-                 Si on trouve un combinaison qui a pour score la taille de la matrice alors on arrête la recherche.
-                 Ex : si on a une matrice de 5 secouristes et 5 DPS, le score max théorique est de 5.
-                 Donc si on trouve une combinaison d'affectation = 5 alors on trouvera pas de solution + optimal
-                 */
-                if (this.scoreActuel == this.matAdj.length) {
-                    this.bestScore = this.scoreActuel;
-                    this.meilleureCombin = combinaison.clone();
-                    return; // retour à la méthode appelante dans la pile d'exécution
-                }
-                backTracking(combinaison, colUtilisee, ligne + 1);
-                scoreActuel -= this.matAdj[ligne][col];
-                colUtilisee[col] = false;
+        // affecter le secouriste courant à chaque besoin possible
+        for (int besoinIndex = 0; besoinIndex < this.indexBesoin.size(); besoinIndex++) {
+            // vérifier si besoin disponible && affectation est valide
+            if (!besoinsUtilises[besoinIndex] && this.matAdj[secouristeIndex][besoinIndex] == 1) {
+                combinaisonActuelle[secouristeIndex] = besoinIndex;
+                besoinsUtilises[besoinIndex] = true;
+
+                // récursion sur les affectations possible pour les autres sec
+                rechercherMeilleureAffectation(secouristeIndex + 1, combinaisonActuelle, besoinsUtilises);
+
+                // backtracking
+                combinaisonActuelle[secouristeIndex] = -1;
+                besoinsUtilises[besoinIndex] = false;
             }
         }
+
+        // explore la possibilité de ne pas affecter le sec
+        combinaisonActuelle[secouristeIndex] = -1;
+        rechercherMeilleureAffectation(secouristeIndex + 1, combinaisonActuelle, besoinsUtilises);
     }
+
+    private int calculerScoreCombinaison(int[] combinaison) {
+        int score = 0;
+        for (int i = 0; i < combinaison.length; i++) {
+            if (combinaison[i] != -1 && matAdj[i][combinaison[i]] == 1) {
+                score++;
+            }
+        }
+        return score;
+    }
+
+
+    // ================================================ GETTER ET AUTRES ================================================
 
 
     public ArrayList<Possede> getListeSecouriste() {
         return this.listeSecouristeComp;
     }
 
-    public HashMap<DPS, Competences> getListeDPS() {
-        return this.listeDPSComp;
+    public ArrayList<Besoin> getListeBesoins() {
+        return this.listeBesoins;
     }
 
     public int[][] getMatriceAdj() {
         return this.matAdj;
+    }
+
+    public HashMap<Integer, Long> getIndexSecouriste() {
+        return this.indexSecouriste;
+    }
+
+    public HashMap<Integer, Besoin> getIndexBesoin() {
+        return this.indexBesoin;
+    }
+
+    public int calculerScore(ArrayList<Affectation> affectations) {
+        Set<Long> secouristesAffectes = new HashSet<>();
+        Set<Long> besoinsCouverts = new HashSet<>();
+        int score = 0;
+
+        for (Affectation a : affectations) {
+            if (!secouristesAffectes.contains(a.getIdSecouriste())) { // vérifie que le secouriste n'est pas affecté
+                if (!besoinsCouverts.contains(a.getIdDPS())) { // vérifie que le besoin n'est pas déjà couvert
+                    boolean competenceValide = false; // vérifie que le secouriste a la comp
+                    for (Possede p : this.listeSecouristeComp) {
+                        if (p.getIdSecouriste() == a.getIdSecouriste()
+                                && p.getIntitule().equals(a.getIntituleComp())) {
+                            competenceValide = true;
+                        }
+                    }
+                    if (competenceValide) {
+                        score++;
+                        secouristesAffectes.add(a.getIdSecouriste());
+                        besoinsCouverts.add(a.getIdDPS());
+                    }
+                }
+            }
+        }
+        return score;
     }
 }
