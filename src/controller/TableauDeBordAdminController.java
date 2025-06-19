@@ -16,9 +16,13 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import metier.graphe.model.EventData;
+import metier.graphe.model.dao.SecouristeDAO;
 import metier.persistence.Admin;
+import metier.persistence.Secouriste;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -213,4 +217,33 @@ public class TableauDeBordAdminController implements Initializable {
             System.out.println("Erreur vue CalendrierAdminMois : " + e.getMessage());
         }
     }
+
+    @FXML
+    private void handleExportCSV(ActionEvent event) {
+        // Création d'une instance du DAO pour accéder aux données des secouristes
+        SecouristeDAO dao = new SecouristeDAO();
+
+        // Appel de la méthode findAll() pour récupérer tous les secouristes depuis la base de données
+        List<Secouriste> liste = dao.findAll();
+
+        // Création d'une fenêtre pour choisir l'emplacement et le nom du fichier à enregistrer
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer sous..."); // Titre de la fenêtre
+        fileChooser.setInitialFileName("secouristes.csv"); // Nom proposé par défaut
+
+        // Filtre pour ne permettre que les fichiers .csv
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichier CSV", "*.csv")
+        );
+
+        // Affiche la boîte de dialogue de sauvegarde et récupère le fichier sélectionné
+        File fichier = fileChooser.showSaveDialog(null);
+
+        // Si l'utilisateur a bien sélectionné un fichier (et n'a pas annulé)
+        if (fichier != null) {
+            // Appel de la méthode utilitaire pour écrire les données dans le fichier CSV
+            util.ExportCSV.exportSecouristes(liste, fichier.getAbsolutePath());
+        }
+    }
+
 }

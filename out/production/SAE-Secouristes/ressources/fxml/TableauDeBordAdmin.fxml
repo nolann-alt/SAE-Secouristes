@@ -131,6 +131,11 @@
                                     <Insets top="20.0" />
                                 </VBox.margin>
                             </Button>
+                            <Button fx:id="exportCSVButton" onAction="#handleExportCSV" layoutX="20" layoutY="20" styleClass="create-button" text="Exporter CSV">
+                                <VBox.margin>
+                                    <Insets top="20.0" />
+                                </VBox.margin>
+                            </Button>
                         </children>
                     </VBox>
                 </content>
