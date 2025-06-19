@@ -6,19 +6,12 @@ package metier.persistence;
 public class Possede {
     private String intituleComp;
     private long idSecouriste;
-    private Secouriste secouriste;
 
 
-    public Possede(String intituleComp, Secouriste secouriste) {
+    public Possede(String intituleComp, long id) {
         this.intituleComp = intituleComp;
-        this.idSecouriste = secouriste.getId();
-        this.secouriste = secouriste;
+        this.idSecouriste = id;
     }
-
-    public Secouriste getSecouriste() {
-        return this.secouriste;
-    }
-
 
     public String getIntitule() {
         return this.intituleComp;
