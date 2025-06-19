@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import metier.graphe.model.dao.PossedeDAO;
+import metier.graphe.model.dao.SecouristeDAO;
 import metier.persistence.Competences;
 import metier.persistence.Possede;
 import metier.persistence.Secouriste;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -237,6 +239,40 @@ public class ProfilSecouristeAdminController implements Initializable {
                     "-fx-border-color: #E60023; -fx-border-radius: 30; -fx-background-radius: 30;");
             pastille.setPadding(new Insets(10, 20, 10, 20));
             competenceContainer.getChildren().add(pastille);
+        }
+    }
+
+    @FXML
+    private void handleDeleteAccount(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de suppression");
+        alert.setHeaderText("Supprimer le compte de " + secouriste.getPrenom() + " " + secouriste.getNom() + " ?");
+        alert.setContentText("Cette action est irréversible.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            PossedeDAO possedeDAO = new PossedeDAO();
+            possedeDAO.deleteAllBySecouriste(secouriste.getId()); // Supprime les compétences liées
+
+            SecouristeDAO secouristeDAO = new SecouristeDAO();
+            int deleted = secouristeDAO.delete(secouriste); // Supprime le compte
+
+            if (deleted > 0) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Compte supprimé");
+                info.setHeaderText(null);
+                info.setContentText("Le compte a été supprimé avec succès.");
+                info.showAndWait();
+
+                // Retour à la vue précédente
+                handleBack(event);
+            } else {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Erreur");
+                error.setHeaderText("Échec de la suppression du compte.");
+                error.setContentText("Une erreur est survenue lors de la suppression.");
+                error.showAndWait();
+            }
         }
     }
 }

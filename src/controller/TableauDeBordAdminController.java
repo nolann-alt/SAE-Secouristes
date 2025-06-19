@@ -242,7 +242,7 @@ public class TableauDeBordAdminController implements Initializable {
         // Si l'utilisateur a bien sélectionné un fichier (et n'a pas annulé)
         if (fichier != null) {
             // Appel de la méthode utilitaire pour écrire les données dans le fichier CSV
-            util.ExportCSV.exportSecouristes(liste, fichier.getAbsolutePath());
+            ExportCSV.exportSecouristes(liste, fichier.getAbsolutePath());
         }
     }
 

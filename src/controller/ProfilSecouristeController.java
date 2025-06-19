@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -253,5 +254,37 @@ public class ProfilSecouristeController implements Initializable {
     private void hidePopup() {
         popupPane.setVisible(false);
         overlay.setVisible(false);
+    }
+
+    @FXML
+    private void handleDeleteAccount(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de suppression");
+        alert.setHeaderText("Êtes-vous sûr de vouloir supprimer votre compte ?");
+        alert.setContentText("Cette action est irréversible.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            PossedeDAO possedeDAO = new PossedeDAO();
+            possedeDAO.deleteAllBySecouriste(user.getId()); // ← SUPPRESSION DES LIENS AVANT
+
+            SecouristeDAO secouristeDAO = new SecouristeDAO();
+            int deleted = secouristeDAO.delete(user);
+
+            if (deleted > 0) {
+                GlobalController.currentUser = null;
+                try {
+                    GlobalController.switchView("../ressources/fxml/Accueil.fxml", (Node) event.getSource());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Erreur");
+                errorAlert.setHeaderText("Échec de la suppression du compte.");
+                errorAlert.showAndWait();
+            }
+        }
     }
 }

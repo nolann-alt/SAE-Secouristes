@@ -21,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -279,8 +280,9 @@ public class CalendrierSecouristeMoisController implements Initializable {
             String heureDebutStr = hourComboBoxStart.getValue().replace("h", "");
             String heureFinStr = hourComboBoxEnd.getValue().replace("h", "");
 
-            LocalTime heureDebut = LocalTime.parse(heureDebutStr);
-            LocalTime heureFin = LocalTime.parse(heureFinStr);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+            LocalTime heureDebut = LocalTime.parse(heureDebutStr, formatter);
+            LocalTime heureFin = LocalTime.parse(heureFinStr, formatter);
 
             LocalDateTime debut = LocalDateTime.of(dateDebut, heureDebut);
             LocalDateTime fin = LocalDateTime.of(dateFin, heureFin);
@@ -298,6 +300,4 @@ public class CalendrierSecouristeMoisController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
 }

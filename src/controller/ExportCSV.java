@@ -1,4 +1,4 @@
-package util;
+package controller;
 
 import metier.persistence.Secouriste;
 import metier.persistence.Competences;
