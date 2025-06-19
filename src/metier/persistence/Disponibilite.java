@@ -10,7 +10,7 @@ package metier.persistence;
  */
 public class Disponibilite {
     /** The ID of the rescuer */
-    private int idSec;
+    private long idSec;
     /** The day of availability */
     private Journee dateDispo;
 
@@ -19,7 +19,7 @@ public class Disponibilite {
      * @param idSec  the ID of the rescuer
      * @param laDate date of the rescuer's disponibility
      */
-    public Disponibilite(int idSec, Journee laDate) {
+    public Disponibilite(long idSec, Journee laDate) {
         this.idSec = idSec;
         this.dateDispo = laDate;
     }
@@ -28,7 +28,7 @@ public class Disponibilite {
      * Returns the ID of the rescuer.
      * @return the rescuer's ID
      */
-    public int getIdSecouriste() {
+    public long getIdSecouriste() {
         return idSec;
     }
 
@@ -36,7 +36,7 @@ public class Disponibilite {
      * Sets the ID of the rescuer.
      * @param idSec the rescuer's ID to set
      */
-    public void setIdSecouriste(int idSec) {
+    public void setIdSecouriste(long idSec) {
         this.idSec = idSec;
     }
 
