@@ -475,12 +475,12 @@
                                     </FXCollections>
                                 </items>
                             </ComboBox>
-                     <Label fx:id="message" layoutX="20.0" layoutY="52.0" style="-fx-text-fill: black; -fx-font-size: 16;" text="Message" wrapText="true" GridPane.rowIndex="3">
+                     <Label layoutX="20.0" layoutY="52.0" style="-fx-text-fill: black; -fx-font-size: 16;" text="Message" wrapText="true" GridPane.rowIndex="3">
                         <GridPane.margin>
                            <Insets left="10.0" />
                         </GridPane.margin>
                      </Label>
-                     <TextField style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-border-color: rgba(171, 171, 171, 0.21);" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <TextField fx:id="message" style="-fx-background-color: rgba(171, 171, 171, 0.21); -fx-border-color: rgba(171, 171, 171, 0.21);" GridPane.columnIndex="1" GridPane.rowIndex="3">
                         <GridPane.margin>
                            <Insets />
                         </GridPane.margin>

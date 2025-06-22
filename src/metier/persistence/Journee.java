@@ -39,29 +39,14 @@ public class Journee {
 
     @Override
     public boolean equals(Object o) {
-        boolean ret = true;
-        // Vérifie si on compare l'objet à lui-même (même référence)
-        if (this == o) {
-            ret = true;
-        }
-        // Vérifie que l'objet passé n'est pas null et est bien de la même classe
-        if (o == null || getClass() != o.getClass()) {
-            ret = false;
-        }
-        // Convertit l'objet en Journee pour accéder à ses champs
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Journee journee = (Journee) o;
-        // Compare chaque champ (jour, mois, année) un par un
-        if (jour != journee.jour || mois != journee.mois || annee != journee.annee) {
-            ret = false;
-        }
-        // Si tous les champs correspondent, les objets sont égaux
-        return ret;
+        return jour == journee.jour && mois == journee.mois && annee == journee.annee;
     }
 
     @Override
     public int hashCode() {
-        // Calcule un code de hachage à partir des champs day, month, year
-        // Utilisé pour les collections basées sur du hachage (HashMap, HashSet...)
         return Objects.hash(jour, mois, annee);
     }
 

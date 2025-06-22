@@ -32,7 +32,13 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import metier.graphe.model.EventData;
 
-
+/** * This class is the controller for the weekly calendar view in the admin interface.
+ * It manages the display of the calendar, handles user interactions, and updates the UI with events.
+ * The calendar shows a week view with buttons for each day and allows adding events.
+ *
+ * @author M. Weis, N. Lescop, M. Gouelo, A. Jan
+ * @version 1.0
+ */
 public class CalendrierAdminSemaineController {
 
     @FXML

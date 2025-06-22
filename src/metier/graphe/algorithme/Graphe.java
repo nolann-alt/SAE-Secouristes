@@ -6,15 +6,27 @@ import metier.persistence.Possede;
 
 import java.util.*;
 
+/**
+ * * This class represents a graph structure used for managing the assignment of rescuers to needs based on their competencies.
+ * It provides methods for greedy and exhaustive assignment algorithms, as well as utility methods for graph properties.
+ */
 public class Graphe {
 
+    /** LIste of rescuers and their competencies */
     private ArrayList<Possede> listeSecouristeComp;
+    /** List of all needs */
     private ArrayList<Besoin> listeBesoins;
+    /** Adjacency matrix representing the relationships between rescuers and needs */
     private int[][] matAdj;
+    /** Best combination of assignments found during exhaustive search */
     private int[] meilleureCombin;
+    /** Current score of the assignment */
     private int scoreActuel;
+    /** Best score found during exhaustive search */
     private int bestScore;
+    /** Index mapping for unique rescuers */
     private HashMap<Integer, Long> indexSecouriste;
+    /** Index mapping for needs */
     private HashMap<Integer, Besoin> indexBesoin;
 
     /**
@@ -121,7 +133,7 @@ public class Graphe {
     }
 
     /**
-     *
+     * Recursive method to find the best assignment configuration using backtracking.
      * @param secouristeIndex index of the rescuer
      * @param combinaisonActuelle configuration of the actual assignement
      * @param besoinsUtilises list of needs used or not
@@ -249,8 +261,6 @@ public class Graphe {
         }
         return score;
     }
-
-
 
     /**
      * Method which verify if a graph is a DAG (acyclic and oriented)

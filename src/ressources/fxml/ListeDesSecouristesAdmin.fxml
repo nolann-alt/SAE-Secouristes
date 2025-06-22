@@ -106,6 +106,9 @@
                 </content>
             </ScrollPane>
         </center>
+      <bottom>
+         <VBox prefHeight="150.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      </bottom>
     </BorderPane>
 
     <!-- NAVIGATION BAR FLOTANTE -->

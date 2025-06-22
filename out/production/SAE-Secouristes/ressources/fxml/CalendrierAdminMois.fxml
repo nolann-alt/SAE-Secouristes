@@ -475,7 +475,7 @@
                                     </FXCollections>
                                 </items>
                             </ComboBox>
-                     <Label fx:id="message" layoutX="20.0" layoutY="52.0" style="-fx-text-fill: black; -fx-font-size: 16;" text="Message" wrapText="true" GridPane.rowIndex="3">
+                     <Label fx:id="message" layoutX="20.0" layoutY="52.0" style="-fx-text-fill: black; -fx-font-size: 16;" text="" wrapText="true" GridPane.rowIndex="3">
                         <GridPane.margin>
                            <Insets left="10.0" />
                         </GridPane.margin>

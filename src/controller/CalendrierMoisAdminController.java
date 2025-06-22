@@ -37,11 +37,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the monthly calendar view in the admin interface.
+ * It allows administrators to view and manage events for each month,
+ * including selecting dates, viewing events, and managing rescuers.
+ *
+ * @author M. Weis, N. Lescop, M. Gouelo, A. Jan
+ * @version 1.0
+ */
 public class CalendrierMoisAdminController implements Initializable {
 
     @FXML
     /** This Label is used to display messages to the user */
-    public Label message;
+    public TextField message;
 
     /** This DatePicker is used to select a date in the calendar view. */
     @FXML private DatePicker datePickerStart;
@@ -525,6 +533,26 @@ public class CalendrierMoisAdminController implements Initializable {
         String heureDebutStr = hourComboBoxStart.getValue().replace("h", "");
         String heureFinStr = hourComboBoxEnd.getValue().replace("h", "");
         String couleur = hourComboBoxEnd1.getValue();
+        if (couleur == null) {
+            System.out.println("Aucune couleur sélectionnée !");
+            return; // ou gérer une valeur par défaut si tu préfères
+        }
+
+        switch (couleur) {
+            case "Rouge" -> couleur = "#FF0000";
+            case "Bleu" -> couleur = "#0000FF";
+            case "Vert" -> couleur = "#00FF00";
+            case "Jaune" -> couleur = "#FFFF00";
+            case "Orange" -> couleur = "#FFA500";
+            case "Violet" -> couleur = "#800080";
+            case "Rose" -> couleur = "#FFC0CB";
+            case "Gris" -> couleur = "#808080";
+            case "Noir" -> couleur = "#000000";
+            default -> {
+                System.out.println("Couleur inconnue : " + couleur);
+                return;
+            }
+        }
 
         // 2. Vérifier que les champs sont remplis
         if (date == null || heureDebutStr == null || heureFinStr == null || couleur == null) {
@@ -543,7 +571,7 @@ public class CalendrierMoisAdminController implements Initializable {
             // 4. Créer le DPS
             DPS dps = new DPS(
                     0,
-                    message.getText(),
+                    getMessageText(),
                     Date.valueOf(date),
                     debutSQL,
                     finSQL,
@@ -662,10 +690,15 @@ public class CalendrierMoisAdminController implements Initializable {
                 affectations = graphe.affectationExhaustive();
             }
             AffectationDAO affectationDAO = new AffectationDAO();
+            System.out.println();
+            System.out.println("==================== Meilleur Affectation trouvée ====================");
             for (Affectation aff : affectations) {
                 System.out.printf("Affectation : Secouriste %d, Besoin %s%n", aff.getIdSecouriste(), aff.getIntituleComp());
                 affectationDAO.create(aff);
             }
+
+            System.out.println();
+            System.out.println("=====================================================================");
 
             // Création des indisponibilités pour chaque secouriste affecté au DPS
             DispoDAO dispoDAO = new DispoDAO();
@@ -680,6 +713,7 @@ public class CalendrierMoisAdminController implements Initializable {
             for (Affectation aff : affectations) {
                 Disponibilite indispo = new Disponibilite(aff.getIdSecouriste(), jourDPS);
                 dispoDAO.create(indispo);
+                System.out.println("Création d'indispo pour secouriste " + aff.getIdSecouriste() + " à la date " + jourDPS);
             }
 
             hidePopup();
@@ -707,6 +741,12 @@ public class CalendrierMoisAdminController implements Initializable {
 
         for (Secouriste s : secouristes) {
             List<Disponibilite> indispos = dispoDAO.findAllBySecouriste((int) s.getId());
+
+            System.out.println("Secouriste " + s.getId() + " a " + indispos.size() + " indispos.");
+            for (Disponibilite d : indispos) {
+                System.out.println(" - Indispo le " + d.getDateDispo());
+            }
+
 
             boolean estIndisponible = false;
             for (Disponibilite d : indispos) {
@@ -792,6 +832,16 @@ public class CalendrierMoisAdminController implements Initializable {
      */
     private boolean plagesSeChevauchent(LocalTime debut1, LocalTime fin1, LocalTime debut2, LocalTime fin2) {
         return !fin1.isBefore(debut2) && !debut1.isAfter(fin2);
+    }
+
+    /**
+     * This method returns the text of the message label.
+     * It is used to retrieve the message entered by the user in the UI.
+     *
+     * @return The text of the message label.
+     */
+    public String getMessageText() {
+        return message.getText();
     }
 
 }
